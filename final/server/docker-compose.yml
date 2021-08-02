@@ -1,15 +1,14 @@
-version: '3'
+version: "3"
 
 services:
-  
-  client:
-    build: client
-    stdin_open: true
-    ports:
-      - 80:3000
-    volumes:
-      - ./client:/app
-      - /app/node_modules
+  # client:
+  #   build: client
+  #   stdin_open: true
+  #   ports:
+  #     - 80:3000
+  #   volumes:
+  #     - ./client:/app
+  #     - /app/node_modules
 
   server:
     build: server
