@@ -77,19 +77,17 @@ const initialGithubLink = "danii1415@github.com";
 
 const AddProject = () => {
   const [step, setStep] = useState(1);
-  const [selectedTeacher, setSelectedTeacher] = useState(initialTeacher || "");
-  // const [selectedTeacher, setSelectedTeacher] = useState("");
-  const [currWorkshops, setCurrWorkshops] = useState(initialWorkshops || null);
-  const [selectedWorkshop, setSelectedWorkshop] = useState(
-    initialWorkshop || null
-  );
+  // const [selectedTeacher, setSelectedTeacher] = useState(initialTeacher || "");
+  const [selectedTeacher, setSelectedTeacher] = useState("");
+  const [currWorkshops, setCurrWorkshops] = useState(null);
+  const [selectedWorkshop, setSelectedWorkshop] = useState(null);
   const [currStudentidx, setcurrStudentidx] = useState(0);
-  // const [studentsList, setStudentsList] = useState([new Student()]);
-  const [studentsList, setStudentsList] = useState(initialStudentList);
+  const [studentsList, setStudentsList] = useState([new Student()]);
+  // const [studentsList, setStudentsList] = useState(initialStudentList);
   const [markDownText, setMarkDownText] = useState(initialMarkdownText);
   const [image, setImage] = useState(null);
-  const [projectTitle, setProjectTitle] = useState("My Project");
-  const [githubLink, setgithubLink] = useState(initialGithubLink || "");
+  const [projectTitle, setProjectTitle] = useState("");
+  const [githubLink, setgithubLink] = useState("");
 
   const onImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -115,8 +113,10 @@ const AddProject = () => {
     )[0];
     setSelectedTeacher(teacher);
   };
+
   const selectedTeacherSubmit = () => {
     const curr = selectedTeacher.workshops;
+    console.log(curr);
 
     setCurrWorkshops(curr);
   };
@@ -125,7 +125,6 @@ const AddProject = () => {
     let workshop = currWorkshops.filter(
       (workshop) => workshop.name == e.target.value
     )[0];
-
     setSelectedWorkshop(workshop);
   };
 
@@ -195,8 +194,8 @@ const AddProject = () => {
           currWorkshops={currWorkshops}
           nextStep={nextStep}
           prevStep={prevStep}
-          selectedWorkshopName={selectedWorkshop.name}
-          workshopId={selectedWorkshop.id}
+          selectedWorkshopName={selectedWorkshop && selectedWorkshop.name}
+          workshopId={selectedWorkshop && selectedWorkshop.id}
         />
       )}
       {step >= 3 && step <= 6 && (

@@ -7,6 +7,7 @@ import {
   Typography,
   Box,
   makeStyles,
+  Grid,
 } from "@material-ui/core";
 import React from "react";
 import ReactMarkdown from "react-markdown";
@@ -16,8 +17,11 @@ const useStyles = makeStyles({
   editorsContainer: {
     marginTop: "40px",
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
+  },
+  text: {
+    textAlign: "right",
   },
 });
 
@@ -34,7 +38,7 @@ const AddPreview = ({
   const classes = useStyles();
   return (
     <>
-      <Container component="main" maxWidth="xs">
+      <Grid component="main" maxWidth="xs">
         <form>
           <TextField
             value={projectTitle}
@@ -57,25 +61,27 @@ const AddPreview = ({
             name="github-link"
           />
         </form>
-      </Container>
-      <Container maxWidth="lg">
+      </Grid>
+      <Grid xs={12}>
         <Typography gutterBottom component="h1" align="center" variant="h5">
           MarkDown הגישו את התקציר בכתב
         </Typography>
-        <Box className={classes.editorsContainer}>
-          <TextField
-            multiline
-            variant="outlined"
-            value={markDownText}
-            onChange={onPreviewChange}
-          />
-          <Box>
+        <Grid className={classes.editorsContainer}>
+          <Grid xs={5} className={classes.text}>
             <ReactMarkdown>{markDownText}</ReactMarkdown>
-          </Box>
-        </Box>
+          </Grid>
+          <Grid xs={5}>
+            <TextField
+              multiline
+              variant="outlined"
+              value={markDownText}
+              onChange={onPreviewChange}
+            />
+          </Grid>
+        </Grid>
         <Button onClick={prevStep}>הקודם</Button>
         <Button onClick={nextStep}>הבא</Button>
-      </Container>
+      </Grid>
     </>
   );
 };

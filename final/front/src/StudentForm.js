@@ -26,7 +26,6 @@ const StudentForm = ({
           required
           fullWidth
           label="שם פרטי"
-          autoComplete
           autoFocus
         />
         <TextField
@@ -37,7 +36,6 @@ const StudentForm = ({
           required
           fullWidth
           label="שם משפחה"
-          autoComplete
         />
         <TextField
           value={currStudent.emailAddress}
@@ -48,7 +46,6 @@ const StudentForm = ({
           required
           fullWidth
           label="כתובת מייל"
-          autoComplete
         />
         <TextField
           value={currStudent.idNumber}
@@ -58,7 +55,6 @@ const StudentForm = ({
           required
           fullWidth
           label="תעודת זהות"
-          autoComplete
         />
         <Button onClick={onPreviousStudentClick}>הקודם</Button>
         {stepNumber >= 3 && stepNumber <= 5 && (

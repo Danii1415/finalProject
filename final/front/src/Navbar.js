@@ -41,7 +41,9 @@ const Navbar = ({ loggedInTeacher = false }) => {
           </Link>
         </Button>
         <Button color="inherit">
-          <Link className={classes.linkStyle}>הגשת פרוייקט חדש</Link>
+          <Link className={classes.linkStyle} to="/EditPreview">
+            עריכת הפרויקט
+          </Link>
         </Button>
         {loggedInTeacher === true && (
           <Button color="inherit" onClick={onSignOut}>

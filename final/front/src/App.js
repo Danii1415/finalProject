@@ -6,7 +6,7 @@ import Directions from "./Directions";
 import EditWorkshop from "./EditWorkshop";
 import AllWorkshops from "./AllWorkshops";
 import Navbar from "./Navbar";
-import { useEffect } from "react";
+import EditPreview from "./EditPreview";
 import SignIn from "./SignIn";
 const App = () => {
   return (
@@ -18,6 +18,7 @@ const App = () => {
         <Route path="/Directions" component={Directions} />
         <Route path="/EditWorkshop" component={EditWorkshop} />
         <Route path="/AllWorkshops" component={AllWorkshops} />
+        <Route path="/EditPreview" component={EditPreview} />
       </Switch>
     </BrowserRouter>
   );
