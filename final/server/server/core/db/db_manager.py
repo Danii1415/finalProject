@@ -1,6 +1,5 @@
 from flask import jsonify
 from .database import DB
-from core.models.models import Quote
 from core.models.student import Student
 from core.models.teacher import Teacher
 from core.models.workshop import Workshop
