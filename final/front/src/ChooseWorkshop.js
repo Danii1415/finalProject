@@ -32,33 +32,22 @@ const ChooseWorkshop = ({
   const classes = useStyles();
 
   return (
-    <Container className={classes.container}>
-      <FormControl>
-        <FormLabel>בחר סדנה</FormLabel>
-        <RadioGroup value={selectedWorkshopName} onChange={onChange}>
-          {currWorkshops &&
-            currWorkshops.map((workshop) => {
-              return (
-                <FormControlLabel
-                  key={workshop.id}
-                  value={workshop.name}
-                  control={<Radio />}
-                  label={workshop.name}
-                />
-              );
-            })}
-        </RadioGroup>
-      </FormControl>
-      <Box>
-        <Button onClick={prevStep}>הקודם</Button>
-        <Button
-          onClick={nextStep}
-          disabled={selectedWorkshopName ? false : true}
-        >
-          הבא
-        </Button>
-      </Box>
-    </Container>
+    <form>
+      <FormLabel>בחר סדנה</FormLabel>
+      <RadioGroup value={selectedWorkshopName} onChange={onChange}>
+        {currWorkshops &&
+          currWorkshops.map((workshop) => {
+            return (
+              <FormControlLabel
+                key={workshop.id}
+                value={workshop.name}
+                control={<Radio />}
+                label={workshop.name}
+              />
+            );
+          })}
+      </RadioGroup>
+    </form>
   );
 };
 

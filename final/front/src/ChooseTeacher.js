@@ -5,61 +5,41 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { Button, Container, makeStyles } from "@material-ui/core";
+import "./ChooseTeacher.css";
 
-const useStyles = makeStyles({
-  container: {
-    marginTop: "40px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  form: {
-    minWidth: "400px",
-  },
-});
+// const useStyles = makeStyles({
+//   form: {
+//     minWidth: "700px",
+//     maxWidth: "1000px",
+//     display: "flex",
+//   },
+// });
 
 const ChooseTeacher = ({
   teachers,
-  onSelectedTeacherSubmit,
   onSelectedTeacherChange,
-  nextStep,
   selectedTeacherName,
 }) => {
-  const classes = useStyles();
-
-  const onContinue = () => {
-    onSelectedTeacherSubmit();
-    nextStep();
-  };
+  // const classes = useStyles();
 
   return (
-    <Container className={classes.container}>
-      <FormControl className={classes.form} onChange={onSelectedTeacherChange}>
-        <InputLabel>בחר מרצה</InputLabel>
-        <Select
-          variant="outlined"
-          fullWidth
-          onChange={onSelectedTeacherChange}
-          value={selectedTeacherName}
-        >
-          {teachers.map((teacher) => {
-            return (
-              <MenuItem key={teacher.id} value={teacher.name}>
-                {teacher.name}
-              </MenuItem>
-            );
-          })}
-        </Select>
-        <Button
-          size="large"
-          onClick={onContinue}
-          disabled={selectedTeacherName ? false : true}
-          color="primary"
-        >
-          הבא
-        </Button>
-      </FormControl>
-    </Container>
+    <FormControl onChange={onSelectedTeacherChange}>
+      {/* <InputLabel>בחר מרצה</InputLabel> */}
+      <label>בחר מרצה</label>
+      <Select
+        variant="outlined"
+        onChange={onSelectedTeacherChange}
+        value={selectedTeacherName || teachers[0].name}
+      >
+        {teachers.map((teacher) => {
+          return (
+            <MenuItem key={teacher.id} value={teacher.name}>
+              {teacher.name}
+            </MenuItem>
+          );
+        })}
+      </Select>
+    </FormControl>
   );
 };
 
