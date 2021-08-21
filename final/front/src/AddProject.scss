@@ -1,8 +1,10 @@
+//maybe add media query for bigger screens
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 30px;
+  padding: 130px 30px 30px 30px;
   & > div,
   form {
     min-width: 700px;
@@ -10,26 +12,39 @@
     margin-bottom: 20px;
   }
   .title {
-    font-size: 30px;
+    font-size: 34px;
+    font-weight: 500;
   }
-  .select-form {
+  .select-form,
+  .preview-container {
     display: flex;
     flex-direction: column;
+    label {
+      margin-bottom: 10px;
+      color: rgb(68, 66, 66);
+      font-weight: bold;
+      align-self: flex-end;
+    }
   }
   .students-form {
     display: flex;
     flex-direction: column;
   }
-  .preview-container {
+
+  .contacts-container {
     display: flex;
     flex-direction: column;
+    .contacts-input {
+      display: flex;
+      justify-content: space-between;
+    }
   }
-}
-label {
-  margin-bottom: 10px;
-  color: rgb(68, 66, 66);
-  font-weight: bold;
-  align-self: flex-end;
+  .save-button {
+    min-width: 700px;
+    max-width: 1000px;
+    height: 70px;
+    margin-top: 50px;
+  }
 }
 
 .justify-center {
@@ -50,6 +65,7 @@ button,
   background-color: #39da95;
   font-size: 18px;
   font-weight: 600;
+  margin: 0;
 }
 button:hover {
   background-color: #16a366;
@@ -81,6 +97,14 @@ button:hover {
     font-size: 18px;
     border-radius: 5px;
     border: 2px solid lightgray;
+    // outline-style: groove;
+    outline: none;
+  }
+  label {
+    margin-bottom: 10px;
+    color: rgb(68, 66, 66);
+    font-weight: bold;
+    align-self: flex-end;
   }
 }
 
@@ -149,6 +173,12 @@ input[type="file"] {
     flex: 1;
     display: flex;
     flex-direction: column;
+    & > label {
+      margin-bottom: 10px;
+      color: rgb(68, 66, 66);
+      font-weight: bold;
+      align-self: flex-end;
+    }
   }
 }
 .image-buttons {
@@ -165,4 +195,14 @@ input[type="file"] {
     flex: 0 0 120px;
     font-size: 15px;
   }
+}
+
+.main-label {
+  font-size: 22px;
+  color: black;
+  text-decoration: underline;
+  margin-bottom: 20px;
+  color: rgb(68, 66, 66);
+  font-weight: bold;
+  align-self: flex-end;
 }

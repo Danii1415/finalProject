@@ -8,6 +8,7 @@ import AllWorkshops from "./AllWorkshops";
 import Navbar from "./Navbar";
 import EditPreview from "./EditPreview";
 import SignIn from "./SignIn";
+import PendingProjects from "./PendingProjects";
 const App = () => {
   return (
     <BrowserRouter>
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/EditWorkshop" component={EditWorkshop} />
         <Route path="/AllWorkshops" component={AllWorkshops} />
         <Route path="/EditPreview" component={EditPreview} />
+        <Route path="/pendingProjects" component={PendingProjects} />
       </Switch>
     </BrowserRouter>
   );

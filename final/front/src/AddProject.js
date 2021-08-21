@@ -85,6 +85,9 @@ const AddProject = () => {
   const [image, setImage] = useState("");
   const [projectTitle, setProjectTitle] = useState("");
   const [githubLink, setgithubLink] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactName, setContactName] = useState("");
+  const [contactPhone, setContactPhone] = useState("");
 
   const onImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -200,7 +203,26 @@ const AddProject = () => {
           })}
         </Select>
       </div>
+      <div className="input-container">
+        <label>שם הפרויקט</label>
+        <input
+          value={projectTitle}
+          onChange={onTitleChange}
+          name="project-title"
+          autocomplete="off"
+        />
+      </div>
+      <div className="input-container">
+        <label>קישור לגיטהאב</label>
+        <input
+          value={githubLink}
+          onChange={onGithubLinkChange}
+          name="github-link"
+          autocomplete="off"
+        />
+      </div>
       <form className="students-form">
+        <label className="main-label">הוסף פרטי המגישים</label>
         <div className="student-input-row ">
           <div className="input-container first">
             <label>שם משפחה</label>
@@ -281,25 +303,6 @@ const AddProject = () => {
           )}
         </div>
       </form>
-      <div className="input-container">
-        <label>שם הפרויקט</label>
-        <input
-          value={projectTitle}
-          onChange={onTitleChange}
-          name="project-title"
-          autocomplete="off"
-        />
-      </div>
-      <div className="input-container">
-        <label>קישור לגיטהאב</label>
-        <input
-          value={githubLink}
-          onChange={onGithubLinkChange}
-          name="github-link"
-          autocomplete="off"
-        />
-      </div>
-
       <div className="preview-container">
         <label>
           (ראו דוגמא) Markdown כתבו תקציר באורך 250-400 מילים. המערכת תומכת בשפת
@@ -315,7 +318,6 @@ const AddProject = () => {
         />
         {/* </div> */}
       </div>
-
       <div className="add-img-container">
         <img src={image} className="left-side" />
         <div className="right-side">
@@ -329,7 +331,40 @@ const AddProject = () => {
           </div>
         </div>
       </div>
-      <div></div>
+      <div className="contacts-container">
+        <label className="main-label">פרטי איש הקשר</label>
+        <div className="contacts-input">
+          <div className="input-container">
+            <label>שם מלא</label>
+            <input
+              value={contactName}
+              onChange={(e) => setContactName(e.target.value)}
+              name="contact-name"
+              autocomplete="off"
+            />
+          </div>
+
+          <div className="input-container">
+            <label>טלפון</label>
+            <input
+              value={contactPhone}
+              onChange={(e) => setContactPhone(e.target.value)}
+              name="contact-phone"
+              autocomplete="off"
+            />
+          </div>
+          <div className="input-container">
+            <label>אימייל</label>
+            <input
+              value={contactEmail}
+              onChange={(e) => setContactEmail(e.target.value)}
+              name="contact-email"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+      </div>
+      <button className="save-button">הגש את הפרויקט</button>
     </div>
   );
 };

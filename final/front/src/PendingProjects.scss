@@ -1,0 +1,16 @@
+.pending-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 130px 30px 30px 30px;
+  & > div,
+  label {
+    min-width: 700px;
+    max-width: 1000px;
+    margin-bottom: 20px;
+    height: 20px;
+    font-size: 35px;
+    text-decoration: underline;
+    color: rgb(68, 66, 66);
+  }
+}

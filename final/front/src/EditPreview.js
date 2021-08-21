@@ -91,7 +91,7 @@ const EditPreview = () => {
 
   const [status, setStatus] = useState("מחכה לעריכת תלמידים");
   //   const [status, setStatus] = useState("מחכה לאישור מרצה");
-  const isTeacher = false;
+  const isTeacher = true;
 
   const [projectTitle, setProjectTitle] = useState("My Project!!");
   const [teacher, setTeacher] = useState("אמיר קירש");
