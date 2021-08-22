@@ -3,7 +3,6 @@
   flex-direction: column;
   align-items: center;
   padding: 130px 30px 30px 30px;
-  & > div,
   label {
     min-width: 700px;
     max-width: 1000px;
@@ -12,5 +11,31 @@
     font-size: 35px;
     text-decoration: underline;
     color: rgb(68, 66, 66);
+  }
+  .projects-div {
+    min-width: 1000px;
+    max-width: 1000px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .project:nth-child(3n) {
+    margin-right: 0;
+  }
+
+  .project {
+    flex: 0 0 calc((100% - 40px) * 0.33);
+    height: 300px;
+    margin-bottom: 30px;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    .project-img {
+      width: 100%;
+      height: 80%;
+      transition: opacity 1s;
+    }
+    .project-img:hover {
+      opacity: 0.5;
+    }
   }
 }
