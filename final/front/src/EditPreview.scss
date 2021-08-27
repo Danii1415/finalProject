@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 130px 30px 30px 30px;
+  & > div,
+  form {
+    min-width: 700px;
+    max-width: 1000px;
+    margin-bottom: 20px;
+  }
+  .title {
+    min-width: 700px;
+    max-width: 1000px;
+    font-size: 44px;
+    font-weight: 500;
+    align-self: center;
+    text-align: right;
+    margin-bottom: 40px;
+  }
+  .project-teacher-details-container {
+    display: flex;
+    flex-direction: row;
+    & > div {
+      flex: 0 0 calc((100% - 60px) * 0.33);
+      margin-right: 30px;
+    }
+    & > div:nth-child(3n) {
+      margin-right: 0;
+    }
+  }
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    input {
+      height: 40px;
+      text-align: right;
+      padding: 0 10px;
+      font-size: 18px;
+      border-radius: 5px;
+      border: 2px solid lightgray;
+    }
+    label {
+      margin-bottom: 10px;
+      color: rgb(68, 66, 66);
+      font-weight: bold;
+      align-self: flex-end;
+    }
+  }
+}

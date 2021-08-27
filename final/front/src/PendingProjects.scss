@@ -20,7 +20,9 @@
   .project:nth-child(3n) {
     margin-right: 0;
   }
-
+  .project:hover {
+    background-color: transparent;
+  }
   .project {
     flex: 0 0 calc((100% - 60px) * 0.33);
     height: 300px;
@@ -28,6 +30,7 @@
     margin-right: 30px;
     display: flex;
     flex-direction: column;
+    background-color: black;
     .project-img {
       cursor: pointer;
       width: 100%;

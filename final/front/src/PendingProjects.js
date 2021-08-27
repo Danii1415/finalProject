@@ -22,7 +22,7 @@ const projects = [
 const PendingProjects = () => {
   const history = useHistory();
   const onProjectClick = (e) => {
-    history.push("");
+    history.push("/editpreview");
   };
   return (
     <div className="pending-container">
