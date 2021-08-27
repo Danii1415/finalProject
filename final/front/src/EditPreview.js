@@ -86,6 +86,7 @@ const useStyles = makeStyles({
 
 const EditPreview = () => {
   const classes = useStyles();
+  const [image, setImage] = useState("");
   const [messageList, setMessageList] = useState(teacherMessages);
   //   const [messageList, setMessageList] = useState([]);
   const [markDownText, setMarkDownText] = useState("");
@@ -103,6 +104,13 @@ const EditPreview = () => {
   const [newMessage, setNewMessage] = useState("");
   const [editMessage, setEditMessage] = useState("");
   const [editMessageIdx, setEditMessageIdx] = useState(-1);
+
+  const onImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      let img = e.target.files[0];
+      setImage(URL.createObjectURL(img));
+    }
+  };
 
   const onGithubLinkChange = (e) => {
     setgithubLink(e.target.value);
@@ -208,9 +216,7 @@ const EditPreview = () => {
         />
       </div>
       <div className="preview-container">
-        <label>
-          (ראו דוגמא) Markdown כתבו תקציר באורך 250-400 מילים. המערכת תומכת בשפת
-        </label>
+        <label>עריכת התקציר</label>
         {/* <div className="preview-editor-container"> */}
         {/* <div className="markdown-result">
             <ReactMarkdown>{markDownText}</ReactMarkdown>
@@ -221,6 +227,133 @@ const EditPreview = () => {
           onChange={onPreviewChange}
         />
       </div>
+      <div className="add-img-container">
+        <img src={image} className="left-side" />
+        <div className="right-side">
+          <label>תמונת הפרויקט</label>
+          <div className="image-buttons">
+            <label className="custom-file-upload">
+              <input onChange={onImageChange} type="file" />
+              הוסף תמונה
+            </label>
+            <button>הסר תמונה</button>
+          </div>
+        </div>
+      </div>
+      <Grid
+        style={{ border: "3px solid rgb(114, 228, 207)", marginTop: "40px" }}
+        className={classes.container}
+        xs={12}
+      >
+        <Container>
+          <Typography variant="h4" align="center">
+            הערות המרצה
+          </Typography>
+        </Container>
+        <List>
+          {messageList.map((message, idx) => {
+            return (
+              <div key={idx}>
+                <Divider />
+                <ListItem>
+                  {isTeacher && (
+                    <Container>
+                      <Fab onClick={() => deleteMessage(idx)}>
+                        <DeleteIcon color="primary" />
+                      </Fab>
+                      <Fab
+                        onClick={() => {
+                          console.log("clicked");
+                          handleEditMessageClickOpen(idx);
+                        }}
+                      >
+                        <EditIcon color="primary" />
+                      </Fab>
+                    </Container>
+                  )}
+                  <Grid container>
+                    <Grid item xs={12}>
+                      <ListItemText
+                        align="right"
+                        primary={message.text}
+                      ></ListItemText>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <ListItemText
+                        align="right"
+                        secondary={message.date}
+                      ></ListItemText>
+                    </Grid>
+                  </Grid>
+                </ListItem>
+              </div>
+            );
+          })}
+        </List>
+        {isTeacher && (
+          <Fab onClick={handleNewMessageClickOpen}>
+            <AddIcon color="primary" />
+          </Fab>
+        )}
+      </Grid>
+      <Dialog
+        open={openNewMessage}
+        onClose={handleNewMessageClose}
+        PaperComponent={PaperComponent}
+        aria-labelledby="draggable-dialog-title"
+      >
+        <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+          הודעה חדשה
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            multiline
+            autoFocus
+            margin="dense"
+            label=".. הודעה חדשה"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleNewMessageClose} color="primary">
+            ביטול
+          </Button>
+          <Button onClick={saveNewMessage} color="primary">
+            שמור הודעה
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* ------------------------------------ */}
+      <Dialog
+        open={openEditMessage}
+        onClose={handleEditMessageClose}
+        PaperComponent={PaperComponent}
+        aria-labelledby="draggable-dialog-title"
+      >
+        <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+          ערוך הודעה חדשה
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            value={editMessage}
+            onChange={(e) => setEditMessage(e.target.value)}
+            multiline
+            autoFocus
+            margin="dense"
+            label=".. ערוך הודעה חדשה"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleEditMessageClose} color="primary">
+            ביטול
+          </Button>
+          <Button onClick={() => saveEditedMessage()} color="primary">
+            שמור הודעה
+          </Button>
+        </DialogActions>
+      </Dialog>
       {/* </div> */}
       {/* </div>
       {/* 
@@ -306,19 +439,6 @@ const EditPreview = () => {
           )}
         </div>
       </form>
-      <div className="add-img-container">
-        <img src={image} className="left-side" />
-        <div className="right-side">
-          <label>תמונת הפרויקט</label>
-          <div className="image-buttons">
-            <label className="custom-file-upload">
-              <input onChange={onImageChange} type="file" />
-              הוסף תמונה
-            </label>
-            <button>הסר תמונה</button>
-          </div>
-        </div>
-      </div>
       <div className="contacts-container">
         <label className="main-label">פרטי איש הקשר</label>
         <div className="contacts-input">
