@@ -5,6 +5,7 @@ import logoThree from "./dd.png";
 import logoFour from "./download.png";
 import logoFive from "./academLogo.jpeg";
 import logoSix from "./academLogo.jpeg";
+import { useHistory } from "react-router-dom";
 
 const projects = [
   {
@@ -19,6 +20,10 @@ const projects = [
 ];
 
 const PendingProjects = () => {
+  const history = useHistory();
+  const onProjectClick = (e) => {
+    history.push("");
+  };
   return (
     <div className="pending-container">
       <label>הגשות שלא אושרו</label>
@@ -26,11 +31,12 @@ const PendingProjects = () => {
         {projects.map((project) => {
           return (
             <div className="project">
-              <img className="project-img" src={project.photo} />
-              <div className="project-title">
-                <div></div>
-                <div></div>
-              </div>
+              <img
+                onClick={onProjectClick}
+                className="project-img"
+                src={project.photo}
+              />
+              <div className="project-title">{project.name}</div>
             </div>
           );
         })}
