@@ -2,21 +2,59 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 130px 30px 30px 30px;
+  padding: 160px 30px 30px 30px;
   & > div,
   form {
     min-width: 700px;
     max-width: 1000px;
     margin-bottom: 20px;
   }
-  .title {
+  .student-project-submit-button {
     min-width: 700px;
     max-width: 1000px;
-    font-size: 44px;
-    font-weight: 500;
-    align-self: center;
-    text-align: right;
+    height: 70px;
+    margin-top: 15px;
+  }
+  .student-project-submit-button:disabled,
+  .student-project-submit-button[disabled] {
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+    cursor: default;
+  }
+  .teacher-project-approval {
+    display: flex;
+    padding-top: 10px;
+    & > button {
+      flex: 0 0 calc((100% - 20px) * 0.5);
+      height: 60px;
+    }
+    .approval-button {
+      background-color: lightgreen;
+    }
+    .approval-button:hover {
+      background-color: green;
+    }
+    .decline-button {
+      background-color: lightcoral;
+      margin-right: 20px;
+    }
+    .decline-button:hover {
+      background-color: red;
+    }
+  }
+  .title-container {
+    display: flex;
+    min-width: 700px;
+    max-width: 1000px;
     margin-bottom: 40px;
+    justify-content: space-between;
+    .update-title {
+      font-size: 44px;
+      font-weight: 500;
+    }
+    .messages-button {
+    }
   }
   .project-teacher-details-container {
     display: flex;
@@ -78,5 +116,122 @@
         align-self: flex-end;
       }
     }
+  }
+}
+
+.drawer-container {
+  display: flex;
+  flex-direction: column;
+  width: 700px;
+  align-items: center;
+  .new-message-container {
+    display: flex;
+    padding: 20px 20px;
+    width: 650px;
+    .new-message-input {
+      direction: rtl;
+      text-align: right;
+      padding: 10px;
+      resize: none;
+      font-family: emoji;
+      outline: none;
+      flex: 0 0 75%;
+    }
+    .new-message-input:hover {
+      // background-color: rgba(174, 244, 174, 0.283);
+    }
+    .new-message-button {
+      background-color: rgb(3, 191, 191);
+    }
+
+    .new-message-button:hover {
+      background-color: darkcyan;
+    }
+    .new-message-button:disabled,
+    .new-message-button[disabled] {
+      border: 1px solid #999999;
+      background-color: #cccccc;
+      color: #666666;
+      cursor: default;
+    }
+  }
+  .messages-container {
+    border: 3px solid rgb(114, 228, 207);
+    padding: 20px 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  .header {
+    font-size: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 415px;
+    align-self: flex-end;
+    button {
+      background-color: rgb(3, 191, 191);
+      width: 35px;
+      height: 30px;
+      top: -5px;
+    }
+    button:hover {
+      background-color: darkcyan;
+    }
+  }
+  .message-container {
+    display: flex;
+    flex-direction: column;
+    .message-div {
+      display: flex;
+      justify-content: space-between;
+      .content-teacher {
+        display: flex;
+        flex-direction: column;
+        background-color: darkcyan;
+        border-radius: 10px;
+        padding: 6px;
+        color: white;
+        flex: 0 0 60%;
+        text-align: right;
+      }
+      .content-student {
+        display: flex;
+        flex-direction: column;
+        background-color: rgb(53, 196, 153);
+        border-radius: 10px;
+        padding: 6px;
+        color: white;
+        flex: 0 0 60%;
+        text-align: right;
+        right: 160px;
+        position: relative;
+      }
+      .message-text {
+        margin-bottom: 10px;
+        font-family: "Roboto";
+      }
+      .message-details {
+        color: black;
+        font-weight: bold;
+        font-size: 13px;
+        font-family: "Roboto";
+      }
+      .actions {
+        flex: 0 0 12%;
+        display: flex;
+        justify-content: space-between;
+        button {
+          background-color: rgb(3, 191, 191);
+          width: 35px;
+          height: 30px;
+        }
+        button:hover {
+          background-color: darkcyan;
+        }
+      }
+    }
+  }
+  svg {
+    color: white;
   }
 }
