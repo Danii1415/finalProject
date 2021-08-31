@@ -181,6 +181,10 @@ const EditPreview = () => {
     return message.date + ", " + message.name;
   };
 
+  const onStudentsProjectSubmit = () => {
+    setStatus("pendingTeacherApproval");
+  };
+
   return (
     <div className="container">
       <div className="title-container">
@@ -349,6 +353,7 @@ const EditPreview = () => {
       )}
       {!isTeacher && (
         <button
+          onClick={onStudentsProjectSubmit}
           className="student-project-submit-button"
           disabled={status === "pendingTeacherApproval" ? true : false}
         >

@@ -1,7 +1,7 @@
 import React from "react";
 
-const AllWorkshops = () => {
+const AllProjects = () => {
   return <div>Directions</div>;
 };
 
-export default AllWorkshops;
+export default AllProjects;

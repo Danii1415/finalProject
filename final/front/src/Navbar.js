@@ -1,75 +1,49 @@
-import {
-  AppBar,
-  Button,
-  makeStyles,
-  Toolbar,
-  Typography,
-} from "@material-ui/core";
-import React from "react";
+import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import "./Navbar.scss";
 import logo from "./academLogo.jpeg";
 
-const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-  },
-  linkStyle: {
-    color: "white",
-    textDecoration: "none",
-  },
-});
-const Navbar = ({ loggedInTeacher = false }) => {
+const Navbar = ({ loggedInTeacher }) => {
   const history = useHistory();
-  const classes = useStyles();
+  // const [isTeacherLoggedIn, setIsTeacherLoggedIn] = useState(false);
   const onSignOut = () => {
-    //signOutUser
-    history.push("/signin");
+    localStorage.removeItem("loggedInTeacher");
+    history.push("/");
   };
   return (
     <div className="navbar-container">
-      <div className="navbar">
-        <Link to="/" className="link">
-          ראשי
-        </Link>
-        <Link className="link" to="/addproject">
-          הגשת פרוייקט חדש
-        </Link>
+      <div className="navbar-links-header">
+        {loggedInTeacher ? (
+          <div class="teacher-menu-dropdown">
+            <button class="dropbtn">שלום {loggedInTeacher}</button>
+            <div class="dropdown-content">
+              <Link>סדנאות שאושרו</Link>
+              <Link>סדנאות שלא אושרו</Link>
+              <button onClick={onSignOut}>צא</button>
+            </div>
+          </div>
+        ) : (
+          <Link to="/Signin" className="link margin-left">
+            כניסת מרצה
+          </Link>
+        )}
+        <div className="navbar-general-menu">
+          <Link to="/" className="link">
+            ראשי
+          </Link>
+          <Link to="/allProjects" className="link">
+            כל הפרויקטים
+          </Link>
+          <Link to="/ProjectsList" className="link">
+            רשימת הפרויקטים
+          </Link>
+          <Link to="/directions" className="link">
+            דרכי הגעה
+          </Link>
+        </div>
       </div>
       <img className="logo" src={logo} alt="logo" />
     </div>
-    // <AppBar position="sticky">
-    //   <Toolbar>
-    //     <Typography variant="h4" className={classes.root}>
-    //       <Link className={classes.linkStyle} to="/">
-    //         סדנא תשעט
-    //       </Link>
-    //     </Typography>
-    //     <Typography variant="subtitle2" className={classes.root}>
-    //       Logged in as {"teacher"}
-    //     </Typography>
-    //     <Button color="inherit">
-    //       <Link className={classes.linkStyle} to="/addproject">
-    //         הגשת פרוייקט חדש
-    //       </Link>
-    //     </Button>
-    //     <Button color="inherit">
-    //       <Link className={classes.linkStyle} to="/EditPreview">
-    //         עריכת הפרויקט
-    //       </Link>
-    //     </Button>
-    //     {loggedInTeacher === true && (
-    //       <Button color="inherit" onClick={onSignOut}>
-    //         צא
-    //       </Button>
-    //     )}
-    //     {loggedInTeacher === false && (
-    //       <Button color="inherit" onClick={onSignOut}>
-    //         כניסת מרצה
-    //       </Button>
-    //     )}
-    //   </Toolbar>
-    // </AppBar>
   );
 };
 
