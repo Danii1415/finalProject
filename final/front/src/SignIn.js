@@ -1,19 +1,20 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 import "./SignIn.scss";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const history = useHistory();
 
   const onSubmit = (e) => {
     e.preventDefault();
     localStorage.setItem("loggedInTeacher", "אמיר");
-    //sign in
+    history.push("/");
   };
 
   return (
     <div className="signin-container">
-      {/* <div className="title">כניסה למערכת</div> */}
       <form className="signin-form">
         <input
           value={email}
@@ -31,6 +32,7 @@ const SignIn = () => {
           type="password"
         />
         <button
+          className="signin-button"
           onClick={(e) => {
             onSubmit(e);
           }}

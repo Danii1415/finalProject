@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import "./Navbar.scss";
 import logo from "./academLogo.jpeg";
 
-const Navbar = ({ loggedInTeacher }) => {
+const Navbar = ({ loggedInTeacher, onSignOut }) => {
   const history = useHistory();
   // const [isTeacherLoggedIn, setIsTeacherLoggedIn] = useState(false);
-  const onSignOut = () => {
-    localStorage.removeItem("loggedInTeacher");
-    history.push("/");
-  };
+  useEffect(() => {
+    console.log("nav");
+  }, []);
   return (
     <div className="navbar-container">
       <div className="navbar-links-header">
@@ -28,17 +27,17 @@ const Navbar = ({ loggedInTeacher }) => {
           </Link>
         )}
         <div className="navbar-general-menu">
-          <Link to="/" className="link">
-            ראשי
-          </Link>
-          <Link to="/allProjects" className="link">
-            כל הפרויקטים
+          <Link to="/directions" className="link">
+            דרכי הגעה
           </Link>
           <Link to="/ProjectsList" className="link">
             רשימת הפרויקטים
           </Link>
-          <Link to="/directions" className="link">
-            דרכי הגעה
+          <Link to="/allProjects" className="link">
+            כל הפרויקטים
+          </Link>
+          <Link to="/" className="link">
+            ראשי
           </Link>
         </div>
       </div>

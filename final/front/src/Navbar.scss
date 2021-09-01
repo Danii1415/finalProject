@@ -14,15 +14,19 @@
     background-color: rgba(0, 0, 0, 0.699);
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
+    .navbar-general-menu {
+      display: flex;
+      // margin-right: 10%;
+    }
     .teacher-menu-dropdown {
-      margin-left: 10%;
+      // margin-left: 10%;
     }
   }
   .link {
     cursor: pointer;
     border-radius: 10px;
-    padding: 10px;
+    padding: 15px;
     border: none;
     color: white;
     background-color: rgb(114, 228, 207);
@@ -30,8 +34,8 @@
     font-weight: bolder;
     text-decoration: none;
     height: 30px;
-    width: 280px;
-    margin-right: 10px;
+    // width: 187px;
+    margin-right: 25px;
   }
 
   .link:hover {
@@ -39,7 +43,7 @@
   }
 }
 .margin-left {
-  margin-left: 10%;
+  // margin-left: 10%;
 }
 
 .dropbtn {
