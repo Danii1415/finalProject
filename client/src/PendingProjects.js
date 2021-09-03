@@ -1,10 +1,12 @@
+//fix ui, make sure photos are same height
+
+//maybe add search/filter by projectname/id/name
+
 import React from "react";
 import "./PendingProjects.scss";
 import logo from "./academLogo.jpeg";
 import logoThree from "./dd.png";
 import logoFour from "./download.png";
-import logoFive from "./academLogo.jpeg";
-import logoSix from "./academLogo.jpeg";
 import { useHistory } from "react-router-dom";
 
 const projects = [
@@ -21,9 +23,12 @@ const projects = [
 
 const PendingProjects = () => {
   const history = useHistory();
+
   const onProjectClick = (e) => {
+    //this should be with id
     history.push("/editpreview");
   };
+
   return (
     <div className="pending-container">
       <label>הגשות שלא אושרו</label>

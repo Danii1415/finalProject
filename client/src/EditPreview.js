@@ -1,3 +1,5 @@
+//fix hours and minutes 1 digit sometimes
+
 import React from "react";
 import {
   Dialog,
@@ -35,6 +37,12 @@ import "./EditPreview.scss";
 
 //   * list item 1
 //   * list item 2`;
+
+const students = [
+  { name: "דניאל כפיר" },
+  { name: "שגיב לוי" },
+  { name: "איתי מלמד" },
+];
 
 const teacherMessages = [
   {
@@ -74,8 +82,8 @@ const EditPreview = () => {
   //   const [messageList, setMessageList] = useState([]);
   const [markDownText, setMarkDownText] = useState("");
 
-  // const [status, setStatus] = useState("pendingTeacherApproval");
-  const [status, setStatus] = useState("pendingStudentsEdit");
+  const [status, setStatus] = useState("pendingTeacherApproval");
+  // const [status, setStatus] = useState("pendingStudentsEdit");
   const [isTeacher, setIsTeacher] = useState(false);
 
   const [projectTitle, setProjectTitle] = useState("My Project!!");
@@ -90,6 +98,7 @@ const EditPreview = () => {
   const [contactEmail, setContactEmail] = useState("");
   const [contactName, setContactName] = useState("");
   const [contactPhone, setContactPhone] = useState("");
+  const [messageSender, setMessageSender] = useState("");
 
   const [isOpenDrawer, setisOpenDrawer] = useState(true);
 
@@ -146,7 +155,7 @@ const EditPreview = () => {
     const now = new Date();
     messages[editMessageIdx] = {
       text: editMessage,
-      date: `${now.getDay()}/${now.getMonth()}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`,
+      date: `${now.getDay()}/${now.getMonth()}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`,
     };
     setMessageList(messages);
     setOpenEditMessage(false);
@@ -159,9 +168,9 @@ const EditPreview = () => {
     const now = new Date();
     const _newMessage = {
       text: newMessage,
-      date: `${now.getDay()}/${now.getMonth()}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`,
-      isTeacher: isTeacher ? true : false,
-      name: isTeacher ? "אמיר קירש" : "דניאל כפיר",
+      date: `${now.getDay()}/${now.getMonth()}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`,
+      fromTeacher: isTeacher ? true : false,
+      name: isTeacher ? "אמיר קירש" : messageSender,
     };
     messages.push(_newMessage);
     setMessageList(messages);
@@ -178,11 +187,20 @@ const EditPreview = () => {
   };
 
   const getMessageDetails = (message) => {
-    return message.date + ", " + message.name;
+    return message.date + " ," + message.name;
   };
 
   const onStudentsProjectSubmit = () => {
     setStatus("pendingTeacherApproval");
+  };
+
+  const onMessageSenderChange = (e) => {
+    console.log(e.target.value);
+    setMessageSender(e.target.value);
+  };
+
+  const areFieldsDisabled = () => {
+    return !isTeacher && status === "";
   };
 
   return (
@@ -234,13 +252,37 @@ const EditPreview = () => {
               })}
             </div>
             <div className="new-message-container">
-              <button
-                disabled={newMessage ? false : true}
-                onClick={saveNewMessage}
-                className="new-message-button"
-              >
-                הוסף הודעה חדשה
-              </button>
+              <div className="send-message-buttons-div">
+                <button
+                  disabled={
+                    (!isTeacher && !messageSender) || !newMessage ? true : false
+                  }
+                  onClick={saveNewMessage}
+                  className="new-message-button"
+                >
+                  הוסף הודעה חדשה
+                </button>
+                <select
+                  disabled={isTeacher ? true : false}
+                  className="name-select"
+                  onChange={onMessageSenderChange}
+                >
+                  {isTeacher === false ? (
+                    <>
+                      <option value="" disabled selected>
+                        בחר סטודנט
+                      </option>
+                      {students.map((student) => {
+                        return (
+                          <option value={student.name}>{student.name}</option>
+                        );
+                      })}
+                    </>
+                  ) : (
+                    <option>אמיר קירש</option>
+                  )}
+                </select>
+              </div>
               <textarea
                 className="new-message-input"
                 placeholder="כתוב הודעה חדשה..."

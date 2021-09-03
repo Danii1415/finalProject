@@ -1,5 +1,6 @@
 import React from "react";
 import "./ProjectDisplay.scss";
+import { getStudentsNamesFormat } from "./utils";
 import logoThree from "./dd.png";
 
 const project = {
@@ -16,15 +17,6 @@ const project = {
   course: "פתרונות תוכנה מתקדמים",
   github: "www.github.com/danii1415",
   preview: `אני רושם מלא שורות אני רושם מלא שורות אני רושם מלא שורות ה אני רושם מלא שורות אני רושם מלא שורות אני רושם מלא שורות <br></br> <br></br> אני רושם מלא שורות אני רושם מלא שורות אני רושם מלא שורות אני רושם מלא שורות אני רושם מלא שורות אני רושם מלא שורות אני רושם מלא שורות אני רושם מלא שורות`,
-};
-
-const getStudentsNamesFormat = (students) => {
-  let res = "";
-  for (let i = 0; i < students.length; i++) {
-    res +=
-      students.length - i !== 1 ? `${students[i].name}, ` : students[i].name;
-  }
-  return res;
 };
 
 const ProjectDisplay = () => {

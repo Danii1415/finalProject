@@ -43,12 +43,23 @@ const App = () => {
       <Navbar loggedInTeacher={loggedInTeacher} onSignOut={onSignOut} />
       <Switch>
         <Route exact path="/" component={HomePage} />
+        {/* <Route
+          exact
+          path="/ProjectDisplay/:projectid"
+          component={ProjectDisplay}
+        /> */}
         <Route exact path="/ProjectDisplay" component={ProjectDisplay} />
         <Route exact path="/Signin" component={SignIn} />
         <Route exact path="/Addproject" component={AddProject} />
         <Route exact path="/Directions" component={Directions} />
         <Route exact path="/AllProjects" component={AllProjects} />
+        {/* <Route exact path="/EditPreview/:projectid" component={EditPreview} /> */}
         <Route exact path="/EditPreview" component={EditPreview} />
+        {/* <Route
+          exact
+          path="/pendingProjects/:teacherid"
+          component={PendingProjects}
+        /> */}
         <Route exact path="/pendingProjects" component={PendingProjects} />
       </Switch>
     </BrowserRouter>

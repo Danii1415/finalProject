@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./AddProject.scss";
 import { MenuItem, Select } from "@material-ui/core";
+import { Student } from "./utils";
 // import ReactMarkdown from "react-markdown";
 
 const kirsh = {
@@ -32,15 +33,6 @@ const guy = {
     },
   ],
 };
-
-class Student {
-  constructor(firstName = "", lastName = "", idNumber = "", emailAddress = "") {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.idNumber = idNumber;
-    this.emailAddress = emailAddress;
-  }
-}
 
 const teachers = [kirsh, guy];
 

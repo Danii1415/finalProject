@@ -128,6 +128,15 @@
     display: flex;
     padding: 20px 20px;
     width: 650px;
+    height: 70px;
+    .send-message-buttons-div {
+      display: flex;
+      flex-direction: column;
+      .name-select {
+        height: 30px;
+        direction: rtl;
+      }
+    }
     .new-message-input {
       direction: rtl;
       text-align: right;
@@ -142,6 +151,10 @@
     }
     .new-message-button {
       background-color: rgb(3, 191, 191);
+      height: 40px;
+      cursor: pointer;
+      border: none;
+      border-radius: 3px;
     }
 
     .new-message-button:hover {

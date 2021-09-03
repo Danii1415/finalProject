@@ -17,7 +17,7 @@ const Navbar = ({ loggedInTeacher, onSignOut }) => {
             <button class="dropbtn">שלום {loggedInTeacher}</button>
             <div class="dropdown-content">
               <Link>סדנאות שאושרו</Link>
-              <Link>סדנאות שלא אושרו</Link>
+              <Link to="/pendingprojects">סדנאות שלא אושרו</Link>
               <button onClick={onSignOut}>צא</button>
             </div>
           </div>
