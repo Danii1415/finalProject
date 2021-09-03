@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./AddProject.scss";
 import { MenuItem, Select } from "@material-ui/core";
 import { Student } from "../../utils";
+import StudentForm from "../../components/student-form/StudentForm";
+
 // import ReactMarkdown from "react-markdown";
 
 const kirsh = {
@@ -65,7 +67,6 @@ const teachers = [kirsh, guy];
 // const initialGithubLink = "danii1415@github.com";
 
 const AddProject = () => {
-  const [step, setStep] = useState(1);
   // const [selectedTeacher, setSelectedTeacher] = useState(initialTeacher || "");
   const [selectedTeacher, setSelectedTeacher] = useState("");
   const [currWorkshops, setCurrWorkshops] = useState([]);
@@ -116,12 +117,8 @@ const AddProject = () => {
   };
 
   const onStudentListChange = (e, idx) => {
-    console.log(e.target);
     let studentsArr = [...studentsList];
-    console.log(studentsArr);
-    console.log(idx);
     let student = studentsArr[idx];
-    console.log(student);
     student[e.target.name] = e.target.value;
     setStudentsList([
       ...studentsArr.slice(0, idx),
@@ -137,14 +134,15 @@ const AddProject = () => {
       setStudentsList(studentsArr);
     }
     setcurrStudentidx(currStudentidx + 1);
-    setStep(step + 1);
   };
 
   const onPreviousStudentClick = () => {
+    let studentsArr = [...studentsList];
+    studentsArr.pop();
     if (currStudentidx !== 0) {
       setcurrStudentidx(currStudentidx - 1);
     }
-    setStep(step - 1);
+    setStudentsList(studentsArr);
   };
 
   const onPreviewChange = (e) => {
@@ -237,76 +235,36 @@ const AddProject = () => {
           autocomplete="off"
         />
       </div>
-      <form className="students-form">
+      <div class="add-students-div">
         <label className="main-label">הוסף פרטי המגישים</label>
-        <div className="student-input-row ">
-          <div className="input-container first">
-            <label>שם משפחה</label>
-            <input
-              value={studentsList[currStudentidx].lastName}
-              name="lastName"
-              id="lastName"
-              autocomplete="off"
-              onChange={(e) => {
-                onStudentListChange(e, currStudentidx);
-              }}
+        {studentsList.map((student, idx) => {
+          return (
+            <StudentForm
+              currStudentidx={idx}
+              student={student}
+              onStudentListChange={onStudentListChange}
+              isMultipleStudents={studentsList.length > 1 ? true : false}
+              isLast={idx === currStudentidx ? true : false}
             />
-          </div>
-          <div className="input-container">
-            <label>שם פרטי</label>
-            <input
-              value={studentsList[currStudentidx].firstName}
-              id="first"
-              name="firstName"
-              autocomplete="off"
-              onChange={(e) => {
-                onStudentListChange(e, currStudentidx);
-              }}
-            />
-          </div>
-        </div>
-        <div className="student-input-row">
-          <div className="input-container first">
-            <label>מספר תעודת זהות</label>
-            <input
-              value={studentsList[currStudentidx].idNumber}
-              name="idNumber"
-              id="idNumber"
-              autocomplete="off"
-              onChange={(e) => {
-                onStudentListChange(e, currStudentidx);
-              }}
-            />
-          </div>
-          <div className="input-container">
-            <label>כתובת מייל</label>
-            <input
-              value={studentsList[currStudentidx].emailAddress}
-              type="email"
-              name="emailAddress"
-              id="email"
-              autocomplete="off"
-              onChange={(e) => {
-                onStudentListChange(e, currStudentidx);
-              }}
-            />
-          </div>
-        </div>
+          );
+        })}
         <div
           className={
-            currStudentidx === 0
+            currStudentidx === 0 || currStudentidx === 3
               ? "student-buttons justify-center"
               : "student-buttons justify-between"
           }
         >
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              onNextStudentClick();
-            }}
-          >
-            הוסף תלמיד
-          </button>
+          {currStudentidx < 3 && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                onNextStudentClick();
+              }}
+            >
+              הוסף תלמיד
+            </button>
+          )}
           {currStudentidx > 0 && (
             <button
               onClick={(e) => {
@@ -314,11 +272,11 @@ const AddProject = () => {
                 onPreviousStudentClick();
               }}
             >
-              לתלמיד הקודם
+              הסר תלמיד
             </button>
           )}
         </div>
-      </form>
+      </div>
       <div className="preview-container">
         <label>
           (ראו דוגמא) Markdown כתבו תקציר באורך 250-400 מילים. המערכת תומכת בשפת
