@@ -1,7 +1,7 @@
 import React from "react";
 import "./ProjectDisplay.scss";
-import { getStudentsNamesFormat } from "./utils";
-import logoThree from "./dd.png";
+import { getStudentsNamesFormat } from "../../utils";
+import logoThree from "../../images/dd.png";
 
 const project = {
   img: logoThree,

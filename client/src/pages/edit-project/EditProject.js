@@ -19,7 +19,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import Draggable from "react-draggable";
-import "./EditPreview.scss";
+import "./EditProject.scss";
 
 // const initialMarkdownText = `# כותרת
 

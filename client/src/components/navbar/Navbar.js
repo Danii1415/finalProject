@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import "./Navbar.scss";
-import logo from "./academLogo.jpeg";
+import logo from "../../images/academLogo.jpeg";
 
 const Navbar = ({ loggedInTeacher, onSignOut }) => {
   const history = useHistory();

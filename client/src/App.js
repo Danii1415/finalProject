@@ -1,15 +1,15 @@
 import "./App.css";
 import "@fontsource/roboto";
-import AddProject from "./AddProject";
+import AddProject from "./pages/add-project/AddProject";
 import { BrowserRouter, Route, Switch, useHistory } from "react-router-dom";
-import Directions from "./Directions";
-import AllProjects from "./AllProjects";
-import Navbar from "./Navbar";
-import EditPreview from "./EditPreview";
-import SignIn from "./SignIn";
+import Directions from "./pages/directions/Directions";
+import AllProjects from "./pages/all-projects/AllProjects";
+import Navbar from "./components/navbar/Navbar";
+import EditPreview from "./pages/edit-project/EditProject";
+import SignIn from "./pages/sign-in/SignIn";
 import PendingProjects from "./PendingProjects";
 import HomePage from "./HomePage";
-import ProjectDisplay from "./ProjectDisplay";
+import ProjectDisplay from "./pages/project-display/ProjectDisplay";
 
 import { useEffect, useState } from "react";
 const App = () => {
