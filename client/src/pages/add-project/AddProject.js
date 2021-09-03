@@ -105,7 +105,6 @@ const AddProject = () => {
     )[0];
     const workshops = teacher.workshops;
     setSelectedTeacher(teacher);
-    setSelectedWorkshop(teacher.workshops[0]);
     setCurrWorkshops(workshops);
   };
 
@@ -152,12 +151,6 @@ const AddProject = () => {
     setMarkDownText(e.target.value);
   };
 
-  useEffect(() => {
-    setCurrWorkshops(teachers[0].workshops);
-    setSelectedTeacher(teachers[0]);
-    setSelectedWorkshop(teachers[0].workshops[0]);
-  }, []);
-
   return (
     <div className="container">
       <div className="title">הגשת תקציר לסדנה</div>
@@ -168,7 +161,22 @@ const AddProject = () => {
           variant="outlined"
           onChange={selectedTeacherChange}
           value={selectedTeacher && selectedTeacher.name}
+          displayEmpty
+          MenuProps={{
+            anchorOrigin: {
+              vertical: "bottom",
+              horizontal: "left",
+            },
+            transformOrigin: {
+              vertical: "top",
+              horizontal: "left",
+            },
+            getContentAnchorEl: null,
+          }}
         >
+          <MenuItem disabled key="-1" value="">
+            בחר מרצה
+          </MenuItem>
           {teachers.map((teacher) => {
             return (
               <MenuItem key={teacher.id} value={teacher.name}>
@@ -181,11 +189,27 @@ const AddProject = () => {
       <div className="select-form">
         <label>בחר סדנה</label>
         <Select
+          disabled={!currWorkshops.length ? true : false}
           style={{ height: "40px" }}
           variant="outlined"
           onChange={selectedWorkshopChange}
           value={selectedWorkshop && selectedWorkshop.name}
+          displayEmpty
+          MenuProps={{
+            anchorOrigin: {
+              vertical: "bottom",
+              horizontal: "left",
+            },
+            transformOrigin: {
+              vertical: "top",
+              horizontal: "left",
+            },
+            getContentAnchorEl: null,
+          }}
         >
+          <MenuItem disabled key="-1" value="">
+            בחר סדנה
+          </MenuItem>
           {currWorkshops.map((workshop) => {
             return (
               <MenuItem key={workshop.id} value={workshop.name}>
