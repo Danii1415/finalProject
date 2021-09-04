@@ -3,10 +3,10 @@
 //maybe add search/filter by projectname/id/name
 
 import React from "react";
-import "./PendingProjects.scss";
-import logo from "./images/academLogo.jpeg";
-import logoThree from "./images/dd.png";
-import logoFour from "./images/download.png";
+import "./TeacherProjects.scss";
+import logo from "../../images/academLogo.jpeg";
+import logoThree from "../../images/dd.png";
+import logoFour from "../../images/download.png";
 import { useHistory } from "react-router-dom";
 
 const projects = [
@@ -21,7 +21,7 @@ const projects = [
   { name: "הנה אני פקוייקט 5", workshop: "הנדסת תוכנה", photo: logoThree },
 ];
 
-const PendingProjects = () => {
+const TeacherProjects = () => {
   const history = useHistory();
 
   const onProjectClick = (e) => {
@@ -50,4 +50,4 @@ const PendingProjects = () => {
   );
 };
 
-export default PendingProjects;
+export default TeacherProjects;

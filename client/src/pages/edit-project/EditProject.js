@@ -23,17 +23,17 @@ import "./EditProject.scss";
 
 // const initialMarkdownText = `# כותרת
 
-//   **מודגש**
+//   *מודגש*
 
-//   *איטליק*
+//   איטליק
 
 //   * איבר רשימה 1
 //   * איבר רשימה 2
 //   # Markdown
 
-//   **Bold**
+//   *Bold*
 
-//   *Italic*
+//   Italic
 
 //   * list item 1
 //   * list item 2`;
@@ -76,7 +76,7 @@ function PaperComponent(props) {
   );
 }
 
-const EditPreview = () => {
+const EditProject = () => {
   const [image, setImage] = useState("");
   const [messageList, setMessageList] = useState(teacherMessages);
   //   const [messageList, setMessageList] = useState([]);
@@ -204,7 +204,7 @@ const EditPreview = () => {
   };
 
   return (
-    <div className="container">
+    <div className="edit-form">
       <div className="title-container">
         <Drawer anchor="left" open={isOpenDrawer} onClose={closeDrawer}>
           <div className="drawer-container">
@@ -463,4 +463,4 @@ const EditPreview = () => {
     </div>
   );
 };
-export default EditPreview;
+export default EditProject;

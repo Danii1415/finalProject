@@ -10,11 +10,12 @@ const SignIn = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     localStorage.setItem("loggedInTeacher", "אמיר");
-    history.push("/");
+    history.push("/1/projects");
   };
 
   return (
     <div className="signin-container">
+      <div className="page-title">התחבר למערכת</div>
       <form className="signin-form">
         <input
           value={email}
@@ -38,7 +39,7 @@ const SignIn = () => {
           }}
           type="submit"
         >
-          היכנס למערכת
+          כניסה
         </button>
       </form>
     </div>

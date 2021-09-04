@@ -1,8 +1,7 @@
-.container {
+.edit-form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 160px 30px 30px 30px;
   & > div,
   form {
     min-width: 700px;

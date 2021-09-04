@@ -150,7 +150,7 @@ const AddProject = () => {
   };
 
   return (
-    <div className="container">
+    <div className="add-form">
       <div className="title">הגשת תקציר לסדנה</div>
       <div className="select-form">
         <label>בחר מרצה</label>

@@ -9,39 +9,28 @@ const Navbar = ({ loggedInTeacher, onSignOut }) => {
   useEffect(() => {
     console.log("nav");
   }, []);
+
+  console.log("loggedInTeacher", loggedInTeacher);
+
   return (
     <div className="navbar-container">
       <div className="navbar-links-header">
-        {loggedInTeacher ? (
-          <div class="teacher-menu-dropdown">
-            <button class="dropbtn">שלום {loggedInTeacher}</button>
-            <div class="dropdown-content">
-              <Link>סדנאות שאושרו</Link>
-              <Link to="/pendingprojects">סדנאות שלא אושרו</Link>
-              <button onClick={onSignOut}>צא</button>
+        <img className="logo" src={logo} alt="logo" />
+        <div className="links">
+          <Link to="/" className="link  primary">
+            כל הפרוייקטים
+          </Link>
+          {loggedInTeacher ? (
+            <div className="link" onClick={onSignOut}>
+              התנתק
             </div>
-          </div>
-        ) : (
-          <Link to="/Signin" className="link margin-left">
-            כניסת מרצה
-          </Link>
-        )}
-        <div className="navbar-general-menu">
-          <Link to="/directions" className="link">
-            דרכי הגעה
-          </Link>
-          <Link to="/ProjectsList" className="link">
-            רשימת הפרויקטים
-          </Link>
-          <Link to="/allProjects" className="link">
-            כל הפרויקטים
-          </Link>
-          <Link to="/" className="link">
-            ראשי
-          </Link>
+          ) : (
+            <Link to="/Signin" className="link">
+              כניסת מרצה
+            </Link>
+          )}
         </div>
       </div>
-      <img className="logo" src={logo} alt="logo" />
     </div>
   );
 };

@@ -2,14 +2,12 @@ import "./App.css";
 import "@fontsource/roboto";
 import AddProject from "./pages/add-project/AddProject";
 import { BrowserRouter, Route, Switch, useHistory } from "react-router-dom";
-import Directions from "./pages/directions/Directions";
 import AllProjects from "./pages/all-projects/AllProjects";
 import Navbar from "./components/navbar/Navbar";
 import EditPreview from "./pages/edit-project/EditProject";
 import SignIn from "./pages/sign-in/SignIn";
-import PendingProjects from "./PendingProjects";
-import HomePage from "./HomePage";
-import ProjectDisplay from "./pages/project-display/ProjectDisplay";
+import TeacherProjects from "./pages/teacher-projects/TeacherProjects";
+import DisplayProject from "./pages/display-project/DisplayProject";
 
 import { useEffect, useState } from "react";
 const App = () => {
@@ -20,7 +18,6 @@ const App = () => {
     localStorage.removeItem("loggedInTeacher");
     setLoggedInTeacher("");
     history.push("/");
-    history.go(0);
   };
 
   const onSignIn = () => {
@@ -37,31 +34,31 @@ const App = () => {
       setLoggedInTeacher("");
     }
   });
-
   return (
     <BrowserRouter>
       <Navbar loggedInTeacher={loggedInTeacher} onSignOut={onSignOut} />
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        {/* <Route
+      <div className="container">
+        <Switch>
+          <Route exact path="/" component={AllProjects} />
+          {/* <Route
           exact
-          path="/ProjectDisplay/:projectid"
-          component={ProjectDisplay}
+          path="/DisplayProject/:projectid"
+          component={DisplayProject}
         /> */}
-        <Route exact path="/ProjectDisplay" component={ProjectDisplay} />
-        <Route exact path="/Signin" component={SignIn} />
-        <Route exact path="/Addproject" component={AddProject} />
-        <Route exact path="/Directions" component={Directions} />
-        <Route exact path="/AllProjects" component={AllProjects} />
-        {/* <Route exact path="/EditPreview/:projectid" component={EditPreview} /> */}
-        <Route exact path="/EditPreview" component={EditPreview} />
-        {/* <Route
+          {/* <Route exact path="/AllProjects" component={AllProjects} /> */}
+          <Route exact path="/DisplayProject" component={DisplayProject} />
+          <Route exact path="/Signin" component={SignIn} />
+          <Route exact path="/Addproject" component={AddProject} />
+          {/* <Route exact path="/EditPreview/:projectid" component={EditPreview} /> */}
+          <Route exact path="/EditPreview" component={EditPreview} />
+          {/* <Route
           exact
           path="/pendingProjects/:teacherid"
           component={PendingProjects}
         /> */}
-        <Route exact path="/pendingProjects" component={PendingProjects} />
-      </Switch>
+          <Route exact path="/:id/Projects" component={TeacherProjects} />
+        </Switch>
+      </div>
     </BrowserRouter>
   );
 };

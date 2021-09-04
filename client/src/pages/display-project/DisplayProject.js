@@ -1,5 +1,5 @@
 import React from "react";
-import "./ProjectDisplay.scss";
+import "./DisplayProject.scss";
 import { getStudentsNamesFormat } from "../../utils";
 import logoThree from "../../images/dd.png";
 
@@ -19,7 +19,7 @@ const project = {
   preview: `אני רושם מלא שורות אני רושם מלא שורות אני רושם מלא שורות ה אני רושם מלא שורות אני רושם מלא שורות אני רושם מלא שורות <br></br> <br></br> אני רושם מלא שורות אני רושם מלא שורות אני רושם מלא שורות אני רושם מלא שורות אני רושם מלא שורות אני רושם מלא שורות אני רושם מלא שורות אני רושם מלא שורות`,
 };
 
-const ProjectDisplay = () => {
+const DisplayProject = () => {
   return (
     <div className="project-display-container">
       <div className="body">
@@ -60,4 +60,4 @@ const ProjectDisplay = () => {
   );
 };
 
-export default ProjectDisplay;
+export default DisplayProject;
