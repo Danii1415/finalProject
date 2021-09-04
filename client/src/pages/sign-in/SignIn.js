@@ -1,15 +1,18 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
+import { teacherLogin } from "../../redux/securitySlice";
 import "./SignIn.scss";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const onSubmit = (e) => {
     e.preventDefault();
-    localStorage.setItem("loggedInTeacher", "אמיר");
+    dispatch(teacherLogin());
     history.push("/1/projects");
   };
 

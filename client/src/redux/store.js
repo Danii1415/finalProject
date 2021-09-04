@@ -1,5 +1,8 @@
-import { createStore } from "redux";
-import reducer from "./reducer";
+import { configureStore } from "@reduxjs/toolkit";
+import securityReducer from "../redux/securitySlice";
 
-const store = createStore(reducer);
-export default store;
+export default configureStore({
+  reducer: {
+    security: securityReducer,
+  },
+});

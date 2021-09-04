@@ -2,15 +2,19 @@ import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import "./Navbar.scss";
 import logo from "../../images/academLogo.jpeg";
+import { useDispatch, useSelector } from "react-redux";
+import { teacherLogout } from "../../redux/securitySlice";
 
-const Navbar = ({ loggedInTeacher, onSignOut }) => {
+const Navbar = () => {
   const history = useHistory();
-  // const [isTeacherLoggedIn, setIsTeacherLoggedIn] = useState(false);
-  useEffect(() => {
-    console.log("nav");
-  }, []);
+  const dispatch = useDispatch();
+  const loggedInTeacher = useSelector(
+    (state) => state.security.loggedInTeacher
+  );
 
-  console.log("loggedInTeacher", loggedInTeacher);
+  const onSignOut = () => {
+    dispatch(teacherLogout());
+  };
 
   return (
     <div className="navbar-container">

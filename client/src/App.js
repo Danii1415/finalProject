@@ -10,33 +10,20 @@ import TeacherProjects from "./pages/teacher-projects/TeacherProjects";
 import DisplayProject from "./pages/display-project/DisplayProject";
 
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { teacherLogin } from "./redux/securitySlice";
 const App = () => {
-  const [loggedInTeacher, setLoggedInTeacher] = useState("");
-  const history = useHistory();
-
-  const onSignOut = () => {
-    localStorage.removeItem("loggedInTeacher");
-    setLoggedInTeacher("");
-    history.push("/");
-  };
-
-  const onSignIn = () => {
-    localStorage.setItem("loggedInTeacher", "אמיר");
-    setLoggedInTeacher("אמיר");
-    history.push("/");
-    history.go(0);
-  };
+  // const history = useHistory();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (localStorage.getItem("loggedInTeacher")) {
-      setLoggedInTeacher(localStorage.getItem("loggedInTeacher"));
-    } else {
-      setLoggedInTeacher("");
+      dispatch(teacherLogin());
     }
-  });
+  }, []);
   return (
     <BrowserRouter>
-      <Navbar loggedInTeacher={loggedInTeacher} onSignOut={onSignOut} />
+      <Navbar />
       <div className="container">
         <Switch>
           <Route exact path="/" component={AllProjects} />
