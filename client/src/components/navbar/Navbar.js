@@ -21,15 +21,20 @@ const Navbar = () => {
       <div className="navbar-links-header">
         <img className="logo" src={logo} alt="logo" />
         <div className="links">
-          <Link to="/" className="link  primary">
+          {loggedInTeacher && (
+            <Link to="/1/Projects" className="link">
+              הקורסים שלי
+            </Link>
+          )}
+          <Link to="/" className="link">
             כל הפרוייקטים
           </Link>
           {loggedInTeacher ? (
-            <div className="link" onClick={onSignOut}>
+            <div className="button-link primary" onClick={onSignOut}>
               התנתק
             </div>
           ) : (
-            <Link to="/Signin" className="link">
+            <Link to="/Signin" className="button-link primary">
               כניסת מרצה
             </Link>
           )}
