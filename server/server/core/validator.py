@@ -11,6 +11,8 @@ class Validator(object):
 			return isinstance(element, datetime)
 		if desired_type == "float":
 			return type(element) == float
+		if desired_type == "bool":
+			return type(element) == bool
 		if desired_type == "list":
 			return type(element) == list#(element in desired_type)
 		raise ValueError("Invalid value for desired type")

@@ -23,7 +23,7 @@ class Teacher(object):
 		self.create_optional_fields = []
 
 		# Fields required for UPDATE
-		self.update_required_fields = ["workshops"]
+		self.update_required_fields = ["name", "mail", "workshops"]
 
 		# Fields optional for UPDATE
 		self.update_optional_fields = []

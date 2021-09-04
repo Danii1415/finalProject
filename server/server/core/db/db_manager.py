@@ -1,9 +1,11 @@
 from flask import jsonify
 from .database import DB
+from core.models.models import Quote
 from core.models.student import Student
 from core.models.teacher import Teacher
 from core.models.workshop import Workshop
 from core.models.project import Project
+from core.models.project import Msg
 
 
 class DBManager(object):
@@ -13,6 +15,7 @@ class DBManager(object):
 		self.project = Project(self.db)
 		self.teacher = Teacher(self.db)
 		self.workshop = Workshop(self.db)
+		self.msg = Msg(self.db)
 
 
 
@@ -36,6 +39,25 @@ class DBManager(object):
 				students_list.append(self.student.find_by_id(student_id))
 			project["studentList"] = students_list
 		return jsonify(ans)
+
+
+	def get_all_projects_of_teacher(self, teacher_id):
+		ans=self.project.find({'teacherId': teacher_id})
+		for project in ans:
+			students_list=[]
+			for student_id in project["studentList"]:
+				students_list.append(self.student.find_by_id(student_id))
+			project["studentList"] = students_list
+		return jsonify(ans)
+
+
+	def get_project_by_id(self, project_id):
+		response = self.project.find_by_id(project_id)
+		students_list=[]
+		for student_id in response["studentList"]:
+			students_list.append(self.student.find_by_id(student_id))
+		response["studentList"] = students_list
+		return jsonify(response)
 		
 	
 	def insert_student(self, first_name, last_name, ID, mail):
@@ -82,3 +104,18 @@ class DBManager(object):
 		teacher_workshops.append(workshop_record["_id"])
 		response2 = self.teacher.update(teacher_id, {'workshops': teacher_workshops})
 		return workshop_record["_id"] # workshopID
+
+
+
+
+	def insert_msg(self, name, text, projectId, fromTeacher):
+		response = self.insert_msg({"name": name, "text": text, "projectId": projectId, "fromTeacher": fromTeacher})
+		return response
+
+	def insert_msg(self, msg_json):
+		response = self.msg.create(msg_json)
+		return response
+
+	def get_all_msgs_of_project(self, project_id):
+		ans=self.msg.find({'projectId': project_id})
+		return jsonify(ans)

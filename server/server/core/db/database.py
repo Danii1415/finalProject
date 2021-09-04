@@ -6,10 +6,14 @@ from bson import ObjectId
 
 class DB:
 
+	#URI = "mongodb://127.0.0.1:27017"
 	@classmethod
 	def __init__(self):
 		self.client = MongoClient('db')
-		self.db = self.client.finalProjectsDB
+		self.db = self.client.finalProjectsDB#client.quotesdb
+		#client = MongoClient('db')
+		#client = MongoClient(DB.URI)
+		#DB.DATABASE = client['sample_app']
 
 	@classmethod
 	def insert_old(self, collection, data):
