@@ -27,7 +27,7 @@ const Navbar = () => {
             </Link>
           )}
           <Link to="/" className="link">
-            כל הפרוייקטים
+            כל הפרויקטים
           </Link>
           {loggedInTeacher ? (
             <div className="button-link primary" onClick={onSignOut}>

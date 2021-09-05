@@ -21,6 +21,9 @@ import ReactMarkdown from "react-markdown";
 import Draggable from "react-draggable";
 import "./EditProject.scss";
 import { useSelector } from "react-redux";
+import logoThree from "../../images/dd.png";
+import { Student } from "../../utils";
+import StudentForm from "../../components/student-form/StudentForm";
 
 // const initialMarkdownText = `# כותרת
 
@@ -38,6 +41,10 @@ import { useSelector } from "react-redux";
 
 //   * list item 1
 //   * list item 2`;
+const initialStudentList = [
+  new Student("דניאל", "כפיר", "danii1415@gmail.com", "203482721"),
+  new Student("שגיב", "לוי", "sagiv@gmail.com", "203323221"),
+];
 
 const students = [
   { name: "דניאל כפיר" },
@@ -79,9 +86,15 @@ function PaperComponent(props) {
 
 const EditProject = () => {
   const [image, setImage] = useState("");
+  const [studentsList, setStudentsList] = useState(initialStudentList);
+  const [currStudentidx, setCurrStudentidx] = useState(
+    initialStudentList.length - 1
+  );
   const [messageList, setMessageList] = useState(teacherMessages);
   //   const [messageList, setMessageList] = useState([]);
-  const [markDownText, setMarkDownText] = useState("");
+  const [markDownText, setMarkDownText] = useState(
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tincidunt quis elit non lacinia. Vivamus at congue lectus. Aenean id scelerisque purus. Nunc eleifend leo sit amet lobortis imperdiet. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla facilisis placerat massa, blandit consectetur dui bibendum nec. Mauris rhoncus quam at vulputate blandit. Sed blandit augue eu convallis posuere. Vivamus porttitor dignissim tortor at facilisis. Cras vestibulum orci sit amet leo vestibulum, vitae vestibulum elit facilisis. Sed eu nisl vel tortor ornare cursus. Duis sit amet orci felis. Duis tincidunt tellus at pulvinar commodo. Fusce nec enim feugiat, lacinia tellus et, varius elit. Integer vitae semper lorem, porttitor commodo mauris. Pellentesque euismod nisi nec convallis lobortis."
+  );
   const [status, setStatus] = useState("pendingTeacherApproval");
   // const [status, setStatus] = useState("pendingStudentsEdit");
   const [projectTitle, setProjectTitle] = useState("My Project!!");
@@ -93,15 +106,44 @@ const EditProject = () => {
   const [newMessage, setNewMessage] = useState("");
   const [editMessage, setEditMessage] = useState("");
   const [editMessageIdx, setEditMessageIdx] = useState(-1);
-  const [contactEmail, setContactEmail] = useState("");
-  const [contactName, setContactName] = useState("");
-  const [contactPhone, setContactPhone] = useState("");
+  const [contactEmail, setContactEmail] = useState("Danii1415@gmail.com");
+  const [contactName, setContactName] = useState("דניאל כפיר");
+  const [contactPhone, setContactPhone] = useState("0505595660");
   const [messageSender, setMessageSender] = useState("");
   const loggedInTeacher = useSelector(
     (state) => state.security.loggedInTeacher
   );
 
   const [isOpenDrawer, setisOpenDrawer] = useState(false);
+
+  const onStudentListChange = (e, idx) => {
+    let studentsArr = [...studentsList];
+    let student = studentsArr[idx];
+    student[e.target.name] = e.target.value;
+    setStudentsList([
+      ...studentsArr.slice(0, idx),
+      student,
+      ...studentsArr.slice(idx + 1),
+    ]);
+  };
+
+  const onNextStudentClick = () => {
+    let studentsArr = [...studentsList];
+    if (!studentsArr[currStudentidx + 1]) {
+      studentsArr.push(new Student());
+      setStudentsList(studentsArr);
+    }
+    setCurrStudentidx(currStudentidx + 1);
+  };
+
+  const onPreviousStudentClick = () => {
+    let studentsArr = [...studentsList];
+    studentsArr.pop();
+    if (currStudentidx !== 0) {
+      setCurrStudentidx(currStudentidx - 1);
+    }
+    setStudentsList(studentsArr);
+  };
 
   const openDrawer = () => {
     setisOpenDrawer(true);
@@ -310,7 +352,7 @@ const EditProject = () => {
           <input value={"הנדסת תוכנה"} disabled />
         </div>
         <div className="input-container">
-          <label>מספר פרוייקט</label>
+          <label>מספר פרויקט</label>
           <input value={"234311"} disabled />
         </div>
       </div>
@@ -344,8 +386,50 @@ const EditProject = () => {
           onChange={onPreviewChange}
         />
       </div>
+      <div class="add-students-div">
+        <label className="main-label">הוסף פרטי המגישים</label>
+        {studentsList.map((student, idx) => {
+          return (
+            <StudentForm
+              currStudentidx={idx}
+              student={student}
+              onStudentListChange={onStudentListChange}
+              isMultipleStudents={studentsList.length > 1 ? true : false}
+              isLast={idx === currStudentidx ? true : false}
+            />
+          );
+        })}
+        <div
+          className={
+            currStudentidx === 0 || currStudentidx === 3
+              ? "student-buttons justify-center"
+              : "student-buttons justify-between"
+          }
+        >
+          {currStudentidx < 3 && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                onNextStudentClick();
+              }}
+            >
+              הוסף תלמיד
+            </button>
+          )}
+          {currStudentidx > 0 && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                onPreviousStudentClick();
+              }}
+            >
+              הסר תלמיד
+            </button>
+          )}
+        </div>
+      </div>
       <div className="add-img-container">
-        <img src={image} className="left-side" />
+        <img src={logoThree} className="left-side" />
         <div className="right-side">
           <label>תמונת הפרויקט</label>
           <div className="image-buttons">

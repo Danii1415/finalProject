@@ -8,6 +8,7 @@ import EditProject from "./pages/edit-project/EditProject";
 import SignIn from "./pages/sign-in/SignIn";
 import TeacherProjects from "./pages/teacher-projects/TeacherProjects";
 import DisplayProject from "./pages/display-project/DisplayProject";
+import Axios from "axios";
 
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -16,6 +17,22 @@ const App = () => {
   // const history = useHistory();
   const dispatch = useDispatch();
 
+  // useEffect(() => {
+  //   const postData = async () => {
+  //     try {
+  //       const res = await Axios.post("http://localhost:5000/students/", {
+  //         firstName: "dani",
+  //         lastName: "d",
+  //         id: "123",
+  //         mail: "mail@mail",
+  //       });
+  //       console.log(res.data);
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   };
+  //   postData();
+  // }, []);
   useEffect(() => {
     if (localStorage.getItem("loggedInTeacher")) {
       dispatch(teacherLogin());

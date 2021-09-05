@@ -26,76 +26,76 @@ const AllProjects = () => {
   };
   const projects = [
     {
-      projectName: "פרוייקט הנדסת תוכנה",
+      projectName: "פרויקט הנדסת תוכנה",
       course: "הנדסת תוכנה",
       projectImg: logoThree,
       id: 1,
     },
     {
-      projectName: "פרוייקט הנדסת תוכנה",
+      projectName: "פרויקט הנדסת תוכנה",
       course: "הנדסת תוכנה",
       projectImg: logo,
       id: 1,
     },
     {
-      projectName: "פרוייקט הנדסת תוכנה",
+      projectName: "פרויקט הנדסת תוכנה",
       course: "הנדסת תוכנה",
       projectImg: logoFour,
       id: 1,
     },
     {
-      projectName: "פרוייקט הנדסת תוכנה",
+      projectName: "פרויקט הנדסת תוכנה",
       course: "הנדסת תוכנה",
       projectImg: logoThree,
       id: 1,
     },
     {
-      projectName: "פרוייקט הנדסת תוכנה",
+      projectName: "פרויקט הנדסת תוכנה",
       course: "הנדסת תוכנה",
       projectImg: logoThree,
     },
     {
-      projectName: "פרוייקט הנדסת תוכנה",
+      projectName: "פרויקט הנדסת תוכנה",
       course: "הנדסת תוכנה",
       projectImg: logoThree,
     },
     {
-      projectName: "פרוייקט הנדסת תוכנה",
+      projectName: "פרויקט הנדסת תוכנה",
       course: "הנדסת תוכנה",
       projectImg: logoThree,
     },
     {
-      projectName: "פרוייקט הנדסת תוכנה",
+      projectName: "פרויקט הנדסת תוכנה",
       course: "הנדסת תוכנה",
       projectImg: logoThree,
     },
     {
-      projectName: "פרוייקט הנדסת תוכנה",
+      projectName: "פרויקט הנדסת תוכנה",
       course: "הנדסת תוכנה",
       projectImg: logoThree,
     },
     {
-      projectName: "פרוייקט הנדסת תוכנה",
+      projectName: "פרויקט הנדסת תוכנה",
       course: "הנדסת תוכנה",
       projectImg: logoThree,
     },
     {
-      projectName: "פרוייקט הנדסת תוכנה",
+      projectName: "פרויקט הנדסת תוכנה",
       course: "הנדסת תוכנה",
       projectImg: logoThree,
     },
     {
-      projectName: "פרוייקט הנדסת תוכנה",
+      projectName: "פרויקט הנדסת תוכנה",
       course: "הנדסת תוכנה",
       projectImg: logoThree,
     },
     {
-      projectName: "פרוייקט הנדסת תוכנה",
+      projectName: "פרויקט הנדסת תוכנה",
       course: "הנדסת תוכנה",
       projectImg: logoThree,
     },
     {
-      projectName: "פרוייקט הנדסת תוכנה",
+      projectName: "פרויקט הנדסת תוכנה",
       course: "הנדסת תוכנה",
       projectImg: logoThree,
     },
@@ -111,7 +111,7 @@ const AllProjects = () => {
             <ViewListIcon />
           </ToggleButton>
         </ToggleButtonGroup>
-        <div className="projects-title">הפרוייקטים</div>
+        <div className="projects-title">הפרויקטים</div>
       </div>
       <div className="projects-display">
         {projects.map((project) => (

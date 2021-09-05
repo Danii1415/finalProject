@@ -37,10 +37,22 @@
     .students-form {
       display: flex;
       flex-direction: column;
+      .student-input-row {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 20px;
+
+        & > div {
+          flex: 1 1 calc((100% - 50px) * 0.5);
+        }
+        .first {
+          margin-right: 50px;
+        }
+      }
       .student-number {
         text-align: right;
         font-size: 13px;
-        color: #989898;
+        color: #05a2b7;
         font-weight: 600;
         margin-bottom: 10px;
       }
@@ -197,19 +209,6 @@
   }
   .custom-file-upload:hover {
     background-color: #068090;
-  }
-
-  .student-input-row {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 20px;
-
-    & > div {
-      flex: 1 1 calc((100% - 50px) * 0.5);
-    }
-    .first {
-      margin-right: 50px;
-    }
   }
 
   .input-container {

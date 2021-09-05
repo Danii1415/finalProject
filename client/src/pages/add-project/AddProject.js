@@ -72,7 +72,7 @@ const AddProject = () => {
   const [selectedTeacher, setSelectedTeacher] = useState("");
   const [currWorkshops, setCurrWorkshops] = useState([]);
   const [selectedWorkshop, setSelectedWorkshop] = useState("");
-  const [currStudentidx, setcurrStudentidx] = useState(0);
+  const [currStudentidx, setCurrStudentidx] = useState(0);
   const [studentsList, setStudentsList] = useState([new Student()]);
   // const [studentsList, setStudentsList] = useState(initialStudentList);
   const [markDownText, setMarkDownText] = useState("");
@@ -134,14 +134,14 @@ const AddProject = () => {
       studentsArr.push(new Student());
       setStudentsList(studentsArr);
     }
-    setcurrStudentidx(currStudentidx + 1);
+    setCurrStudentidx(currStudentidx + 1);
   };
 
   const onPreviousStudentClick = () => {
     let studentsArr = [...studentsList];
     studentsArr.pop();
     if (currStudentidx !== 0) {
-      setcurrStudentidx(currStudentidx - 1);
+      setCurrStudentidx(currStudentidx - 1);
     }
     setStudentsList(studentsArr);
   };
