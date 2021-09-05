@@ -5,7 +5,7 @@ from core.models.student import Student
 from core.models.teacher import Teacher
 from core.models.workshop import Workshop
 from core.models.project import Project
-from core.models.project import Msg
+from core.models.msg import Msg
 
 
 class DBManager(object):

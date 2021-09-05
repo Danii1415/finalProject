@@ -1,7 +1,7 @@
 import random
 from flask import Flask, request, jsonify
 from pymongo import MongoClient
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from core import app
 
 from .db.database import DB
@@ -19,6 +19,8 @@ db = DB()
 student = Student(db)
 project = Project(db)
 teacher = Teacher(db)
+
+
 
 
 
@@ -50,26 +52,6 @@ def init_for_testing_db():
 
 	return "success to init DB for testing"
 
-@app.route('/quote')
-def quote():
-	app.logger.info(f"ENTERING: {request.path}")
-	#client = MongoClient('db')
-	#db = client.quotesdb
-	#data = list(db.quotes.find())
-	#DB.find_one
-	data = Quote.find(1)
-	return data.json()
-	if len(data) < 1:
-		return {
-				"id": 0,
-				"quote": "Remember to init the db with InitDB.js"
-		}
-
-	row = random.choice(data)
-	return {
-		"id": int(row['id']),
-		"quote": row['quote']
-	}
 
 
 
@@ -102,19 +84,18 @@ def get_students():
 
 
 @app.route('/students/<string:student_id>/', methods=['GET'])
-def get_task(student_id):
+def get_student(student_id):
 	return student.find_by_id(student_id), 200
 
 
 @app.route('/students/', methods=['POST'])
 def add_student():
 	if request.method == "POST":
-		first_name = request.form['firstName']
-		last_name = request.form['lastName']
-		ID = request.form['id']
-		mail = request.form['mail']
-		response = student.create({'firstName': first_name, 'lastName': last_name, 'id': ID, 'mail': mail})
-		return response, 201
+		
+		#response = jsonify(response)
+		request_json = request.get_json()
+		response = db_manager.insert_student(request_json)
+		return response
 
 
 @app.route('/students/<string:student_id>/', methods=['PUT'])
