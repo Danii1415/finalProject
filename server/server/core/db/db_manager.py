@@ -97,12 +97,18 @@ class DBManager(object):
 		teacher_record = self.teacher.find_by_name(teacher_name)
 		#teacher_record["workshops"] = [ DBRef(collection = "workshops", id = workshop_record["_id"]) ]
 		teacher_id=teacher_record['_id']
-		teacher_workshops = []#teacher_record['workshops']
+		teacher_workshops = teacher_record['workshops']
+
 		#del teacher_record['_id']
 		#del teacher_record['created']
 		#del teacher_record['updated']
 		teacher_workshops.append(workshop_record["_id"])
-		response2 = self.teacher.update(teacher_id, {'workshops': teacher_workshops})
+		teacher_record['workshops'] = teacher_workshops
+		teacher_record.pop("created")
+		teacher_record.pop("updated")
+		teacher_record.pop("_id")
+		print(teacher_record)
+		response2 = self.teacher.update(teacher_id, teacher_record)
 		return workshop_record["_id"] # workshopID
 
 

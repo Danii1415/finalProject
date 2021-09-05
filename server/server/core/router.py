@@ -36,7 +36,7 @@ def init_for_testing_db():
 	name = "Yossi"
 	ID = "203516794"
 	mail = "yossi@mta.ac.il"
-	workshops= "sdaSD"
+	workshops= []
 	teacherId = teacher.create({'name': name, 'mail': mail, 'workshops': workshops})
 
 	workshopId=db_manager.insert_workshop_and_append_it_to_teacher("sadna2", "Yossi")
