@@ -11,6 +11,7 @@ import ViewQuiltIcon from "@material-ui/icons/ViewQuilt";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ProjectBox from "../../components/ProjectBox/ProjectBox";
+import "./TeacherProjects.scss";
 
 // const projects = [
 //   {
@@ -142,7 +143,10 @@ const TeacherProjects = () => {
           </ol>
         </>
       ) : (
-        <div>אין לך גישה לעמוד זה</div>
+        <div className="not-authorized">
+          <div className="header">אין לך גישה לעמוד זה</div>
+          <div className="description">היכנס בתור מרצה על מנת לצפות בתוכן</div>
+        </div>
       )}
     </>
   );
