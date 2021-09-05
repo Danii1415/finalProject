@@ -6,7 +6,7 @@
   form {
     min-width: 700px;
     max-width: 1000px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
   }
   .add-students-div {
     display: flex;
@@ -91,7 +91,7 @@
       height: 60px;
     }
     .approval-button {
-      background-color: lightgreen;
+      background-color: #76ca76;
       margin-right: 20px;
       cursor: pointer;
       border-radius: 5px;
@@ -100,6 +100,7 @@
       color: white;
       font-size: 18px;
       font-weight: 600;
+      height: 70px;
     }
     .approval-button:hover {
       background-color: green;
@@ -114,6 +115,7 @@
       color: white;
       font-size: 18px;
       font-weight: 600;
+      height: 70px;
     }
     .decline-button:hover {
       background-color: red;

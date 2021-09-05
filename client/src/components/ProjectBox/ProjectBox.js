@@ -3,14 +3,17 @@ import { VisibilityOutlined } from "@material-ui/icons";
 import React from "react";
 import { Link } from "react-router-dom";
 import "./ProjectBox.scss";
-const ProjectBox = ({ project, onClickRoute }) => {
+const ProjectBox = ({ project, linkType }) => {
   return (
     <div className="project-container">
       <div className="project-image">
         <div className="figure">
           <img className="image" src={project.projectImg} />
         </div>
-        <Link className="project-link" to={onClickRoute(project)}></Link>
+        <Link
+          className="project-link"
+          to={linkType === "display" ? "/displayproject" : "/editproject"}
+        ></Link>
       </div>
       <div className="details-container">
         {/* <div className="project-statistics"> */}

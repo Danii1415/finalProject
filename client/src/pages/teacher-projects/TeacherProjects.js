@@ -138,7 +138,7 @@ const TeacherProjects = () => {
           </div>
           <ol className="projects-display">
             {projects.map((project) => (
-              <ProjectBox onClickRoute={onClickRoute} project={project} />
+              <ProjectBox linkType="edit" project={project} />
             ))}
           </ol>
         </>

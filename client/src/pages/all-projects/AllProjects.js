@@ -1,6 +1,12 @@
+// should be Sorted by course name, filtered by project name or project course
+
 import React, { useState } from "react";
 import Chip from "@material-ui/core/Chip";
-import { FavoriteOutlined, VisibilityOutlined } from "@material-ui/icons";
+import {
+  FavoriteOutlined,
+  SdStorageOutlined,
+  VisibilityOutlined,
+} from "@material-ui/icons";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import ViewModuleIcon from "@material-ui/icons/ViewModule";
 import ViewQuiltIcon from "@material-ui/icons/ViewQuilt";
@@ -16,10 +22,6 @@ import ProjectBox from "../../components/ProjectBox/ProjectBox";
 const AllProjects = () => {
   const [view, setView] = useState("grid");
   const history = useHistory();
-
-  const onClickRoute = (project) => {
-    // history.push("displayproject");
-  };
 
   const handleChange = (e, nextView) => {
     setView(nextView);
@@ -115,7 +117,7 @@ const AllProjects = () => {
       </div>
       <div className="projects-display">
         {projects.map((project) => (
-          <ProjectBox project={project} onClickRoute={onClickRoute} />
+          <ProjectBox project={project} linkType="display" />
         ))}
       </div>
     </>
