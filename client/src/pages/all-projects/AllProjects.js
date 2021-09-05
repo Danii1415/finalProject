@@ -26,8 +26,8 @@ const AllProjects = () => {
   };
   const projects = [
     {
-      projectName: "פרויקט הנדסת תוכנה",
-      course: "הנדסת תוכנה",
+      course: " פיתוח תוכנה בטכנולוגיות דוט נט",
+      projectName: "פרויקט עם ארבע מילים",
       projectImg: logoThree,
       id: 1,
     },

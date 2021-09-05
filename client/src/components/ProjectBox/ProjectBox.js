@@ -13,16 +13,16 @@ const ProjectBox = ({ project, onClickRoute }) => {
         <Link className="project-link" to={onClickRoute(project)}></Link>
       </div>
       <div className="details-container">
-        <div className="project-statistics">
-          {/* {/<div className="statistics-icon">/} */}
-          {/*    <FavoriteOutlined fontSize='small' color="disabled" />*/}
-          {/*    <span>44</span>*/}
-          {/* {/</div>/} */}
-          {/* <div className="statistics-icon">
+        {/* <div className="project-statistics"> */}
+        {/* {/<div className="statistics-icon">/} */}
+        {/*    <FavoriteOutlined fontSize='small' color="disabled" />*/}
+        {/*    <span>44</span>*/}
+        {/* {/</div>/} */}
+        {/* <div className="statistics-icon">
             <VisibilityOutlined fontSize="small" color="disabled" />
             <span>89</span>
           </div> */}
-        </div>
+        {/* </div> */}
         <div className="project-details">
           <Chip
             className="course-name"
