@@ -117,3 +117,32 @@
     margin-bottom: 5px;
   }
 }
+
+.list-display-container {
+  display: flex;
+  flex-direction: column;
+  padding-right: 4%;
+  padding-left: 4%;
+  min-width: 900px;
+  .title {
+    font-size: 20px;
+    font-weight: 600;
+    align-self: flex-end;
+    margin-bottom: 50px;
+  }
+
+  .show-more-button {
+    height: 35px;
+    width: 100px;
+    border-radius: 15px;
+    color: #05a2b7;
+    border: 1px solid #05a2b7;
+    cursor: pointer;
+    background-color: #fafafa;
+    margin-top: 12px;
+    &:hover {
+      background-color: #05a2b7;
+      color: #fafafa;
+    }
+  }
+}

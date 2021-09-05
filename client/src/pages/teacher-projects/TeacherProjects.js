@@ -12,93 +12,87 @@ import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ProjectBox from "../../components/ProjectBox/ProjectBox";
 import "./TeacherProjects.scss";
+import { Chip, Divider } from "@material-ui/core";
+import ProjectTable from "../../components/ProjectTable/ProjectTable";
 
-// const projects = [
-//   {
-//     name: "my first one",
-//     workshop: "יישומי רשת",
-//     photo: logo,
-//   },
-//   { name: "הפרויקט השני שלנו", workshop: "יישומי רשת", photo: logoThree },
-//   { name: "זה פרויקט שונה", workshop: "הנדסת תוכנה", photo: logoFour },
-//   { name: "תראה מה זה", workshop: "יישומי רשת", photo: logo },
-//   { name: "הנה אני פקוייקט 5", workshop: "הנדסת תוכנה", photo: logoThree },
-// ];
 const projects = [
   {
-    projectName: "פרויקט הנדסת תוכנה",
-    course: "הנדסת תוכנה",
+    projectName: "Face Recognition System",
+    course: "יישומי רשת",
     projectImg: logoThree,
-    id: 1,
+    id: 3424324,
+    status: "מחכה לאישור מרצה",
   },
   {
     projectName: "פרויקט הנדסת תוכנה",
     course: "הנדסת תוכנה",
     projectImg: logo,
-    id: 1,
+    id: 4564564,
+    status: "מחכה לעריכת הסטודנטים",
   },
   {
-    projectName: "פרויקט הנדסת תוכנה",
-    course: "הנדסת תוכנה",
+    projectName: "Face Recognition System",
+    course: "HomeCommunications",
     projectImg: logoFour,
-    id: 1,
+    id: 3458677,
+    status: "מחכה לאישור מרצה",
   },
-  {
-    projectName: "פרויקט הנדסת תוכנה",
-    course: "הנדסת תוכנה",
-    projectImg: logoThree,
-    id: 1,
-  },
-  {
-    projectName: "פרויקט הנדסת תוכנה",
-    course: "הנדסת תוכנה",
-    projectImg: logoThree,
-  },
-  {
-    projectName: "פרויקט הנדסת תוכנה",
-    course: "הנדסת תוכנה",
-    projectImg: logoThree,
-  },
-  {
-    projectName: "פרויקט הנדסת תוכנה",
-    course: "הנדסת תוכנה",
-    projectImg: logoThree,
-  },
-  {
-    projectName: "פרויקט הנדסת תוכנה",
-    course: "הנדסת תוכנה",
-    projectImg: logoThree,
-  },
-  {
-    projectName: "פרויקט הנדסת תוכנה",
-    course: "הנדסת תוכנה",
-    projectImg: logoThree,
-  },
-  {
-    projectName: "פרויקט הנדסת תוכנה",
-    course: "הנדסת תוכנה",
-    projectImg: logoThree,
-  },
-  {
-    projectName: "פרויקט הנדסת תוכנה",
-    course: "הנדסת תוכנה",
-    projectImg: logoThree,
-  },
-  {
-    projectName: "פרויקט הנדסת תוכנה",
-    course: "הנדסת תוכנה",
-    projectImg: logoThree,
-  },
-  {
-    projectName: "פרויקט הנדסת תוכנה",
-    course: "הנדסת תוכנה",
-    projectImg: logoThree,
-  },
-  {
-    projectName: "פרויקט הנדסת תוכנה",
-    course: "הנדסת תוכנה",
-    projectImg: logoThree,
-  },
+  // {
+  //   projectName: "פרויקט הנדסת תוכנה",
+  //   course: "הנדסת תוכנה",
+  //   projectImg: logoThree,
+  //   id: 1,
+  // },
+  // {
+  //   projectName: "Face Recognition System",
+  //   course: "הנדסת תוכנה",
+  //   projectImg: logo,
+  // },
+  // {
+  //   projectName: "פרויקט הנדסת תוכנה",
+  //   course: "הנדסת תוכנה",
+  //   projectImg: logoFour,
+  // },
+  // {
+  //   projectName: "Face Recognition System",
+  //   course: "הנדסת תוכנה",
+  //   projectImg: logoThree,
+  // },
+  // {
+  //   projectName: "פרויקט הנדסת תוכנה",
+  //   course: "הנדסת תוכנה",
+  //   projectImg: logo,
+  // },
+  // {
+  //   projectName: "Face Recognition System",
+  //   course: "הנדסת תוכנה",
+  //   projectImg: logoFour,
+  // },
+  // {
+  //   projectName: "Face Recognition System",
+  //   course: "הנדסת תוכנה",
+  //   projectImg: logoThree,
+  // },
+  // {
+  //   projectName: "פרויקט הנדסת תוכנה",
+  //   course: "הנדסת תוכנה",
+  //   projectImg: logo,
+  // },
+  // {
+  //   projectName: "Face Recognition System",
+  //   course: "הנדסת תוכנה",
+  //   projectImg: logoFour,
+  // },
+  // {
+  //   projectName: "פרויקט הנדסת תוכנה",
+  //   course: "הנדסת תוכנה",
+  //   projectImg: logoThree,
+  // },
+  // {
+  //   projectName: "Face Recognition System",
+  //   course: "הנדסת תוכנה",
+  //   projectImg: logo,
+  // },
 ];
 const TeacherProjects = () => {
   const history = useHistory();
@@ -117,8 +111,11 @@ const TeacherProjects = () => {
   };
 
   return (
-    <>
-      {loggedInTeacher ? (
+    <div className="list-display-container">
+      <div className="title">הגשות שלא אושרו</div>
+      <ProjectTable projects={projects} />
+      <button className="show-more-button">הצג עוד</button>
+      {/* {loggedInTeacher ? (
         <>
           <div className="projects-info">
             <ToggleButtonGroup
@@ -147,8 +144,8 @@ const TeacherProjects = () => {
           <div className="header">אין לך גישה לעמוד זה</div>
           <div className="description">היכנס בתור מרצה על מנת לצפות בתוכן</div>
         </div>
-      )}
-    </>
+      )} */}
+    </div>
   );
 };
 

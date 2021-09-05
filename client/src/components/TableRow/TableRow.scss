@@ -1,0 +1,54 @@
+.content-row {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  align-items: center;
+  height: 55px;
+  & > div {
+    text-align: right;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .img-wrapper {
+    margin-right: 2%;
+    flex: 0 0 10%;
+    flex-wrap: wrap;
+    .img-name-content {
+      height: 40px;
+      max-width: 90px;
+      border-radius: 10%;
+    }
+  }
+  .project-name {
+    flex: 0 0 24%;
+    flex-wrap: wrap;
+    @media screen and (max-width: 1400px) {
+      flex: 0 0 29%;
+    }
+  }
+  .course-content {
+    flex: 0 0 24%;
+    flex-wrap: wrap;
+    @media screen and (max-width: 1400px) {
+      flex: 0 0 29%;
+    }
+  }
+  .project-id-content {
+    flex: 0 0 20%;
+    flex-wrap: wrap;
+    @media screen and (max-width: 1400px) {
+      flex: 0 0 15%;
+    }
+  }
+  .status-content {
+    flex: 0 0 20%;
+    flex-wrap: wrap;
+    @media screen and (max-width: 1400px) {
+      flex: 0 0 15%;
+    }
+  }
+  span:hover {
+    color: lightgray;
+    cursor: pointer;
+  }
+}
