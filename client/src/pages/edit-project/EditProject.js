@@ -52,7 +52,7 @@ const students = [
   { name: "איתי מלמד" },
 ];
 
-const teacherMessages = [
+const initialMessages = [
   {
     date: "11/8/21 19:40",
     text: "צריך לעשות דברים בצורה אחרת תוסיפו ככה ותעשו ככה ואחרי זה תוסיפו עוד דברים",
@@ -90,7 +90,7 @@ const EditProject = () => {
   const [currStudentidx, setCurrStudentidx] = useState(
     initialStudentList.length - 1
   );
-  const [messageList, setMessageList] = useState(teacherMessages);
+  const [messageList, setMessageList] = useState(initialMessages);
   //   const [messageList, setMessageList] = useState([]);
   const [markDownText, setMarkDownText] = useState(
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tincidunt quis elit non lacinia. Vivamus at congue lectus. Aenean id scelerisque purus. Nunc eleifend leo sit amet lobortis imperdiet. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla facilisis placerat massa, blandit consectetur dui bibendum nec. Mauris rhoncus quam at vulputate blandit. Sed blandit augue eu convallis posuere. Vivamus porttitor dignissim tortor at facilisis. Cras vestibulum orci sit amet leo vestibulum, vitae vestibulum elit facilisis. Sed eu nisl vel tortor ornare cursus. Duis sit amet orci felis. Duis tincidunt tellus at pulvinar commodo. Fusce nec enim feugiat, lacinia tellus et, varius elit. Integer vitae semper lorem, porttitor commodo mauris. Pellentesque euismod nisi nec convallis lobortis."
@@ -242,9 +242,8 @@ const EditProject = () => {
     setMessageSender(e.target.value);
   };
 
-  const areFieldsDisabled = () => {
-    return !loggedInTeacher && status === "";
-  };
+  const areFieldsDisabled =
+    !loggedInTeacher && status === "pendingTeacherApproval";
 
   return (
     <div className="edit-form">
@@ -359,6 +358,7 @@ const EditProject = () => {
       <div className="input-container">
         <label>שם הפרויקט</label>
         <input
+          disabled={areFieldsDisabled ? true : false}
           value={projectTitle}
           onChange={onProjectTitleChange}
           name="project-title"
@@ -368,6 +368,7 @@ const EditProject = () => {
       <div className="input-container">
         <label>קישור לגיטהאב</label>
         <input
+          disabled={areFieldsDisabled ? true : false}
           value={githubLink}
           onChange={onGithubLinkChange}
           name="github-link"
@@ -381,6 +382,7 @@ const EditProject = () => {
             <ReactMarkdown>{markDownText}</ReactMarkdown>
           </div> */}
         <textarea
+          disabled={areFieldsDisabled ? true : false}
           className="markdown-editor"
           value={markDownText}
           onChange={onPreviewChange}
@@ -391,6 +393,7 @@ const EditProject = () => {
         {studentsList.map((student, idx) => {
           return (
             <StudentForm
+              disabled={areFieldsDisabled ? true : false}
               currStudentidx={idx}
               student={student}
               onStudentListChange={onStudentListChange}
@@ -399,45 +402,64 @@ const EditProject = () => {
             />
           );
         })}
-        <div
-          className={
-            currStudentidx === 0 || currStudentidx === 3
-              ? "student-buttons justify-center"
-              : "student-buttons justify-between"
-          }
-        >
-          {currStudentidx < 3 && (
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                onNextStudentClick();
-              }}
-            >
-              הוסף תלמיד
-            </button>
-          )}
-          {currStudentidx > 0 && (
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                onPreviousStudentClick();
-              }}
-            >
-              הסר תלמיד
-            </button>
-          )}
-        </div>
+        {!areFieldsDisabled && (
+          <div
+            className={
+              currStudentidx === 0 || currStudentidx === 3
+                ? "student-buttons justify-center"
+                : "student-buttons justify-between"
+            }
+          >
+            {currStudentidx < 3 && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNextStudentClick();
+                }}
+              >
+                הוסף תלמיד
+              </button>
+            )}
+            {currStudentidx > 0 && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  onPreviousStudentClick();
+                }}
+              >
+                הסר תלמיד
+              </button>
+            )}
+          </div>
+        )}
       </div>
       <div className="add-img-container">
         <img src={logoThree} className="left-side" />
         <div className="right-side">
           <label>תמונת הפרויקט</label>
           <div className="image-buttons">
-            <label className="custom-file-upload">
-              <input onChange={onImageChange} type="file" />
+            <label
+              className={
+                areFieldsDisabled
+                  ? "custom-file-upload disabled"
+                  : "custom-file-upload"
+              }
+            >
+              <input
+                disabled={areFieldsDisabled ? true : false}
+                onChange={onImageChange}
+                type="file"
+              />
               הוסף תמונה
             </label>
-            <button className="remove-img">הסר תמונה</button>
+            <button
+              disabled={areFieldsDisabled ? true : false}
+              className={
+                areFieldsDisabled ? "remove-img disabled" : "remove-img"
+              }
+            >
+              הסר תמונה
+            </button>
           </div>
         </div>
       </div>
@@ -447,6 +469,7 @@ const EditProject = () => {
           <div className="input-container">
             <label>שם מלא</label>
             <input
+              disabled={areFieldsDisabled ? true : false}
               value={contactName}
               onChange={(e) => setContactName(e.target.value)}
               name="contact-name"
@@ -457,6 +480,7 @@ const EditProject = () => {
           <div className="input-container">
             <label>טלפון</label>
             <input
+              disabled={areFieldsDisabled ? true : false}
               value={contactPhone}
               onChange={(e) => setContactPhone(e.target.value)}
               name="contact-phone"
@@ -466,6 +490,7 @@ const EditProject = () => {
           <div className="input-container">
             <label>אימייל</label>
             <input
+              disabled={areFieldsDisabled ? true : false}
               value={contactEmail}
               onChange={(e) => setContactEmail(e.target.value)}
               name="contact-email"

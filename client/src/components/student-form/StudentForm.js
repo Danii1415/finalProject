@@ -7,6 +7,7 @@ const StudentForm = ({
   onStudentListChange,
   isMultipleStudents,
   isLast,
+  disabled,
 }) => {
   return (
     <form className="students-form">
@@ -19,6 +20,7 @@ const StudentForm = ({
         <div className="input-container first">
           <label>שם משפחה</label>
           <input
+            disabled={disabled ? true : false}
             value={student.lastName}
             name="lastName"
             id="lastName"
@@ -31,6 +33,7 @@ const StudentForm = ({
         <div className="input-container">
           <label>שם פרטי</label>
           <input
+            disabled={disabled ? true : false}
             value={student.firstName}
             id="first"
             name="firstName"
@@ -45,6 +48,7 @@ const StudentForm = ({
         <div className="input-container first">
           <label>מספר תעודת זהות</label>
           <input
+            disabled={disabled ? true : false}
             value={student.idNumber}
             name="idNumber"
             id="idNumber"
@@ -57,6 +61,7 @@ const StudentForm = ({
         <div className="input-container">
           <label>כתובת מייל</label>
           <input
+            disabled={disabled ? true : false}
             value={student.emailAddress}
             type="email"
             name="emailAddress"

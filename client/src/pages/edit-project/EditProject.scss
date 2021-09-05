@@ -237,6 +237,13 @@
           margin: 0;
           width: 130px;
           font-weight: 600;
+          &.disabled {
+            background-color: rgb(199, 197, 197);
+            cursor: default;
+          }
+          &.disabled:hover {
+            background-color: rgb(199, 197, 197);
+          }
         }
         .custom-file-upload:hover {
           background-color: #068090;
@@ -252,6 +259,13 @@
           width: 130px;
           font-weight: 600;
           font-size: 18px;
+          &.disabled {
+            background-color: rgb(199, 197, 197);
+            cursor: default;
+            &:hover {
+              background-color: rgb(199, 197, 197);
+            }
+          }
         }
         .remove-img:hover {
           background-color: #068090;
