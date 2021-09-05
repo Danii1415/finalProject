@@ -78,10 +78,13 @@
   }
   .student-project-submit-button:disabled,
   .student-project-submit-button[disabled] {
-    border: 1px solid #999999;
+    border: 0;
     background-color: #cccccc;
-    color: #666666;
     cursor: default;
+    color: white;
+    font-size: 24px;
+    border-radius: 5px;
+    font-weight: 600;
   }
   .teacher-project-approval {
     display: flex;
@@ -238,11 +241,11 @@
           width: 130px;
           font-weight: 600;
           &.disabled {
-            background-color: rgb(199, 197, 197);
+            background-color: #cccccc;
             cursor: default;
           }
           &.disabled:hover {
-            background-color: rgb(199, 197, 197);
+            background-color: #cccccc;
           }
         }
         .custom-file-upload:hover {
@@ -260,10 +263,10 @@
           font-weight: 600;
           font-size: 18px;
           &.disabled {
-            background-color: rgb(199, 197, 197);
+            background-color: #cccccc;
             cursor: default;
             &:hover {
-              background-color: rgb(199, 197, 197);
+              background-color: #cccccc;
             }
           }
         }

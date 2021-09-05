@@ -198,7 +198,9 @@ const EditProject = () => {
     const now = new Date();
     messages[editMessageIdx] = {
       text: editMessage,
-      date: `${now.getDay()}/${now.getMonth()}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`,
+      date: `${now.getDate()}/${
+        now.getMonth() + 1
+      }/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`,
     };
     setMessageList(messages);
     setOpenEditMessage(false);
@@ -209,9 +211,12 @@ const EditProject = () => {
   const saveNewMessage = () => {
     let messages = [...messageList];
     const now = new Date();
+    console.log(now.getDate());
     const _newMessage = {
       text: newMessage,
-      date: `${now.getDay()}/${now.getMonth()}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`,
+      date: `${now.getDate()}/${
+        now.getMonth() + 1
+      }/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`,
       fromTeacher: loggedInTeacher ? true : false,
       name: loggedInTeacher ? "אמיר קירש" : messageSender,
     };
@@ -311,7 +316,7 @@ const EditProject = () => {
                   className="name-select"
                   onChange={onMessageSenderChange}
                 >
-                  {loggedInTeacher === false ? (
+                  {!loggedInTeacher ? (
                     <>
                       <option value="" disabled selected>
                         בחר סטודנט
