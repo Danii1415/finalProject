@@ -10,11 +10,18 @@ import logoFour from "../../images/download.png";
 import "./AllProjects.scss";
 import logo from "../../images/academLogo.jpeg";
 import logoThree from "../../images/dd.png";
+import { Link, useHistory } from "react-router-dom";
+import ProjectBox from "../../components/ProjectBox/ProjectBox";
 
 const AllProjects = () => {
   const [view, setView] = useState("grid");
+  const history = useHistory();
 
-  const handleChange = (event, nextView) => {
+  const onClickRoute = (project) => {
+    // history.push("displayproject");
+  };
+
+  const handleChange = (e, nextView) => {
     setView(nextView);
   };
   const projects = [
@@ -22,21 +29,25 @@ const AllProjects = () => {
       projectName: "פרוייקט הנדסת תוכנה",
       course: "הנדסת תוכנה",
       projectImg: logoThree,
+      id: 1,
     },
     {
       projectName: "פרוייקט הנדסת תוכנה",
       course: "הנדסת תוכנה",
       projectImg: logo,
+      id: 1,
     },
     {
       projectName: "פרוייקט הנדסת תוכנה",
       course: "הנדסת תוכנה",
       projectImg: logoFour,
+      id: 1,
     },
     {
       projectName: "פרוייקט הנדסת תוכנה",
       course: "הנדסת תוכנה",
       projectImg: logoThree,
+      id: 1,
     },
     {
       projectName: "פרוייקט הנדסת תוכנה",
@@ -92,12 +103,7 @@ const AllProjects = () => {
   return (
     <>
       <div className="projects-info">
-        <ToggleButtonGroup
-          className="display-options"
-          value={view}
-          exclusive
-          onChange={handleChange}
-        >
+        <ToggleButtonGroup value={view} exclusive onChange={handleChange}>
           <ToggleButton value="grid" aria-label="grid">
             <ViewModuleIcon />
           </ToggleButton>
@@ -107,41 +113,11 @@ const AllProjects = () => {
         </ToggleButtonGroup>
         <div className="projects-title">הפרוייקטים</div>
       </div>
-      <ol className="projects-display">
+      <div className="projects-display">
         {projects.map((project) => (
-          <li className="project-container">
-            <div className="project-image">
-              <div className="figure">
-                <img className="image" src={project.projectImg} />
-              </div>
-              <a className="project-link" href=""></a>
-            </div>
-            <div className="details-container">
-              <div className="project-statistics">
-                {/* {/<div className="statistics-icon">/} */}
-                {/*    <FavoriteOutlined fontSize='small' color="disabled" />*/}
-                {/*    <span>44</span>*/}
-                {/* {/</div>/} */}
-                <div className="statistics-icon">
-                  <VisibilityOutlined fontSize="small" color="disabled" />
-                  <span>89</span>
-                </div>
-              </div>
-              <div className="project-details">
-                <Chip
-                  className="course-name"
-                  style={{ color: "#05a2b7", border: "1px solid #05a2b7" }}
-                  label={project.course}
-                  size="small"
-                  color="primary"
-                  variant="outlined"
-                />
-                <div>{project.projectName}</div>
-              </div>
-            </div>
-          </li>
+          <ProjectBox project={project} onClickRoute={onClickRoute} />
         ))}
-      </ol>
+      </div>
     </>
   );
 };

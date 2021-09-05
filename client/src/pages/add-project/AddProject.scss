@@ -61,6 +61,10 @@
     height: 85px;
     margin-top: 50px;
     font-size: 25px;
+    background-color: rgb(114, 228, 207);
+  }
+  .save-button:hover {
+    background-color: rgb(47, 163, 142);
   }
 
   .student-buttons {
@@ -70,6 +74,10 @@
     margin-bottom: 20px;
     & > button {
       flex: 0 0 130px;
+      background-color: #05a2b7;
+    }
+    & > button:hover {
+      background-color: #068090;
     }
   }
 
@@ -107,7 +115,7 @@
     padding: 10px;
     border: none;
     color: white;
-    background-color: rgb(114, 228, 207);
+    background-color: #05a2b7;
     font-size: 18px;
     font-weight: 600;
     width: 130px;
@@ -123,7 +131,7 @@
     .left-side {
       flex: 1;
       margin-right: 30px;
-      background-color: khaki;
+      height: 70px;
     }
     .right-side {
       flex: 1;
@@ -143,6 +151,12 @@
     width: 300px;
     align-self: flex-end;
     justify-content: space-between;
+    .remove-img {
+      background-color: #05a2b7;
+    }
+    .remove-img:hover {
+      background-color: #068090;
+    }
     button {
       flex: 0 0 140px;
     }
@@ -176,16 +190,13 @@
     padding: 10px;
     border: none;
     color: white;
-    background-color: rgb(114, 228, 207);
+    background-color: #05a2b7;
     font-size: 18px;
     font-weight: 600;
     margin: 0;
   }
-  button:hover {
-    background-color: rgb(47, 163, 142);
-  }
   .custom-file-upload:hover {
-    background-color: rgb(47, 163, 142);
+    background-color: #068090;
   }
 
   .student-input-row {

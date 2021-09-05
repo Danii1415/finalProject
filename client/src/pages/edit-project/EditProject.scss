@@ -30,6 +30,14 @@
     }
     .approval-button {
       background-color: lightgreen;
+      margin-right: 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      padding: 10px;
+      border: none;
+      color: white;
+      font-size: 18px;
+      font-weight: 600;
     }
     .approval-button:hover {
       background-color: green;
@@ -37,6 +45,13 @@
     .decline-button {
       background-color: lightcoral;
       margin-right: 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      padding: 10px;
+      border: none;
+      color: white;
+      font-size: 18px;
+      font-weight: 600;
     }
     .decline-button:hover {
       background-color: red;
@@ -53,6 +68,19 @@
       font-weight: 500;
     }
     .messages-button {
+      cursor: pointer;
+      border-radius: 5px;
+      padding: 10px;
+      border: none;
+      color: white;
+      background-color: #05a2b7;
+      font-size: 18px;
+      font-weight: 600;
+      width: 130px;
+      margin-bottom: 0;
+    }
+    .messages-button:hover {
+      background-color: #068090;
     }
   }
   .project-teacher-details-container {
@@ -87,6 +115,16 @@
   .preview-container {
     display: flex;
     flex-direction: column;
+    .markdown-editor {
+      flex: 1;
+      direction: rtl;
+      resize: none;
+      text-align: right;
+      font-size: 17px;
+      padding: 10px;
+      font-family: inherit;
+      min-height: 310px;
+    }
     label {
       margin-bottom: 10px;
       color: rgb(68, 66, 66);
@@ -103,6 +141,7 @@
     .left-side {
       flex: 1;
       margin-right: 30px;
+      height: 70px;
     }
     .right-side {
       flex: 1;
@@ -114,6 +153,69 @@
         font-weight: bold;
         align-self: flex-end;
       }
+      .image-buttons {
+        display: flex;
+        flex-direction: row-reverse;
+        width: 300px;
+        align-self: flex-end;
+        justify-content: space-between;
+        input[type="file"] {
+          display: none;
+          font-size: 18px;
+        }
+        .custom-file-upload {
+          cursor: pointer;
+          border-radius: 5px;
+          padding: 10px;
+          border: none;
+          color: white;
+          background-color: #05a2b7;
+          margin: 0;
+          width: 130px;
+          font-weight: 600;
+        }
+        .custom-file-upload:hover {
+          background-color: #068090;
+        }
+        .remove-img {
+          cursor: pointer;
+          border-radius: 5px;
+          padding: 10px;
+          border: none;
+          color: white;
+          background-color: #05a2b7;
+          margin: 0;
+          width: 130px;
+          font-weight: 600;
+          font-size: 18px;
+        }
+        .remove-img:hover {
+          background-color: #068090;
+        }
+        button {
+          flex: 0 0 140px;
+        }
+        label {
+          height: 20px;
+          flex: 0 0 120px;
+          font-size: 15px;
+        }
+      }
+    }
+  }
+  .contacts-container {
+    display: flex;
+    flex-direction: column;
+    .main-label {
+      font-size: 22px;
+      color: black;
+      margin-bottom: 20px;
+      font-weight: bold;
+      align-self: flex-end;
+    }
+    .contacts-input {
+      display: flex;
+      justify-content: space-between;
     }
   }
 }
@@ -154,6 +256,7 @@
       cursor: pointer;
       border: none;
       border-radius: 3px;
+      color: white;
     }
 
     .new-message-button:hover {
@@ -181,13 +284,13 @@
     width: 415px;
     align-self: flex-end;
     button {
-      background-color: rgb(3, 191, 191);
+      background-color: #05a2b7;
       width: 35px;
       height: 30px;
       top: -5px;
     }
     button:hover {
-      background-color: darkcyan;
+      background-color: #068090;
     }
   }
   .message-container {
@@ -233,12 +336,12 @@
         display: flex;
         justify-content: space-between;
         button {
-          background-color: rgb(3, 191, 191);
+          background-color: #05a2b7;
           width: 35px;
           height: 30px;
         }
         button:hover {
-          background-color: darkcyan;
+          background-color: #068090;
         }
       }
     }

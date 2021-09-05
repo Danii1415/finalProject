@@ -20,6 +20,7 @@ import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import Draggable from "react-draggable";
 import "./EditProject.scss";
+import { useSelector } from "react-redux";
 
 // const initialMarkdownText = `# כותרת
 
@@ -81,11 +82,8 @@ const EditProject = () => {
   const [messageList, setMessageList] = useState(teacherMessages);
   //   const [messageList, setMessageList] = useState([]);
   const [markDownText, setMarkDownText] = useState("");
-
   const [status, setStatus] = useState("pendingTeacherApproval");
   // const [status, setStatus] = useState("pendingStudentsEdit");
-  const [isTeacher, setIsTeacher] = useState(false);
-
   const [projectTitle, setProjectTitle] = useState("My Project!!");
   const [githubLink, setgithubLink] = useState("github.com/danii1415");
   const [teacher, setTeacher] = useState("אמיר קירש");
@@ -99,8 +97,11 @@ const EditProject = () => {
   const [contactName, setContactName] = useState("");
   const [contactPhone, setContactPhone] = useState("");
   const [messageSender, setMessageSender] = useState("");
+  const loggedInTeacher = useSelector(
+    (state) => state.security.loggedInTeacher
+  );
 
-  const [isOpenDrawer, setisOpenDrawer] = useState(true);
+  const [isOpenDrawer, setisOpenDrawer] = useState(false);
 
   const openDrawer = () => {
     setisOpenDrawer(true);
@@ -169,8 +170,8 @@ const EditProject = () => {
     const _newMessage = {
       text: newMessage,
       date: `${now.getDay()}/${now.getMonth()}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`,
-      fromTeacher: isTeacher ? true : false,
-      name: isTeacher ? "אמיר קירש" : messageSender,
+      fromTeacher: loggedInTeacher ? true : false,
+      name: loggedInTeacher ? "אמיר קירש" : messageSender,
     };
     messages.push(_newMessage);
     setMessageList(messages);
@@ -200,7 +201,7 @@ const EditProject = () => {
   };
 
   const areFieldsDisabled = () => {
-    return !isTeacher && status === "";
+    return !loggedInTeacher && status === "";
   };
 
   return (
@@ -255,7 +256,9 @@ const EditProject = () => {
               <div className="send-message-buttons-div">
                 <button
                   disabled={
-                    (!isTeacher && !messageSender) || !newMessage ? true : false
+                    (!loggedInTeacher && !messageSender) || !newMessage
+                      ? true
+                      : false
                   }
                   onClick={saveNewMessage}
                   className="new-message-button"
@@ -263,11 +266,11 @@ const EditProject = () => {
                   הוסף הודעה חדשה
                 </button>
                 <select
-                  disabled={isTeacher ? true : false}
+                  disabled={loggedInTeacher ? true : false}
                   className="name-select"
                   onChange={onMessageSenderChange}
                 >
-                  {isTeacher === false ? (
+                  {loggedInTeacher === false ? (
                     <>
                       <option value="" disabled selected>
                         בחר סטודנט
@@ -350,7 +353,7 @@ const EditProject = () => {
               <input onChange={onImageChange} type="file" />
               הוסף תמונה
             </label>
-            <button>הסר תמונה</button>
+            <button className="remove-img">הסר תמונה</button>
           </div>
         </div>
       </div>
@@ -387,13 +390,13 @@ const EditProject = () => {
           </div>
         </div>
       </div>
-      {isTeacher && (
+      {loggedInTeacher && (
         <div className="teacher-project-approval">
           <button className="decline-button">דחה והחזר לעריכת המגישים</button>
           <button className="approval-button">אשר הגשת הפרויקט</button>
         </div>
       )}
-      {!isTeacher && (
+      {!loggedInTeacher && (
         <button
           onClick={onStudentsProjectSubmit}
           className="student-project-submit-button"

@@ -3,6 +3,7 @@ import "./AddProject.scss";
 import { MenuItem, Select } from "@material-ui/core";
 import { Student } from "../../utils";
 import StudentForm from "../../components/student-form/StudentForm";
+import logoThree from "../../images/dd.png";
 
 // import ReactMarkdown from "react-markdown";
 
@@ -293,7 +294,7 @@ const AddProject = () => {
         {/* </div> */}
       </div>
       <div className="add-img-container">
-        <img src={image} className="left-side" />
+        <img src={logoThree} className="left-side" />
         <div className="right-side">
           <label>תמונת הפרויקט</label>
           <div className="image-buttons">
@@ -301,7 +302,7 @@ const AddProject = () => {
               <input onChange={onImageChange} type="file" />
               הוסף תמונה
             </label>
-            <button>הסר תמונה</button>
+            <button className="remove-img">הסר תמונה</button>
           </div>
         </div>
       </div>

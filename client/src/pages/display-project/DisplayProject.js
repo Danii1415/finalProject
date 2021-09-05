@@ -27,6 +27,7 @@ const DisplayProject = () => {
           <img className="project-img" src={logoThree} />
           <div className="project-name">{project.name}</div>
         </div>
+
         <div className="info-div">
           <div className="content">{project.id}</div>
           <div className="title">:מספר פרויקט</div>
