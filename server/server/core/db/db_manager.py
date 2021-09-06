@@ -6,6 +6,7 @@ from core.models.teacher import Teacher
 from core.models.workshop import Workshop
 from core.models.project import Project
 from core.models.msg import Msg
+import json
 
 
 class DBManager(object):
@@ -79,15 +80,18 @@ class DBManager(object):
 		
 	
 
-	def update_project(self, request_json):
-		project = get_project_by_id(request_json["_id"])
-		for prop in request_json:
-			for attribute, value in prop.items():
-				if attribute != "_id":
-					project[attribute] = value
+	def update_project(self, project_id, request_json):
+		project = self.project.find_by_id(project_id)
 
-		project.update(project["_id"], project)	
-		return jsonify(project)
+		for key in request_json:
+			project[key] = request_json[key]
+		
+		project.pop("updated")
+		project.pop("created")
+		project.pop("_id")
+
+		self.project.update(project_id, project)	
+		return jsonify(request_json)
 
 
 	def insert_student(self, first_name, last_name, ID, mail):

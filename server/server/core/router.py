@@ -126,8 +126,6 @@ def get_projects():
 def add_project():
 	if request.method == "POST":
 		request_json = request.get_json()
-		print(request_json)
-		print("-------------------")
 		response = db_manager.insert_project(request_json["title"], request_json["teacherId"], request_json["workshopId"]
 									, request_json["studentList"], request_json["imgLink"], request_json["preview"], request_json["status"])
 		return response, 201
@@ -144,7 +142,7 @@ def get_project_by_id(project_id):
 def update_project(project_id):
 	if request.method == "PUT":
 		request_json = request.get_json()
-		response = db_manager.update_project(request_json)
+		response = db_manager.update_project(project_id, request_json)
 		return response, 201
 
 
