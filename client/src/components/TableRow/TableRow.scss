@@ -40,14 +40,29 @@
       flex: 0 0 15%;
     }
   }
-  .status-content {
+  .last-content {
     flex: 0 0 20%;
     flex-wrap: wrap;
     @media screen and (max-width: 1400px) {
       flex: 0 0 15%;
     }
+    .orange {
+      background-color: #ffa50040;
+      padding: 6px;
+      border-radius: 10px;
+    }
+    .red {
+      padding: 6px;
+      border-radius: 10px;
+      background-color: #ff00004a;
+    }
+    .green {
+      padding: 6px;
+      border-radius: 10px;
+      background-color: #00800040;
+    }
   }
-  span:hover {
+  .hover-white:hover {
     color: lightgray;
     cursor: pointer;
   }

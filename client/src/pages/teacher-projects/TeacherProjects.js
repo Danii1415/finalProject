@@ -3,7 +3,6 @@ import "./TeacherProjects.scss";
 import logo from "../../images/academLogo.jpeg";
 import logoThree from "../../images/dd.png";
 import logoFour from "../../images/download.png";
-import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import ViewModuleIcon from "@material-ui/icons/ViewModule";
@@ -12,110 +11,172 @@ import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ProjectBox from "../../components/ProjectBox/ProjectBox";
 import "./TeacherProjects.scss";
-import { Chip, Divider } from "@material-ui/core";
 import ProjectTable from "../../components/ProjectTable/ProjectTable";
+import { Checkbox } from "@material-ui/core";
 
-const projects = [
+const initialProjects = [
   {
     projectName: "Face Recognition System",
     course: "יישומי רשת",
     projectImg: logoThree,
     id: 3424324,
-    status: "מחכה לאישור מרצה",
+    status: "pendingTeacherApproval",
   },
   {
     projectName: "פרויקט הנדסת תוכנה",
     course: "הנדסת תוכנה",
     projectImg: logo,
     id: 4564564,
-    status: "מחכה לעריכת הסטודנטים",
+    status: "pendingStudentsEdit",
   },
   {
-    projectName: "Face Recognition System",
+    projectName: "Our Amazing Project!",
     course: "HomeCommunications",
     projectImg: logoFour,
     id: 3458677,
-    status: "מחכה לאישור מרצה",
+    status: "pendingTeacherApproval",
   },
-  // {
-  //   projectName: "פרויקט הנדסת תוכנה",
-  //   course: "הנדסת תוכנה",
-  //   projectImg: logoThree,
-  //   id: 1,
-  // },
-  // {
-  //   projectName: "Face Recognition System",
-  //   course: "הנדסת תוכנה",
-  //   projectImg: logo,
-  // },
-  // {
-  //   projectName: "פרויקט הנדסת תוכנה",
-  //   course: "הנדסת תוכנה",
-  //   projectImg: logoFour,
-  // },
-  // {
-  //   projectName: "Face Recognition System",
-  //   course: "הנדסת תוכנה",
-  //   projectImg: logoThree,
-  // },
-  // {
-  //   projectName: "פרויקט הנדסת תוכנה",
-  //   course: "הנדסת תוכנה",
-  //   projectImg: logo,
-  // },
-  // {
-  //   projectName: "Face Recognition System",
-  //   course: "הנדסת תוכנה",
-  //   projectImg: logoFour,
-  // },
-  // {
-  //   projectName: "Face Recognition System",
-  //   course: "הנדסת תוכנה",
-  //   projectImg: logoThree,
-  // },
-  // {
-  //   projectName: "פרויקט הנדסת תוכנה",
-  //   course: "הנדסת תוכנה",
-  //   projectImg: logo,
-  // },
-  // {
-  //   projectName: "Face Recognition System",
-  //   course: "הנדסת תוכנה",
-  //   projectImg: logoFour,
-  // },
-  // {
-  //   projectName: "פרויקט הנדסת תוכנה",
-  //   course: "הנדסת תוכנה",
-  //   projectImg: logoThree,
-  // },
-  // {
-  //   projectName: "Face Recognition System",
-  //   course: "הנדסת תוכנה",
-  //   projectImg: logo,
-  // },
+  {
+    projectName: "Face Recognition System",
+    course: "יישומי רשת",
+    projectImg: logoThree,
+    id: 3424324,
+    status: "pendingTeacherApproval",
+  },
+  {
+    projectName: "פרויקט הנדסת תוכנה",
+    course: "הנדסת תוכנה",
+    projectImg: logo,
+    id: 4564564,
+    status: "pendingStudentsEdit",
+  },
+  {
+    projectName: "Our Amazing Project!",
+    course: "HomeCommunications",
+    projectImg: logoFour,
+    id: 3458677,
+    status: "pendingTeacherApproval",
+  },
+  {
+    projectName: "Face Recognition System",
+    course: "יישומי רשת",
+    projectImg: logoThree,
+    id: 3424324,
+    status: "pendingTeacherApproval",
+  },
+  {
+    projectName: "פרויקט הנדסת תוכנה",
+    course: "הנדסת תוכנה",
+    projectImg: logo,
+    id: 4564564,
+    status: "pendingStudentsEdit",
+  },
+  {
+    projectName: "Our Amazing Project!",
+    course: "HomeCommunications",
+    projectImg: logoFour,
+    id: 3458677,
+    status: "pendingTeacherApproval",
+  },
+];
+const initialApprovedProjects = [
+  {
+    projectName: "Face Recognition System",
+    course: "יישומי רשת",
+    projectImg: logoThree,
+    id: 3424324,
+    status: "approved",
+  },
+  {
+    projectName: "פרויקט הנדסת תוכנה",
+    course: "הנדסת תוכנה",
+    projectImg: logo,
+    id: 4564564,
+    status: "approved",
+  },
+  {
+    projectName: "Our Amazing Project!",
+    course: "HomeCommunications",
+    projectImg: logoFour,
+    id: 3458677,
+    status: "approved",
+  },
+  {
+    projectName: "Face Recognition System",
+    course: "יישומי רשת",
+    projectImg: logoThree,
+    id: 3424324,
+    status: "approved",
+  },
 ];
 const TeacherProjects = () => {
-  const history = useHistory();
   const loggedInTeacher = useSelector(
     (state) => state.security.loggedInTeacher
   );
-  const [view, setView] = useState("grid");
+  const [currApproved, setCurrApproved] = useState(initialApprovedProjects);
+  const [currProjects, setCurrProjects] = useState(initialProjects);
 
-  const onProjectClick = (procectId) => {
-    //this should be with id
-    // history.push("/editpreview");
-  };
-  const handleChange = () => {};
-  const onClickRoute = (project) => {
-    return `/editproject`;
-  };
+  // const [courses, setCourses] = useState([
+  //   { checked: true, name: "יישומי רשת" },
+  //   { checked: true, name: "הנדסת תוכנה" },
+  //   { checked: true, name: "HomeCommunications" },
+  // ]);
 
   return (
-    <div className="list-display-container">
-      <div className="title">הגשות שלא אושרו</div>
-      <ProjectTable projects={projects} />
-      <button className="show-more-button">הצג עוד</button>
-      {/* {loggedInTeacher ? (
+    <>
+      {loggedInTeacher ? (
+        <>
+          <div className="list-display-container">
+            <div className="title-container">
+              <div className="title">הגשות שלא אושרו</div>
+              {/* {courses.map((course) => {
+                return (
+                  <>
+                    <span className="checkbox-text">{course}</span>
+                    <Checkbox checked={course.name} />
+                  </>
+                );
+              })} */}
+            </div>
+            <ProjectTable
+              projects={currProjects.sort(
+                (a, b) =>
+                  b.status.localeCompare(a.status) ||
+                  b.course.localeCompare(a.course)
+              )}
+              linkType="edit"
+            />
+            <button className="show-more-button">הצג עוד</button>
+          </div>
+          <div className="list-display-container">
+            <div className="title-container">
+              <div className="title">הגשות שאושרו</div>
+            </div>
+
+            <ProjectTable
+              isApproved={true}
+              projects={currApproved.sort((a, b) =>
+                b.course.localeCompare(a.course)
+              )}
+              linkType="edit"
+            />
+            <button className="show-more-button">הצג עוד</button>
+          </div>
+        </>
+      ) : (
+        <div className="not-authorized">
+          <div className="header">אין לך גישה לעמוד זה</div>
+          <div className="description">היכנס בתור מרצה על מנת לצפות בתוכן</div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default TeacherProjects;
+
+{
+  /* {loggedInTeacher ? (
         <>
           <div className="projects-info">
             <ToggleButtonGroup
@@ -144,9 +205,5 @@ const TeacherProjects = () => {
           <div className="header">אין לך גישה לעמוד זה</div>
           <div className="description">היכנס בתור מרצה על מנת לצפות בתוכן</div>
         </div>
-      )} */}
-    </div>
-  );
-};
-
-export default TeacherProjects;
+      )} */
+}

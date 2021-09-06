@@ -1,6 +1,6 @@
 // should be Sorted by course name, filtered by project name or project course
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Chip from "@material-ui/core/Chip";
 import {
   FavoriteOutlined,
@@ -18,94 +18,94 @@ import logo from "../../images/academLogo.jpeg";
 import logoThree from "../../images/dd.png";
 import { Link, useHistory } from "react-router-dom";
 import ProjectBox from "../../components/ProjectBox/ProjectBox";
+import ProjectTable from "../../components/ProjectTable/ProjectTable";
 
 const AllProjects = () => {
   const [view, setView] = useState("grid");
   const history = useHistory();
 
-  const handleChange = (e, nextView) => {
+  const handleViewChange = (e, nextView) => {
+    console.log(nextView);
     setView(nextView);
   };
   const projects = [
     {
-      course: " פיתוח תוכנה בטכנולוגיות דוט נט",
-      projectName: "פרויקט עם ארבע מילים",
+      projectName: "Face Recognition System",
+      teacherName: "ד״ר אמיר קירש",
+      course: "יישומי רשת",
       projectImg: logoThree,
-      id: 1,
+      id: 3424324,
+      status: "pendingTeacherApproval",
     },
     {
       projectName: "פרויקט הנדסת תוכנה",
+      teacherName: "ד״ר גיא רונן",
       course: "הנדסת תוכנה",
       projectImg: logo,
-      id: 1,
+      id: 4564564,
+      status: "pendingStudentsEdit",
     },
     {
-      projectName: "פרויקט הנדסת תוכנה",
-      course: "הנדסת תוכנה",
+      projectName: "Our Amazing Project!",
+      teacherName: "ד״ר אילן קירש",
+      course: "HomeCommunications",
       projectImg: logoFour,
-      id: 1,
+      id: 3458677,
+      status: "pendingTeacherApproval",
+    },
+    {
+      projectName: "Face Recognition System",
+      teacherName: "ד״ר אמיר קירש",
+      course: "יישומי רשת",
+      projectImg: logoThree,
+      id: 3424324,
+      status: "pendingTeacherApproval",
     },
     {
       projectName: "פרויקט הנדסת תוכנה",
+      teacherName: " ד״ר גיא רונן",
       course: "הנדסת תוכנה",
+      projectImg: logo,
+      id: 4564564,
+      status: "pendingStudentsEdit",
+    },
+    {
+      projectName: "Our Amazing Project!",
+      teacherName: " ד״ר אילן קירש ",
+      course: "HomeCommunications",
+      projectImg: logoFour,
+      id: 3458677,
+      status: "pendingTeacherApproval",
+    },
+    {
+      projectName: "Face Recognition System",
+      teacherName: "ד״ר אמיר קירש",
+      course: "יישומי רשת",
       projectImg: logoThree,
-      id: 1,
+      id: 3424324,
+      status: "pendingTeacherApproval",
     },
     {
       projectName: "פרויקט הנדסת תוכנה",
+      teacherName: "ד״ר גיא רונן",
       course: "הנדסת תוכנה",
-      projectImg: logoThree,
+      projectImg: logo,
+      id: 4564564,
+      status: "pendingStudentsEdit",
     },
     {
-      projectName: "פרויקט הנדסת תוכנה",
-      course: "הנדסת תוכנה",
-      projectImg: logoThree,
-    },
-    {
-      projectName: "פרויקט הנדסת תוכנה",
-      course: "הנדסת תוכנה",
-      projectImg: logoThree,
-    },
-    {
-      projectName: "פרויקט הנדסת תוכנה",
-      course: "הנדסת תוכנה",
-      projectImg: logoThree,
-    },
-    {
-      projectName: "פרויקט הנדסת תוכנה",
-      course: "הנדסת תוכנה",
-      projectImg: logoThree,
-    },
-    {
-      projectName: "פרויקט הנדסת תוכנה",
-      course: "הנדסת תוכנה",
-      projectImg: logoThree,
-    },
-    {
-      projectName: "פרויקט הנדסת תוכנה",
-      course: "הנדסת תוכנה",
-      projectImg: logoThree,
-    },
-    {
-      projectName: "פרויקט הנדסת תוכנה",
-      course: "הנדסת תוכנה",
-      projectImg: logoThree,
-    },
-    {
-      projectName: "פרויקט הנדסת תוכנה",
-      course: "הנדסת תוכנה",
-      projectImg: logoThree,
-    },
-    {
-      projectName: "פרויקט הנדסת תוכנה",
-      course: "הנדסת תוכנה",
-      projectImg: logoThree,
+      projectName: "Our Amazing Project!",
+      teacherName: "ד״ר אילן קירש",
+      course: "HomeCommunications",
+      projectImg: logoFour,
+      id: 3458677,
+      status: "pendingTeacherApproval",
     },
   ];
   return (
     <>
       <div className="projects-info">
-        <ToggleButtonGroup value={view} exclusive onChange={handleChange}>
+        <ToggleButtonGroup value={view} exclusive onChange={handleViewChange}>
           <ToggleButton value="grid" aria-label="grid">
             <ViewModuleIcon />
           </ToggleButton>
@@ -115,11 +115,22 @@ const AllProjects = () => {
         </ToggleButtonGroup>
         <div className="projects-title">הפרויקטים</div>
       </div>
-      <div className="projects-display">
-        {projects.map((project) => (
-          <ProjectBox project={project} linkType="display" />
-        ))}
-      </div>
+      {view === "grid" && (
+        <div className="projects-display">
+          {projects.map((project) => (
+            <ProjectBox project={project} linkType="display" />
+          ))}
+        </div>
+      )}
+      {view === "list" && (
+        <div className="list-display-container">
+          <ProjectTable
+            projects={projects.sort((a, b) => b.status.localeCompare(a.status))}
+            linkType="display"
+          />
+          <button className="show-more-button">הצג עוד</button>
+        </div>
+      )}
     </>
   );
 };

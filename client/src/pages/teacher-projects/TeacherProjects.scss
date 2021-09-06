@@ -124,11 +124,20 @@
   padding-right: 4%;
   padding-left: 4%;
   min-width: 900px;
-  .title {
-    font-size: 20px;
-    font-weight: 600;
-    align-self: flex-end;
+  .title-container {
+    display: flex;
+    flex-direction: row-reverse;
     margin-bottom: 50px;
+    .checkbox-text {
+      margin-right: 35px;
+      align-self: center;
+    }
+    // justify-content: flex-end;
+    .title {
+      font-size: 20px;
+      font-weight: 600;
+      align-self: center;
+    }
   }
 
   .show-more-button {
@@ -139,7 +148,7 @@
     border: 1px solid #05a2b7;
     cursor: pointer;
     background-color: #fafafa;
-    margin-top: 12px;
+    margin-top: 25px;
     &:hover {
       background-color: #05a2b7;
       color: #fafafa;
