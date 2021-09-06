@@ -55,19 +55,9 @@ def init_for_testing_db():
 	return "success to init DB for testing"
 
 
-
-
-
 @app.route('/teachers/', methods=['GET'])
 def get_teachers():
-	name = "Yossi"
-	ID = "203516794"
-	mail = "yossi@mta.ac.il"
-	workshops= "sdaSD"
-	#response = teacher.create({'name': name, 'mail': mail, 'workshops': workshops})
-	#db_manager.insert_teacher(name, mail)
 	return db_manager.get_all_teachers(), 200
-
 
 
 @app.route('/students/', methods=['GET'])
@@ -83,12 +73,9 @@ def get_student(student_id):
 @app.route('/students/', methods=['POST'])
 def add_student():
 	if request.method == "POST":
-		
-		#response = jsonify(response)
 		request_json = request.get_json()
 		response = db_manager.insert_student(request_json)
 		return response
-
 
 
 @app.route('/students/<string:student_id>/', methods=['DELETE'])
@@ -96,7 +83,6 @@ def delete_student(student_id):
 	if request.method == "DELETE":
 		student.delete(student_id)
 		return "student Deleted"
-
 
 
 @app.route('/projects/', methods=['GET'])
@@ -113,7 +99,6 @@ def add_project():
 		response = db_manager.insert_project(request_json["title"], request_json["teacherId"], request_json["workshopId"]
 									, request_json["studentList"], request_json["imgLink"], request_json["preview"], request_json["status"])
 		return response, 201
-
 
 
 @app.route('/projects/<string:project_id>/', methods=['GET'])
@@ -148,3 +133,8 @@ def insert_msg(teacher_id):
 def get_msgs_by_project_id(project_id):
 		response = db_manager.get_all_msgs_of_project(project_id)
 		return jsonify(response), 200
+
+@app.route('/projects/teacher/<string:teacher_id>/', methods=['GET'])
+def get_all_projects_of_teacher(teacher_id):
+		response = db_manager.get_all_projects_of_teacher(teacher_id)
+		return response, 200
