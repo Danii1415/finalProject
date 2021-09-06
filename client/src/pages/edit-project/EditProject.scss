@@ -75,6 +75,17 @@
     max-width: 1000px;
     height: 70px;
     margin-top: 15px;
+    background-color: #05a2b7;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 10px;
+    border: none;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    &:hover {
+      background-color: #068090;
+    }
   }
   .student-project-submit-button:disabled,
   .student-project-submit-button[disabled] {
