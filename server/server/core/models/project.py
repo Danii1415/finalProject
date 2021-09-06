@@ -16,17 +16,18 @@ class Project(object):
             "studentList": "list",
             "imgLink": "string",
             "preview": "string",
+			"status": "string",
             "created": "datetime",
             "updated": "datetime"
         }
 
-        self.create_required_fields = ["title", "teacherId", "workshopId", "studentList", "imgLink", "preview"]
+        self.create_required_fields = ["title", "teacherId", "workshopId", "studentList", "imgLink", "preview", "status"]
 
         # Fields optional for CREATE
         self.create_optional_fields = []
 
         # Fields required for UPDATE
-        self.update_required_fields = ["title", "teacherId", "workshopId", "studentList", "imgLink", "preview"]
+        self.update_required_fields = ["title", "teacherId", "workshopId", "studentList", "imgLink", "preview", "status"]
 
         # Fields optional for UPDATE
         self.update_optional_fields = []

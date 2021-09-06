@@ -1,7 +1,7 @@
 import random
 from flask import Flask, request, jsonify
 from pymongo import MongoClient
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from core import app
 
 from .db.database import DB
@@ -22,6 +22,8 @@ teacher = Teacher(db)
 
 
 
+
+
 @app.route('/')
 def index():
 	return db_manager.index()
@@ -34,8 +36,9 @@ def init_for_testing_db():
 	name = "Yossi"
 	ID = "203516794"
 	mail = "yossi@mta.ac.il"
-	workshops= "sdaSD"
-	teacherId = teacher.create({'name': name, 'mail': mail, 'workshops': workshops})
+	workshops= []
+	password="1234"
+	teacherId = teacher.create({'name': name, 'mail': mail, 'workshops': workshops, 'password': password})
 
 	workshopId=db_manager.insert_workshop_and_append_it_to_teacher("sadna2", "Yossi")
 
@@ -45,31 +48,12 @@ def init_for_testing_db():
 	studentList =[{'firstName': "sagiv", 'lastName': "levy", 'id': "203516794", 'mail': "sagivle@mta.ac.il"},
 					{'firstName': "daniel", 'lastName': "daniel", 'id': "123456789", 'mail': "levsagiv@gmail.com"}]
 	imgLink = ""
-	preview = ""
-	db_manager.insert_project(title, teacherId, workshopId, studentList, imgLink, preview)
+	preview = "preview preview preview"
+	status = "pendingTeacherApproval"
+	db_manager.insert_project(title, teacherId, workshopId, studentList, imgLink, preview, status)
 
 	return "success to init DB for testing"
 
-@app.route('/quote')
-def quote():
-	app.logger.info(f"ENTERING: {request.path}")
-	#client = MongoClient('db')
-	#db = client.quotesdb
-	#data = list(db.quotes.find())
-	#DB.find_one
-	data = Quote.find(1)
-	return data.json()
-	if len(data) < 1:
-		return {
-				"id": 0,
-				"quote": "Remember to init the db with InitDB.js"
-		}
-
-	row = random.choice(data)
-	return {
-		"id": int(row['id']),
-		"quote": row['quote']
-	}
 
 
 
@@ -102,19 +86,18 @@ def get_students():
 
 
 @app.route('/students/<string:student_id>/', methods=['GET'])
-def get_task(student_id):
+def get_student(student_id):
 	return student.find_by_id(student_id), 200
 
 
 @app.route('/students/', methods=['POST'])
 def add_student():
 	if request.method == "POST":
-		first_name = request.form['firstName']
-		last_name = request.form['lastName']
-		ID = request.form['id']
-		mail = request.form['mail']
-		response = student.create({'firstName': first_name, 'lastName': last_name, 'id': ID, 'mail': mail})
-		return response, 201
+		
+		#response = jsonify(response)
+		request_json = request.get_json()
+		response = db_manager.insert_student(request_json)
+		return response
 
 
 @app.route('/students/<string:student_id>/', methods=['PUT'])
@@ -136,27 +119,15 @@ def delete_tasks(student_id):
 @app.route('/projects/', methods=['GET'])
 def get_projects():
 	if request.method == "GET":
-		title = "project100"
-		teacherId = "610802d00b576fc654a9138a"
-		workshopId = "610802dc0b576fc654a9138b"
-		studentList =[{'firstName': "sagiv", 'lastName': "levy", 'id': "203516794", 'mail': "sagivle@mta.ac.il"},
-						{'firstName': "daniel", 'lastName': "daniel", 'id': "123456789", 'mail': "levsagiv@gmail.com"}]
-		imgLink = ""
-		preview = ""
-		#db_manager.insert_project(title, teacherId, workshopId, studentList, imgLink, preview)
 		response = db_manager.get_all_projects()
 		return response, 200
 
 @app.route('/projects/', methods=['POST'])
 def add_project():
 	if request.method == "POST":
-		title = request.form['title']
-		teacherId = request.form['teacherId']
-		workshopId = request.form['workshopId']
-		studentList = request.form['studentList']
-		imgLink = request.form['imgLink']
-		preview = request.form['preview']
-		response = db_manager.insert_project(title, teacherId, workshopId, studentList, imgLink, preview)
+		request_json = request.get_json()
+		response = db_manager.insert_project(request_json["title"], request_json["teacherId"], request_json["workshopId"]
+									, request_json["studentList"], request_json["imgLink"], request_json["preview"], request_json["status"])
 		return response, 201
 
 
@@ -165,6 +136,14 @@ def add_project():
 def get_project_by_id(project_id):
 		response = db_manager.get_project_by_id(project_id)
 		return response, 200
+
+
+@app.route('/projects/<string:project_id>/', methods=['PUT'])
+def update_project(project_id):
+	if request.method == "PUT":
+		request_json = request.get_json()
+		response = db_manager.update_project(project_id, request_json)
+		return response, 201
 
 
 @app.route('/msg/', methods=['POST'])
