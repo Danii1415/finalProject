@@ -69,19 +69,9 @@ def get_teachers():
 	return db_manager.get_all_teachers(), 200
 
 
-@app.route('/insert_workshop/', methods=['GET'])
-def insert_workshop():
-	ans = ""#db_manager.insert_workshop_and_append_it_to_teacher("sadna2", "Yossi")
-	return ans
-
 
 @app.route('/students/', methods=['GET'])
 def get_students():
-	first_name = "Sagiv"
-	last_name = "Levy"
-	ID = "203516794"
-	mail = "sagivle@mta.ac.il"
-	#response = student.create({'firstName': first_name, 'lastName': last_name, 'id': ID, 'mail': mail})
 	return db_manager.get_all_students(), 200
 
 
@@ -100,20 +90,13 @@ def add_student():
 		return response
 
 
-@app.route('/students/<string:student_id>/', methods=['PUT'])
-def update_tasks(student_id):
-	if request.method == "PUT":
-		title = request.form['title']
-		body = request.form['body']
-		response = student.update(student_id, {'title': title, 'body': body})
-		return response, 201
-
 
 @app.route('/students/<string:student_id>/', methods=['DELETE'])
-def delete_tasks(student_id):
+def delete_student(student_id):
 	if request.method == "DELETE":
 		student.delete(student_id)
-		return "Record Deleted"
+		return "student Deleted"
+
 
 
 @app.route('/projects/', methods=['GET'])
@@ -121,6 +104,7 @@ def get_projects():
 	if request.method == "GET":
 		response = db_manager.get_all_projects()
 		return response, 200
+
 
 @app.route('/projects/', methods=['POST'])
 def add_project():
@@ -135,7 +119,13 @@ def add_project():
 @app.route('/projects/<string:project_id>/', methods=['GET'])
 def get_project_by_id(project_id):
 		response = db_manager.get_project_by_id(project_id)
-		return response, 200
+		return jsonify(response), 200
+
+
+@app.route('/projects/msgs/<string:project_id>/', methods=['GET'])
+def get_project_by_id_with_msgs(project_id):
+		response = db_manager.get_project_by_id_with_msgs(project_id)
+		return jsonify(response), 200
 
 
 @app.route('/projects/<string:project_id>/', methods=['PUT'])
@@ -149,15 +139,12 @@ def update_project(project_id):
 @app.route('/msg/', methods=['POST'])
 def insert_msg(teacher_id):
 	if request.method == "POST":
-		name = request.form['name']
-		text = request.form['text']
-		projectId = request.form['projectId']
-		fromTeacher = request.form['fromTeacher']
-		response = db_manager.insert_msg(name, text, projectId, fromTeacher)
+		request_json = request.get_json()
+		response = db_manager.insert_msg(request_json)
 		return response, 201
 
 
-@app.route('/projects/msgs/<string:project_id>/', methods=['GET'])
+@app.route('/projects/only_msgs/<string:project_id>/', methods=['GET'])
 def get_msgs_by_project_id(project_id):
-		response = db_manager.get_msgs_by_project_id(project_id)
-		return response, 200
+		response = db_manager.get_all_msgs_of_project(project_id)
+		return jsonify(response), 200

@@ -72,11 +72,11 @@ class DBManager(object):
 		for student_id in response["studentList"]:
 			students_list.append(self.student.find_by_id(student_id))
 		response["studentList"] = students_list
-		response["teacher"] = self.get_teacher_by_id(project["teacherId"])
+		response["teacher"] = self.get_teacher_by_id(response["teacherId"])
 		response.pop("teacherId")
-		response["workshop"] = self.workshop.find_by_id(project["workshopId"])
+		response["workshop"] = self.workshop.find_by_id(response["workshopId"])
 		response.pop("workshopId")
-		return jsonify(response)
+		return (response)
 		
 	
 
@@ -113,6 +113,7 @@ class DBManager(object):
 			for workshop in teacher["workshops"]:
 				workshops_list.append(self.workshop.find_by_id(workshop))
 			teacher["workshops"]=workshops_list
+			teacher.pop("password")
 		return jsonify(ans)
 
 	def get_teacher_by_id(self, teacher_id):
@@ -121,7 +122,8 @@ class DBManager(object):
 		for workshop in teacher["workshops"]:
 			workshops_list.append(self.workshop.find_by_id(workshop))
 		teacher["workshops"]=workshops_list
-		return (teacher)
+		teacher.pop("password")
+		return teacher
 
 	def insert_teacher(self, name, mail):
 		response = self.teacher.create({'name': name, 'mail': mail, 'workshops': []})
@@ -166,4 +168,9 @@ class DBManager(object):
 
 	def get_all_msgs_of_project(self, project_id):
 		ans=self.msg.find({'projectId': project_id})
-		return jsonify(ans)
+		return ans
+
+	def get_project_by_id_with_msgs(self, project_id):
+		response = self.get_project_by_id(project_id)
+		response["msgs"] = self.get_all_msgs_of_project(project_id)
+		return (response)
