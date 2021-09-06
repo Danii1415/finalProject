@@ -37,7 +37,8 @@ def init_for_testing_db():
 	ID = "203516794"
 	mail = "yossi@mta.ac.il"
 	workshops= []
-	teacherId = teacher.create({'name': name, 'mail': mail, 'workshops': workshops})
+	password="1234"
+	teacherId = teacher.create({'name': name, 'mail': mail, 'workshops': workshops, 'password': password})
 
 	workshopId=db_manager.insert_workshop_and_append_it_to_teacher("sadna2", "Yossi")
 
@@ -47,8 +48,9 @@ def init_for_testing_db():
 	studentList =[{'firstName': "sagiv", 'lastName': "levy", 'id': "203516794", 'mail': "sagivle@mta.ac.il"},
 					{'firstName': "daniel", 'lastName': "daniel", 'id': "123456789", 'mail': "levsagiv@gmail.com"}]
 	imgLink = ""
-	preview = ""
-	db_manager.insert_project(title, teacherId, workshopId, studentList, imgLink, preview)
+	preview = "preview preview preview"
+	status = "pendingTeacherApproval"
+	db_manager.insert_project(title, teacherId, workshopId, studentList, imgLink, preview, status)
 
 	return "success to init DB for testing"
 
@@ -117,27 +119,17 @@ def delete_tasks(student_id):
 @app.route('/projects/', methods=['GET'])
 def get_projects():
 	if request.method == "GET":
-		title = "project100"
-		teacherId = "610802d00b576fc654a9138a"
-		workshopId = "610802dc0b576fc654a9138b"
-		studentList =[{'firstName': "sagiv", 'lastName': "levy", 'id': "203516794", 'mail': "sagivle@mta.ac.il"},
-						{'firstName': "daniel", 'lastName': "daniel", 'id': "123456789", 'mail': "levsagiv@gmail.com"}]
-		imgLink = ""
-		preview = ""
-		#db_manager.insert_project(title, teacherId, workshopId, studentList, imgLink, preview)
 		response = db_manager.get_all_projects()
 		return response, 200
 
 @app.route('/projects/', methods=['POST'])
 def add_project():
 	if request.method == "POST":
-		title = request.form['title']
-		teacherId = request.form['teacherId']
-		workshopId = request.form['workshopId']
-		studentList = request.form['studentList']
-		imgLink = request.form['imgLink']
-		preview = request.form['preview']
-		response = db_manager.insert_project(title, teacherId, workshopId, studentList, imgLink, preview)
+		request_json = request.get_json()
+		print(request_json)
+		print("-------------------")
+		response = db_manager.insert_project(request_json["title"], request_json["teacherId"], request_json["workshopId"]
+									, request_json["studentList"], request_json["imgLink"], request_json["preview"], request_json["status"])
 		return response, 201
 
 
@@ -146,6 +138,14 @@ def add_project():
 def get_project_by_id(project_id):
 		response = db_manager.get_project_by_id(project_id)
 		return response, 200
+
+
+@app.route('/projects/<string:project_id>/', methods=['PUT'])
+def update_project(project_id):
+	if request.method == "PUT":
+		request_json = request.get_json()
+		response = db_manager.update_project(request_json)
+		return response, 201
 
 
 @app.route('/msg/', methods=['POST'])
