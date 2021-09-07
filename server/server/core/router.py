@@ -9,6 +9,7 @@ from .models.models import Quote
 from .models.student import Student 
 from .models.project import Project
 from .models.teacher import Teacher
+from .mail_service import Mail_Service
 
 
 
@@ -20,12 +21,16 @@ student = Student(db)
 project = Project(db)
 teacher = Teacher(db)
 
+mail_service = Mail_Service()
+
 
 
 
 
 @app.route('/')
 def index():
+	mail_service.send_mail("levsagiv@gmail.com", "Test - subject", "Test - content")
+
 	return db_manager.index()
 
 @app.route('/init_db')
@@ -98,7 +103,7 @@ def add_project():
 		request_json = request.get_json()
 		response = db_manager.insert_project(request_json["title"], request_json["teacherId"], request_json["workshopId"]
 									, request_json["studentList"], request_json["imgLink"], request_json["preview"], request_json["status"])
-		return response, 201
+		return jsonify(response), 201
 
 
 @app.route('/projects/<string:project_id>/', methods=['GET'])
@@ -122,10 +127,17 @@ def update_project(project_id):
 
 
 @app.route('/msg/', methods=['POST'])
-def insert_msg(teacher_id):
+def insert_msg():
 	if request.method == "POST":
 		request_json = request.get_json()
 		response = db_manager.insert_msg(request_json)
+		send_to_list=[]
+		project = db_manager.get_project_by_id(request_json["projectId"])
+		for student in project["studentList"]:
+			#mail_service.send_mail(student["mail"], "Test - subject - " + request_json["name"], "Test - content - " + request_json["text"])
+			mail_service.send_mail("levsagiv@gmail.com", "Test - subject - " + request_json["name"], "Test - content - " + request_json["text"])
+		#mail_service.send_mail(project["teacher]["mail"], "Test - subject - " + request_json["name"], "Test - content - " + request_json["text"])
+
 		return response, 201
 
 
