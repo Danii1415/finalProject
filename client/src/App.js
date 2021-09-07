@@ -30,8 +30,17 @@ const App = () => {
   //   postData();
   // }, []);
   useEffect(() => {
+    const postData = async () => {
+      try {
+        const res = await Axios.post("http://localhost:5000/students/");
+        console.log(res.data);
+      } catch (e) {}
+    };
+    postData();
+  }, []);
+  useEffect(() => {
     if (localStorage.getItem("loggedInTeacher")) {
-      dispatch(teacherLogin());
+      dispatch(teacherLogin(localStorage.getItem("loggedInTeacher")));
     }
   }, []);
   return (
@@ -44,7 +53,11 @@ const App = () => {
           <Route exact path="/Signin" component={SignIn} />
           <Route exact path="/Addproject" component={AddProject} />
           <Route exact path="/EditProject" component={EditProject} />
-          <Route exact path="/:id/Projects" component={TeacherProjects} />
+          <Route
+            exact
+            path="/:teacherId/Projects"
+            component={TeacherProjects}
+          />
         </Switch>
       </div>
     </BrowserRouter>

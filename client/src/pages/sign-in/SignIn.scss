@@ -38,6 +38,13 @@
     font-weight: 600;
     margin: 0;
     height: 70px;
+    &:disabled {
+      background-color: #cccccc;
+      cursor: default;
+    }
+    &:disabled:hover {
+      background-color: #cccccc;
+    }
   }
   .signin-button:hover {
     background-color: #068090;

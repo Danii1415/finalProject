@@ -6,9 +6,9 @@ export const securitySlice = createSlice({
     loggedInTeacher: "",
   },
   reducers: {
-    teacherLogin: (state) => {
-      localStorage.setItem("loggedInTeacher", "אמיר");
-      state.loggedInTeacher = "1234";
+    teacherLogin: (state, teacherId) => {
+      localStorage.setItem("loggedInTeacher", teacherId);
+      state.loggedInTeacher = teacherId.payload;
     },
     teacherLogout: (state) => {
       localStorage.removeItem("loggedInTeacher");

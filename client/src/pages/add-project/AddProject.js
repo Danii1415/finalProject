@@ -1,3 +1,6 @@
+//photos and missing fields.
+//change select focus
+
 import React, { useEffect, useState } from "react";
 import "./AddProject.scss";
 import { MenuItem, Select } from "@material-ui/core";
@@ -159,7 +162,7 @@ const AddProject = () => {
       <div className="select-form">
         <label>בחר מרצה</label>
         <Select
-          style={{ height: "40px" }}
+          style={{ height: "40px", backgroundColor: "white" }}
           variant="outlined"
           onChange={selectedTeacherChange}
           value={selectedTeacher && selectedTeacher.name}
@@ -192,7 +195,7 @@ const AddProject = () => {
         <label>בחר סדנה</label>
         <Select
           disabled={!currWorkshops.length ? true : false}
-          style={{ height: "40px" }}
+          style={{ height: "40px", backgroundColor: "white" }}
           variant="outlined"
           onChange={selectedWorkshopChange}
           value={selectedWorkshop && selectedWorkshop.name}
