@@ -25,9 +25,7 @@ const App = () => {
   //         mail: "mail@mail",
   //       });
   //       console.log(res.data);
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
+  //     } catch (e) {}
   //   };
   //   postData();
   // }, []);

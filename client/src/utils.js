@@ -8,10 +8,10 @@ export const getStudentsNamesFormat = (students) => {
 };
 
 export class Student {
-  constructor(firstName = "", lastName = "", idNumber = "", emailAddress = "") {
+  constructor(firstName = "", lastName = "", id = "", mail = "") {
     this.firstName = firstName;
     this.lastName = lastName;
-    this.idNumber = idNumber;
-    this.emailAddress = emailAddress;
+    this.id = id;
+    this.mail = mail;
   }
 }

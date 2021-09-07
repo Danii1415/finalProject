@@ -49,9 +49,9 @@ const StudentForm = ({
           <label>מספר תעודת זהות</label>
           <input
             disabled={disabled ? true : false}
-            value={student.idNumber}
-            name="idNumber"
-            id="idNumber"
+            value={student.id}
+            name="id"
+            id="id"
             autocomplete="off"
             onChange={(e) => {
               onStudentListChange(e, currStudentidx);
@@ -62,10 +62,10 @@ const StudentForm = ({
           <label>כתובת מייל</label>
           <input
             disabled={disabled ? true : false}
-            value={student.emailAddress}
+            value={student.mail}
             type="email"
-            name="emailAddress"
-            id="email"
+            name="mail"
+            id="mail"
             autocomplete="off"
             onChange={(e) => {
               onStudentListChange(e, currStudentidx);

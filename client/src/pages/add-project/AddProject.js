@@ -4,84 +4,81 @@ import { MenuItem, Select } from "@material-ui/core";
 import { Student } from "../../utils";
 import StudentForm from "../../components/student-form/StudentForm";
 import logoThree from "../../images/dd.png";
-
-// import ReactMarkdown from "react-markdown";
-
-const kirsh = {
-  id: 1,
-  name: "אמיר קירש",
-  workshops: [
-    {
-      id: 4,
-      name: "הנדסת תוכנה",
-    },
-    {
-      id: 5,
-      name: "יישומי רשת",
-    },
-  ],
-};
-
-const guy = {
-  id: 2,
-  name: "גיא רונן",
-  workshops: [
-    {
-      id: 8,
-      name: "סדנה 1",
-    },
-    {
-      id: 13,
-      name: "איי איי איי",
-    },
-  ],
-};
-
-const teachers = [kirsh, guy];
-
-// const initialMarkdownText = `# כותרת
-
-//   **מודגש**
-
-//   *איטליק*
-
-//   * איבר רשימה 1
-//   * איבר רשימה 2
-//   # Markdown
-
-//   **Bold**
-
-//   *Italic*
-
-//   * list item 1
-//   * list item 2`;
-
-// const initialTeacher = kirsh;
-// const initialWorkshop = kirsh.workshops[0];
-// const initialWorkshops = kirsh.workshops;
-// const initialStudentList = [
-//   new Student("daniel", "kfir", "555555", "dd@default.com"),
-//   new Student("shiran", "kfir", "444444", "dd@mooiie.com"),
-//   new Student("einav", "kfir", "11111111", "dd@efwefwefwfew.com"),
-//   new Student("daniel", "kfir", "2222222", "dd@qqqqqq.com"),
-// ];
-// const initialGithubLink = "danii1415@github.com";
+import Axios from "axios";
 
 const AddProject = () => {
-  // const [selectedTeacher, setSelectedTeacher] = useState(initialTeacher || "");
+  const [teachers, setTeachers] = useState([]);
   const [selectedTeacher, setSelectedTeacher] = useState("");
   const [currWorkshops, setCurrWorkshops] = useState([]);
   const [selectedWorkshop, setSelectedWorkshop] = useState("");
-  const [currStudentidx, setCurrStudentidx] = useState(0);
-  const [studentsList, setStudentsList] = useState([new Student()]);
-  // const [studentsList, setStudentsList] = useState(initialStudentList);
-  const [markDownText, setMarkDownText] = useState("");
-  const [image, setImage] = useState("");
   const [projectTitle, setProjectTitle] = useState("");
   const [githubLink, setgithubLink] = useState("");
+  const [currStudentidx, setCurrStudentidx] = useState(0);
+  const [studentsList, setStudentsList] = useState([new Student()]);
+  const [previewText, setPreviewText] = useState("");
+  const [image, setImage] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [contactName, setContactName] = useState("");
   const [contactPhone, setContactPhone] = useState("");
+  const [isValidForm, setIsValidForm] = useState(false);
+
+  useEffect(() => {
+    if (areFieldsValid()) setIsValidForm(true);
+    else setIsValidForm(false);
+  });
+
+  useEffect(() => {
+    const getTeacherData = async () => {
+      try {
+        const res = await Axios.get("http://localhost:5000/teachers/");
+        setTeachers(res.data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    getTeacherData();
+  }, []);
+
+  const isStudentListValid = () => {
+    for (const student of studentsList) {
+      if (
+        !student.lastName ||
+        !student.firstName ||
+        !student.id ||
+        !student.mail
+      ) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const areFieldsValid = () => {
+    return (
+      selectedTeacher &&
+      selectedWorkshop &&
+      projectTitle &&
+      previewText &&
+      isStudentListValid()
+    );
+  };
+
+  const onProjectSubmit = async () => {
+    try {
+      const res = await Axios.post("http://localhost:5000/projects/", {
+        title: projectTitle,
+        teacherId: selectedTeacher._id,
+        workshopId: selectedWorkshop._id,
+        studentList: studentsList,
+        imgLink: "linkkkk",
+        preview: previewText,
+        status: "pendingTeacherApproval",
+      });
+      //success messages
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const onImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -106,14 +103,19 @@ const AddProject = () => {
       (teacher) => teacher.name === e.target.value
     )[0];
     const workshops = teacher.workshops;
+
+    if (selectedTeacher) {
+      setSelectedWorkshop("");
+    }
     setSelectedTeacher(teacher);
     setCurrWorkshops(workshops);
   };
 
   const selectedWorkshopChange = (e) => {
-    let workshop = currWorkshops.filter(
+    const workshop = currWorkshops.filter(
       (workshop) => workshop.name === e.target.value
     )[0];
+
     setSelectedWorkshop(workshop);
   };
 
@@ -121,6 +123,7 @@ const AddProject = () => {
     let studentsArr = [...studentsList];
     let student = studentsArr[idx];
     student[e.target.name] = e.target.value;
+
     setStudentsList([
       ...studentsArr.slice(0, idx),
       student,
@@ -147,7 +150,7 @@ const AddProject = () => {
   };
 
   const onPreviewChange = (e) => {
-    setMarkDownText(e.target.value);
+    setPreviewText(e.target.value);
   };
 
   return (
@@ -228,13 +231,14 @@ const AddProject = () => {
         />
       </div>
       <div className="input-container">
-        <label>קישור לגיטהאב</label>
+        <label>Github-קישור ל</label>
         <input
           value={githubLink}
           onChange={onGithubLinkChange}
           name="github-link"
           autocomplete="off"
         />
+        <span class="text-helper">אופציונלי</span>
       </div>
       <div class="add-students-div">
         <label className="main-label">הוסף פרטי המגישים</label>
@@ -279,19 +283,12 @@ const AddProject = () => {
         </div>
       </div>
       <div className="preview-container">
-        <label>
-          (ראו דוגמא) Markdown כתבו תקציר באורך 250-400 מילים. המערכת תומכת בשפת
-        </label>
-        {/* <div className="preview-editor-container"> */}
-        {/* <div className="markdown-result">
-            <ReactMarkdown>{markDownText}</ReactMarkdown>
-          </div> */}
+        <label>כתבו תקציר באורך 250-400 מילים.</label>
         <textarea
           className="markdown-editor"
-          value={markDownText}
+          value={previewText}
           onChange={onPreviewChange}
         />
-        {/* </div> */}
       </div>
       <div className="add-img-container">
         <img src={logoThree} className="left-side" />
@@ -339,7 +336,13 @@ const AddProject = () => {
           </div>
         </div>
       </div>
-      <button className="save-button">הגש את הפרויקט</button>
+      <button
+        disabled={!isValidForm ? true : false}
+        onClick={onProjectSubmit}
+        className="save-button"
+      >
+        הגש את הפרויקט
+      </button>
     </div>
   );
 };

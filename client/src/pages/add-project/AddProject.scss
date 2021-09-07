@@ -74,6 +74,13 @@
     margin-top: 50px;
     font-size: 25px;
     background-color: rgb(114, 228, 207);
+    &:disabled {
+      background-color: #cccccc;
+      cursor: default;
+    }
+    &:disabled:hover {
+      background-color: #cccccc;
+    }
   }
   .save-button:hover {
     background-color: rgb(47, 163, 142);
@@ -227,6 +234,11 @@
       color: rgb(68, 66, 66);
       font-weight: bold;
       align-self: flex-end;
+    }
+    .text-helper {
+      align-self: flex-end;
+      font-size: 12px;
+      margin-top: 3px;
     }
   }
 }
