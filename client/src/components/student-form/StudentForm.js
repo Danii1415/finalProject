@@ -8,6 +8,7 @@ const StudentForm = ({
   isMultipleStudents,
   isLast,
   disabled,
+  // key = "",
 }) => {
   return (
     <form className="students-form">
@@ -24,7 +25,7 @@ const StudentForm = ({
             value={student.lastName}
             name="lastName"
             id="lastName"
-            autocomplete="off"
+            autoComplete="off"
             onChange={(e) => {
               onStudentListChange(e, currStudentidx);
             }}
@@ -37,7 +38,7 @@ const StudentForm = ({
             value={student.firstName}
             id="first"
             name="firstName"
-            autocomplete="off"
+            autoComplete="off"
             onChange={(e) => {
               onStudentListChange(e, currStudentidx);
             }}
@@ -52,7 +53,7 @@ const StudentForm = ({
             value={student.id}
             name="id"
             id="id"
-            autocomplete="off"
+            autoComplete="off"
             onChange={(e) => {
               onStudentListChange(e, currStudentidx);
             }}
@@ -66,7 +67,7 @@ const StudentForm = ({
             type="email"
             name="mail"
             id="mail"
-            autocomplete="off"
+            autoComplete="off"
             onChange={(e) => {
               onStudentListChange(e, currStudentidx);
             }}
