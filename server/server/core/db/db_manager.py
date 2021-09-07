@@ -7,6 +7,7 @@ from core.models.workshop import Workshop
 from core.models.project import Project
 from core.models.msg import Msg
 import json
+from datetime import datetime
 
 
 class DBManager(object):
@@ -17,7 +18,6 @@ class DBManager(object):
 		self.teacher = Teacher(self.db)
 		self.workshop = Workshop(self.db)
 		self.msg = Msg(self.db)
-
 
 
 	def index(self):
@@ -49,6 +49,7 @@ class DBManager(object):
 			project["workshop"] = self.workshop.find_by_id(project["workshopId"])
 			project.pop("workshopId")
 
+		ans = sorted(ans, key=lambda k: k['teacher']['name'])
 		return jsonify(ans)
 
 
@@ -63,6 +64,7 @@ class DBManager(object):
 			project.pop("teacherId")
 			project["workshop"] = self.workshop.find_by_id(project["workshopId"])
 			project.pop("workshopId")
+		ans = sorted(ans, key=lambda k: k['workshop']['name'])
 		return jsonify(ans)
 
 
@@ -72,13 +74,12 @@ class DBManager(object):
 		for student_id in response["studentList"]:
 			students_list.append(self.student.find_by_id(student_id))
 		response["studentList"] = students_list
-		response["teacher"] = self.get_teacher_by_id(project["teacherId"])
+		response["teacher"] = self.get_teacher_by_id(response["teacherId"])
 		response.pop("teacherId")
-		response["workshop"] = self.workshop.find_by_id(project["workshopId"])
+		response["workshop"] = self.workshop.find_by_id(response["workshopId"])
 		response.pop("workshopId")
-		return jsonify(response)
+		return (response)
 		
-	
 
 	def update_project(self, project_id, request_json):
 		project = self.project.find_by_id(project_id)
@@ -98,6 +99,7 @@ class DBManager(object):
 		response = self.insert_student({'firstName': first_name, 'lastName': last_name, 'id': ID, 'mail': mail})
 		return response
 
+
 	def insert_student(self, student_json):
 		response = self.student.create(student_json)
 		return response
@@ -113,7 +115,9 @@ class DBManager(object):
 			for workshop in teacher["workshops"]:
 				workshops_list.append(self.workshop.find_by_id(workshop))
 			teacher["workshops"]=workshops_list
+			teacher.pop("password")
 		return jsonify(ans)
+
 
 	def get_teacher_by_id(self, teacher_id):
 		teacher=self.teacher.find_by_id(teacher_id)
@@ -121,49 +125,52 @@ class DBManager(object):
 		for workshop in teacher["workshops"]:
 			workshops_list.append(self.workshop.find_by_id(workshop))
 		teacher["workshops"]=workshops_list
-		return (teacher)
+		teacher.pop("password")
+		return teacher
 
 	def insert_teacher(self, name, mail):
 		response = self.teacher.create({'name': name, 'mail': mail, 'workshops': []})
 		return response
 
 
-
 	def get_all_workshops(self):
 		return jsonify(self.Workshop.find({}))
+
 
 	def insert_workshop_and_append_it_to_teacher(self, name, teacher_name):
 		response = self.workshop.create({'name': name})
 		workshop_record = self.workshop.find_by_id(response)
 
 		teacher_record = self.teacher.find_by_name(teacher_name)
-		#teacher_record["workshops"] = [ DBRef(collection = "workshops", id = workshop_record["_id"]) ]
 		teacher_id=teacher_record['_id']
 		teacher_workshops = teacher_record['workshops']
 
-		#del teacher_record['_id']
-		#del teacher_record['created']
-		#del teacher_record['updated']
 		teacher_workshops.append(workshop_record["_id"])
 		teacher_record['workshops'] = teacher_workshops
 		teacher_record.pop("created")
 		teacher_record.pop("updated")
 		teacher_record.pop("_id")
-		print(teacher_record)
 		response2 = self.teacher.update(teacher_id, teacher_record)
 		return workshop_record["_id"] # workshopID
-
-
 
 
 	def insert_msg(self, name, text, projectId, fromTeacher):
 		response = self.insert_msg({"name": name, "text": text, "projectId": projectId, "fromTeacher": fromTeacher})
 		return response
 
+
 	def insert_msg(self, msg_json):
 		response = self.msg.create(msg_json)
 		return response
 
+
 	def get_all_msgs_of_project(self, project_id):
 		ans=self.msg.find({'projectId': project_id})
-		return jsonify(ans)
+		ans = sorted(ans, key=lambda k: k['created'], reverse=True)
+		return ans
+
+
+	def get_project_by_id_with_msgs(self, project_id):
+		response = self.get_project_by_id(project_id)
+		response["msgs"] = self.get_all_msgs_of_project(project_id)
+		return (response)

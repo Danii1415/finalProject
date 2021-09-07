@@ -9,6 +9,7 @@ from .models.models import Quote
 from .models.student import Student 
 from .models.project import Project
 from .models.teacher import Teacher
+from .mail_service import Mail_Service
 
 
 
@@ -20,12 +21,16 @@ student = Student(db)
 project = Project(db)
 teacher = Teacher(db)
 
+mail_service = Mail_Service()
+
 
 
 
 
 @app.route('/')
 def index():
+	mail_service.send_mail("levsagiv@gmail.com", "Test - subject", "Test - content")
+
 	return db_manager.index()
 
 @app.route('/init_db')
@@ -55,33 +60,13 @@ def init_for_testing_db():
 	return "success to init DB for testing"
 
 
-
-
-
 @app.route('/teachers/', methods=['GET'])
 def get_teachers():
-	name = "Yossi"
-	ID = "203516794"
-	mail = "yossi@mta.ac.il"
-	workshops= "sdaSD"
-	#response = teacher.create({'name': name, 'mail': mail, 'workshops': workshops})
-	#db_manager.insert_teacher(name, mail)
 	return db_manager.get_all_teachers(), 200
-
-
-@app.route('/insert_workshop/', methods=['GET'])
-def insert_workshop():
-	ans = ""#db_manager.insert_workshop_and_append_it_to_teacher("sadna2", "Yossi")
-	return ans
 
 
 @app.route('/students/', methods=['GET'])
 def get_students():
-	first_name = "Sagiv"
-	last_name = "Levy"
-	ID = "203516794"
-	mail = "sagivle@mta.ac.il"
-	#response = student.create({'firstName': first_name, 'lastName': last_name, 'id': ID, 'mail': mail})
 	return db_manager.get_all_students(), 200
 
 
@@ -93,27 +78,16 @@ def get_student(student_id):
 @app.route('/students/', methods=['POST'])
 def add_student():
 	if request.method == "POST":
-		
-		#response = jsonify(response)
 		request_json = request.get_json()
 		response = db_manager.insert_student(request_json)
 		return response
 
 
-@app.route('/students/<string:student_id>/', methods=['PUT'])
-def update_tasks(student_id):
-	if request.method == "PUT":
-		title = request.form['title']
-		body = request.form['body']
-		response = student.update(student_id, {'title': title, 'body': body})
-		return response, 201
-
-
 @app.route('/students/<string:student_id>/', methods=['DELETE'])
-def delete_tasks(student_id):
+def delete_student(student_id):
 	if request.method == "DELETE":
 		student.delete(student_id)
-		return "Record Deleted"
+		return "student Deleted"
 
 
 @app.route('/projects/', methods=['GET'])
@@ -122,20 +96,26 @@ def get_projects():
 		response = db_manager.get_all_projects()
 		return response, 200
 
+
 @app.route('/projects/', methods=['POST'])
 def add_project():
 	if request.method == "POST":
 		request_json = request.get_json()
 		response = db_manager.insert_project(request_json["title"], request_json["teacherId"], request_json["workshopId"]
 									, request_json["studentList"], request_json["imgLink"], request_json["preview"], request_json["status"])
-		return response, 201
-
+		return jsonify(response), 201
 
 
 @app.route('/projects/<string:project_id>/', methods=['GET'])
 def get_project_by_id(project_id):
 		response = db_manager.get_project_by_id(project_id)
-		return response, 200
+		return jsonify(response), 200
+
+
+@app.route('/projects/msgs/<string:project_id>/', methods=['GET'])
+def get_project_by_id_with_msgs(project_id):
+		response = db_manager.get_project_by_id_with_msgs(project_id)
+		return jsonify(response), 200
 
 
 @app.route('/projects/<string:project_id>/', methods=['PUT'])
@@ -147,17 +127,26 @@ def update_project(project_id):
 
 
 @app.route('/msg/', methods=['POST'])
-def insert_msg(teacher_id):
+def insert_msg():
 	if request.method == "POST":
-		name = request.form['name']
-		text = request.form['text']
-		projectId = request.form['projectId']
-		fromTeacher = request.form['fromTeacher']
-		response = db_manager.insert_msg(name, text, projectId, fromTeacher)
+		request_json = request.get_json()
+		response = db_manager.insert_msg(request_json)
+		send_to_list=[]
+		project = db_manager.get_project_by_id(request_json["projectId"])
+		for student in project["studentList"]:
+			#mail_service.send_mail(student["mail"], "Test - subject - " + request_json["name"], "Test - content - " + request_json["text"])
+			mail_service.send_mail("levsagiv@gmail.com", "Test - subject - " + request_json["name"], "Test - content - " + request_json["text"])
+		#mail_service.send_mail(project["teacher]["mail"], "Test - subject - " + request_json["name"], "Test - content - " + request_json["text"])
+
 		return response, 201
 
 
-@app.route('/projects/msgs/<string:project_id>/', methods=['GET'])
+@app.route('/projects/only_msgs/<string:project_id>/', methods=['GET'])
 def get_msgs_by_project_id(project_id):
-		response = db_manager.get_msgs_by_project_id(project_id)
+		response = db_manager.get_all_msgs_of_project(project_id)
+		return jsonify(response), 200
+
+@app.route('/projects/teacher/<string:teacher_id>/', methods=['GET'])
+def get_all_projects_of_teacher(teacher_id):
+		response = db_manager.get_all_projects_of_teacher(teacher_id)
 		return response, 200
