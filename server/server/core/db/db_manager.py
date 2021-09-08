@@ -23,12 +23,14 @@ class DBManager(object):
 	def index(self):
 		return "success";
 
-	def insert_project(self, title, teacherId, workshopId, studentList, imgLink, preview, status):
+	def insert_project(self, title, teacherId, workshopId, studentList, imgLink, preview, status, githubLink, contactName, contactPhone, contactEmail, lastUpdateByStudent):
 		students_id_list = []
 		for student_json in studentList:
 			students_id_list.append(self.insert_student(student_json))
-		response = self.insert_project_with_json({'title': title, 'teacherId': teacherId, 'workshopId': workshopId
-											, 'studentList': students_id_list, 'imgLink': imgLink, 'preview': preview, 'status': status})
+		response = self.insert_project_with_json({'title': title, 'teacherId': teacherId, 'workshopId': workshopId, 
+								'studentList': students_id_list, 'imgLink': imgLink, 'preview': preview, 'status': status,
+								'githubLink': githubLink, 'contactName': contactName, 'contactPhone': contactPhone,
+								'contactEmail': contactEmail, 'lastUpdateByStudent':lastUpdateByStudent})
 		return response
 
 
@@ -48,6 +50,7 @@ class DBManager(object):
 			project.pop("teacherId")
 			project["workshop"] = self.workshop.find_by_id(project["workshopId"])
 			project.pop("workshopId")
+			project["lastUpdateByStudent"] = int(project["lastUpdateByStudent"])
 
 		ans = sorted(ans, key=lambda k: k['teacher']['name'])
 		return jsonify(ans)
@@ -127,6 +130,20 @@ class DBManager(object):
 		teacher["workshops"]=workshops_list
 		teacher.pop("password")
 		return teacher
+
+
+	def validate_teacher(self, teacher_json):
+		teacher = self.teacher.find(teacher_json)
+		if teacher== []:
+			return "Wrong password"
+		teacher = teacher[0]
+		workshops_list=[]
+		for workshop in teacher["workshops"]:
+			workshops_list.append(self.workshop.find_by_id(workshop))
+		teacher["workshops"]=workshops_list
+		teacher.pop("password")
+		return teacher
+
 
 	def insert_teacher(self, name, mail):
 		response = self.teacher.create({'name': name, 'mail': mail, 'workshops': []})

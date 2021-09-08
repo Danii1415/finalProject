@@ -10,10 +10,9 @@ from .models.student import Student
 from .models.project import Project
 from .models.teacher import Teacher
 from .mail_service import Mail_Service
-
-
-
 from .db.db_manager import DBManager
+
+import bson
 
 db_manager=DBManager()
 db = DB()
@@ -55,9 +54,24 @@ def init_for_testing_db():
 	imgLink = ""
 	preview = "preview preview preview"
 	status = "pendingTeacherApproval"
-	db_manager.insert_project(title, teacherId, workshopId, studentList, imgLink, preview, status)
+	githubLink = "htttp://github..."
+	contactName = "sagiv"
+	contactPhone="0522222222"
+	contactEmail = "sagivle@mta.ac.il"
+	lastUpdateByStudent = "1232131231231231231231"
+	db_manager.insert_project(title, teacherId, workshopId, studentList, imgLink, preview
+				,status, githubLink, contactName, contactPhone, contactEmail, lastUpdateByStudent)
 
 	return "success to init DB for testing"
+
+
+@app.route('/teachers/validate/', methods=['POST'])
+def validate_teacher():
+	if request.method == "POST":
+		request_json = request.get_json()
+		response = db_manager.validate_teacher(request_json)
+		return jsonify(response), 201
+
 
 
 @app.route('/teachers/', methods=['GET'])
