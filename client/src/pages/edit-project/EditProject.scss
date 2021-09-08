@@ -101,8 +101,16 @@
     display: flex;
     padding-top: 10px;
     & > button {
-      flex: 0 0 calc((100% - 20px) * 0.5);
+      // flex: 0 0 calc((100% - 40px) * 0.333333);
+      flex: 1;
       height: 60px;
+      &:disabled {
+        background-color: #cccccc;
+        cursor: default;
+      }
+      &:disabled:hover {
+        background-color: #cccccc;
+      }
     }
     .approval-button {
       background-color: #76ca76;
@@ -115,9 +123,9 @@
       font-size: 18px;
       font-weight: 600;
       height: 70px;
-    }
-    .approval-button:hover {
-      background-color: green;
+      &:hover {
+        background-color: green;
+      }
     }
     .decline-button {
       background-color: lightcoral;
@@ -130,9 +138,23 @@
       font-size: 18px;
       font-weight: 600;
       height: 70px;
+      &:hover {
+        background-color: red;
+      }
     }
-    .decline-button:hover {
-      background-color: red;
+    .save-only {
+      background-color: #05a2b7;
+      cursor: pointer;
+      border-radius: 5px;
+      padding: 10px;
+      border: none;
+      color: white;
+      font-size: 18px;
+      font-weight: 600;
+      height: 70px;
+      &:hover {
+        background-color: #068090;
+      }
     }
   }
   .title-container {
@@ -141,6 +163,22 @@
     max-width: 1000px;
     margin-bottom: 40px;
     justify-content: space-between;
+    .status-orange {
+      background-color: #ffa50040;
+      padding: 6px;
+      border-radius: 10px;
+      height: 20px;
+      align-self: flex-end;
+      font-size: 15px;
+    }
+    .status-red {
+      background-color: #ff00004a;
+      padding: 6px;
+      border-radius: 10px;
+      height: 20px;
+      align-self: flex-end;
+      font-size: 15px;
+    }
     .update-title {
       font-size: 44px;
       font-weight: 500;
@@ -314,59 +352,69 @@
 
 .drawer-container {
   display: flex;
-  flex-direction: column;
-  width: 700px;
-  align-items: center;
-  .new-message-container {
-    display: flex;
-    padding: 20px 20px;
-    width: 650px;
-    height: 70px;
-    .send-message-buttons-div {
-      display: flex;
-      flex-direction: column;
-      .name-select {
-        height: 30px;
-        direction: rtl;
-      }
-    }
-    .new-message-input {
-      direction: rtl;
-      text-align: right;
-      padding: 10px;
-      resize: none;
-      font-family: emoji;
-      outline: none;
-      flex: 0 0 75%;
-    }
-    .new-message-input:hover {
-      // background-color: rgba(174, 244, 174, 0.283);
-    }
-    .new-message-button {
-      background-color: rgb(3, 191, 191);
-      height: 40px;
-      cursor: pointer;
-      border: none;
-      border-radius: 3px;
-      color: white;
-    }
-
-    .new-message-button:hover {
-      background-color: darkcyan;
-    }
-    .new-message-button:disabled,
-    .new-message-button[disabled] {
-      border: 1px solid #999999;
-      background-color: #cccccc;
-      color: #666666;
-      cursor: default;
-    }
-  }
-  .messages-container {
-    border: 3px solid rgb(114, 228, 207);
-    padding: 20px 20px;
+  width: 950px;
+  .drawer-preview-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    flex: 0 0 50%;
+    border-right: 1px solid black;
+  }
+  .messages-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 0 0 50%;
+    .new-message-container {
+      display: flex;
+      padding: 20px 20px;
+      height: 70px;
+      .send-message-buttons-div {
+        display: flex;
+        flex-direction: column;
+        .name-select {
+          height: 30px;
+          direction: rtl;
+        }
+      }
+      .new-message-input {
+        direction: rtl;
+        text-align: right;
+        padding: 10px;
+        resize: none;
+        font-family: emoji;
+        outline: none;
+        flex: 0 0 75%;
+      }
+      .new-message-input:hover {
+        // background-color: rgba(174, 244, 174, 0.283);
+      }
+      .new-message-button {
+        background-color: rgb(3, 191, 191);
+        height: 40px;
+        cursor: pointer;
+        border: none;
+        border-radius: 3px;
+        color: white;
+      }
+
+      .new-message-button:hover {
+        background-color: darkcyan;
+      }
+      .new-message-button:disabled,
+      .new-message-button[disabled] {
+        border: 1px solid #999999;
+        background-color: #cccccc;
+        color: #666666;
+        cursor: default;
+      }
+    }
+    .messages-display-container {
+      border: 3px solid rgb(114, 228, 207);
+      padding: 20px 20px;
+      display: flex;
+      flex-direction: column;
+    }
   }
   .header {
     font-size: 20px;

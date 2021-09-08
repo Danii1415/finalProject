@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./TeacherProjects.scss";
 import logo from "../../images/academLogo.jpeg";
 import logoThree from "../../images/dd.png";
@@ -13,6 +13,8 @@ import ProjectBox from "../../components/ProjectBox/ProjectBox";
 import "./TeacherProjects.scss";
 import ProjectTable from "../../components/ProjectTable/ProjectTable";
 import { Checkbox } from "@material-ui/core";
+import { useParams } from "react-router";
+import Axios from "axios";
 
 const initialProjects = [
   {
@@ -110,6 +112,23 @@ const initialApprovedProjects = [
   },
 ];
 const TeacherProjects = () => {
+  const { teacherId } = useParams();
+  const [teacherProjects, setTeacherProjects] = useState([]);
+
+  useEffect(() => {
+    const getTeacherProjects = async () => {
+      try {
+        const res = await Axios.get(
+          "http://localhost:5000/projects/teacher/6136303f70a7bb817e044709"
+        );
+        if (res && res.data) {
+          setTeacherProjects(res.data);
+        }
+      } catch (e) {}
+    };
+    getTeacherProjects();
+  }, [teacherId]);
+
   const loggedInTeacher = useSelector(
     (state) => state.security.loggedInTeacher
   );

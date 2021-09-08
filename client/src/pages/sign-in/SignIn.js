@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+//להוסיף שגיאה + שכחת סיסמא + קריאה לדאטה בייס
+
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { teacherLogin } from "../../redux/securitySlice";
@@ -7,13 +9,24 @@ import "./SignIn.scss";
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isValidForm, setIsValidForm] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const onSubmit = (e) => {
+  useEffect(() => {
+    if (validateFields()) setIsValidForm(true);
+    else setIsValidForm(false);
+  });
+
+  const validateFields = () => {
+    return email && password;
+  };
+
+  const onSubmit = async (e) => {
     e.preventDefault();
-    dispatch(teacherLogin());
-    history.push("/1/projects");
+    // db call
+    dispatch(teacherLogin("6136303f70a7bb817e044709"));
+    history.push("/6136303f70a7bb817e044709/projects");
   };
 
   return (
@@ -37,6 +50,7 @@ const SignIn = () => {
         />
         <button
           className="signin-button"
+          // disabled={!isValidForm ? true : false}
           onClick={(e) => {
             onSubmit(e);
           }}
