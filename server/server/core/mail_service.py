@@ -43,14 +43,13 @@ class Mail_Service(object):
 
 
 	def send_msg_mail(self, receiver_addresses_list, str_html_msg_to_send):
-		self.send_mail_to_mail_list(receiver_addresses_list, "Final Project - you got a new message", str_html_msg_to_send)
+		self.send_mail_to_mail_list(receiver_addresses_list, "Final Project - you got a new message", "Message content: <br>" + str_html_msg_to_send)
 
 
 	def send_create_new_project_mail(self, receiver_addresses_list, project_id):
-		self.send_mail_to_mail_list(receiver_addresses_list, "Final Project - new project was created"
-						, "Project ID: " + project_id)
+		self.send_mail_to_mail_list(receiver_addresses_list, "Final Project - new project was created", "Project ID: " + project_id)
 
 
-	def send_status_was_changed_mail(self, receiver_addresses_list, old_status, new_status):
-		self.send_mail_to_mail_list(receiver_addresses_list, "Final Project - status was changed"
-						, "Old status: " + old_status + "<br>New_status:" + new_status) 
+	def send_status_was_changed_mail(self, receiver_addresses_list, new_status):
+		self.send_mail_to_mail_list(receiver_addresses_list, "Final Project - status was changed", "New_status: " + new_status)
+
