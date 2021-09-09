@@ -7,7 +7,7 @@ class Msg(object):
         self.validator = Validator()
         self.db = database
 
-        self.collection_name = 'projects'  # collection name
+        self.collection_name = 'msg'  # collection name
 
         self.fields = {
             "name": "string",

@@ -70,6 +70,8 @@ def validate_teacher():
 	if request.method == "POST":
 		request_json = request.get_json()
 		response = db_manager.validate_teacher(request_json)
+		if response == "Wrong password":
+			return 404
 		return jsonify(response), 201
 
 
@@ -116,7 +118,13 @@ def add_project():
 	if request.method == "POST":
 		request_json = request.get_json()
 		response = db_manager.insert_project(request_json["title"], request_json["teacherId"], request_json["workshopId"]
-									, request_json["studentList"], request_json["imgLink"], request_json["preview"], request_json["status"])
+									, request_json["studentList"], request_json["imgLink"], request_json["preview"]
+									, request_json["status"], request_json["githubLink"], request_json["contactName"]
+									, request_json["contactPhone"], request_json["contactEmail"], request_json["lastUpdateByStudent"])
+		try:
+			mail_service.send_create_new_project_mail(["levsagiv@gmail.com"], response["_id"]):
+		except Exception as e:
+			print("Send Mail Error! " + e)
 		return jsonify(response), 201
 
 
@@ -137,6 +145,8 @@ def update_project(project_id):
 	if request.method == "PUT":
 		request_json = request.get_json()
 		response = db_manager.update_project(project_id, request_json)
+		if not request_json.has_key("status"):
+		mail_service.send_status_was_changed_mail(["levsagiv@gmail.com"], request_json["status"])
 		return response, 201
 
 
@@ -145,13 +155,16 @@ def insert_msg():
 	if request.method == "POST":
 		request_json = request.get_json()
 		response = db_manager.insert_msg(request_json)
-		send_to_list=[]
-		project = db_manager.get_project_by_id(request_json["projectId"])
-		for student in project["studentList"]:
+		#send_to_list=[]
+		#project = db_manager.get_project_by_id(request_json["projectId"])
+		#for student in project["studentList"]:
 			#mail_service.send_mail(student["mail"], "Test - subject - " + request_json["name"], "Test - content - " + request_json["text"])
-			mail_service.send_mail("levsagiv@gmail.com", "Test - subject - " + request_json["name"], "Test - content - " + request_json["text"])
+			#mail_service.send_mail("levsagiv@gmail.com", "Test - subject - " + request_json["name"], "Test - content - " + request_json["text"])
 		#mail_service.send_mail(project["teacher]["mail"], "Test - subject - " + request_json["name"], "Test - content - " + request_json["text"])
-
+		try:
+			mail_service.send_msg_mail(["levsagiv@gmail.com"], request_json["text"]):
+		except Exception as e:
+			print("Send Mail Error! " + e)
 		return response, 201
 
 

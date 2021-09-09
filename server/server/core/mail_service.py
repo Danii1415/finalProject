@@ -11,10 +11,10 @@ class Mail_Service(object):
 				<html>
 					<head></head>
 					<body>
-					<p>You got a new msg!!<br><br>
+					<p>
 					""" + content + """\
 					<br><br>
-						<a href="https://127.0.0.1:3000/">See Msg</a>
+						<a href="https://127.0.0.1:3000/">link to website</a>
 					</p>
 					</body>
 				</html>
@@ -35,3 +35,22 @@ class Mail_Service(object):
 		text = message.as_string()
 		session.sendmail(sender_address, receiver_address, text)
 		session.quit()
+
+
+	def send_mail_to_mail_list(self, receiver_addresses_list, subject, content):
+		for receiver_address in receiver_addresses_list:
+			self.send_mail(receiver_address, subject, content)
+
+
+	def send_msg_mail(self, receiver_addresses_list, str_html_msg_to_send):
+		self.send_mail_to_mail_list(receiver_addresses_list, "Final Project - you got a new message", str_html_msg_to_send)
+
+
+	def send_create_new_project_mail(self, receiver_addresses_list, project_id):
+		self.send_mail_to_mail_list(receiver_addresses_list, "Final Project - new project was created"
+						, "Project ID: " + project_id)
+
+
+	def send_status_was_changed_mail(self, receiver_addresses_list, old_status, new_status):
+		self.send_mail_to_mail_list(receiver_addresses_list, "Final Project - status was changed"
+						, "Old status: " + old_status + "<br>New_status:" + new_status) 

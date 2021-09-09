@@ -50,7 +50,6 @@ class DBManager(object):
 			project.pop("teacherId")
 			project["workshop"] = self.workshop.find_by_id(project["workshopId"])
 			project.pop("workshopId")
-			project["lastUpdateByStudent"] = int(project["lastUpdateByStudent"])
 
 		ans = sorted(ans, key=lambda k: k['teacher']['name'])
 		return jsonify(ans)
@@ -142,7 +141,7 @@ class DBManager(object):
 			workshops_list.append(self.workshop.find_by_id(workshop))
 		teacher["workshops"]=workshops_list
 		teacher.pop("password")
-		return teacher
+		return teacher["_id"]
 
 
 	def insert_teacher(self, name, mail):
