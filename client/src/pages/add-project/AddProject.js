@@ -17,11 +17,9 @@ const AddProject = () => {
   const [selectedWorkshop, setSelectedWorkshop] = useState("");
   const [currStudentidx, setCurrStudentidx] = useState(0);
   const [image, setImage] = useState("");
-  const [contactEmail, setContactEmail] = useState("");
-  const [contactName, setContactName] = useState("");
-  const [contactPhone, setContactPhone] = useState("");
   const [isValidForm, setIsValidForm] = useState(false);
   const [project, setProject] = useState(new ProjectToAdd());
+  const [displayProjectSuccess, setDisplayProjectSuccess] = useState(false);
 
   useEffect(() => {
     if (areFieldsValid()) setIsValidForm(true);
@@ -62,12 +60,14 @@ const AddProject = () => {
       // project.imgLink &&
       project.preview &&
       project.status &&
-      isStudentListValid()
+      isStudentListValid() &&
+      project.contactEmail &&
+      project.contactName &&
+      project.contactPhone
     );
   };
 
   const onProjectSubmit = async () => {
-    console.log(project);
     try {
       const res = await Axios.post("http://localhost:5000/projects/", {
         title: project.title,
@@ -77,10 +77,16 @@ const AddProject = () => {
         imgLink: "linkkkk",
         preview: project.preview,
         status: project.status,
-        // lastUpdateByStudent: loggedInTeacher ? project.lastUpdateByStudent : Date.now()
+        githubLink: project.githubLink,
+        contactEmail: project.contactEmail,
+        contactName: project.contactName,
+        contactPhone: project.contactPhone,
+        lastUpdateByStudent: Date.now().toString(),
       });
       // const res = await Axios.post("http://localhost:5000/projects/", project);
-      //success messages
+      if (res && res.data) {
+        setDisplayProjectSuccess(true);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -151,209 +157,224 @@ const AddProject = () => {
   };
 
   return (
-    <div className="add-form">
-      <div className="title">הגשת תקציר לסדנה</div>
-      <div className="select-form">
-        <label>בחר מרצה</label>
-        <Select
-          style={{ height: "40px", backgroundColor: "white" }}
-          variant="outlined"
-          onChange={selectedTeacherChange}
-          value={selectedTeacher && selectedTeacher.name}
-          displayEmpty
-          MenuProps={{
-            anchorOrigin: {
-              vertical: "bottom",
-              horizontal: "left",
-            },
-            transformOrigin: {
-              vertical: "top",
-              horizontal: "left",
-            },
-            getContentAnchorEl: null,
-          }}
-        >
-          <MenuItem disabled key="-1" value="">
-            בחר מרצה
-          </MenuItem>
-          {teachers.map((teacher) => {
-            return (
-              <MenuItem key={teacher.id} value={teacher.name}>
-                {teacher.name}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </div>
-      <div className="select-form">
-        <label>בחר סדנה</label>
-        <Select
-          disabled={!currWorkshops.length ? true : false}
-          style={{ height: "40px", backgroundColor: "white" }}
-          variant="outlined"
-          onChange={selectedWorkshopChange}
-          value={selectedWorkshop && selectedWorkshop.name}
-          displayEmpty
-          MenuProps={{
-            anchorOrigin: {
-              vertical: "bottom",
-              horizontal: "left",
-            },
-            transformOrigin: {
-              vertical: "top",
-              horizontal: "left",
-            },
-            getContentAnchorEl: null,
-          }}
-        >
-          <MenuItem disabled key="-1" value="">
-            בחר סדנה
-          </MenuItem>
-          {currWorkshops.map((workshop) => {
-            return (
-              <MenuItem key={workshop.id} value={workshop.name}>
-                {workshop.name}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </div>
-      <div className="input-container">
-        <label>שם הפרויקט</label>
-        <input
-          value={project.title}
-          onChange={(e) => setProject({ ...project, title: e.target.value })}
-          name="project-title"
-          autoComplete="off"
-        />
-      </div>
-      <div className="input-container">
-        <label>Github-קישור ל</label>
-        <input
-          value={project.githubLink}
-          onChange={(e) => {
-            setProject({ ...project, githubLink: e.target.value });
-          }}
-          name="github-link"
-          autoComplete="off"
-        />
-        <span className="text-helper">אופציונלי</span>
-      </div>
-      <div className="add-students-div">
-        <label className="main-label">הוסף פרטי המגישים</label>
-        {/* i dont think we need that validation */}
-        {project.studentsList &&
-          project.studentsList.map((student, idx) => {
-            return (
-              <StudentForm
-                // key={student.id}
-                currStudentidx={idx}
-                student={student}
-                onStudentListChange={onStudentListChange}
-                isMultipleStudents={
-                  project.studentsList.length > 1 ? true : false
-                }
-                isLast={idx === currStudentidx ? true : false}
-              />
-            );
-          })}
-        <div
-          className={
-            currStudentidx === 0 || currStudentidx === 3
-              ? "student-buttons justify-center"
-              : "student-buttons justify-between"
-          }
-        >
-          {currStudentidx < 3 && (
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                onNextStudentClick();
-              }}
-            >
-              הוסף תלמיד
-            </button>
-          )}
-          {currStudentidx > 0 && (
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                onPreviousStudentClick();
-              }}
-            >
-              הסר תלמיד
-            </button>
-          )}
-        </div>
-      </div>
-      <div className="preview-container">
-        <label>כתבו תקציר באורך 250-400 מילים.</label>
-        <textarea
-          className="markdown-editor"
-          value={project.preview}
-          onChange={(e) => setProject({ ...project, preview: e.target.value })}
-        />
-      </div>
-      <div className="add-img-container">
-        <img src={logoThree} className="left-side" />
-        <div className="right-side">
-          <label>תמונת הפרויקט</label>
-          <div className="image-buttons">
-            <label className="custom-file-upload">
-              <input onChange={onImageChange} type="file" />
-              הוסף תמונה
-            </label>
-            <button className="remove-img">הסר תמונה</button>
+    <>
+      {displayProjectSuccess ? (
+        <div className="submit-success-message">
+          <div className="header">הפרויקט הוגש בהצלחה</div>
+          <div className="description">
+            קישור לדף עריכת התקציר יישלח למגישים במייל
           </div>
         </div>
-      </div>
-      <div className="contacts-container">
-        <label className="main-label">פרטי איש הקשר</label>
-        <div className="contacts-input">
+      ) : (
+        <div className="add-form">
+          <div className="title">הגשת תקציר לסדנה</div>
+          <div className="select-form">
+            <label>בחר מרצה</label>
+            <Select
+              style={{ height: "40px", backgroundColor: "white" }}
+              variant="outlined"
+              onChange={selectedTeacherChange}
+              value={selectedTeacher && selectedTeacher.name}
+              displayEmpty
+              MenuProps={{
+                anchorOrigin: {
+                  vertical: "bottom",
+                  horizontal: "left",
+                },
+                transformOrigin: {
+                  vertical: "top",
+                  horizontal: "left",
+                },
+                getContentAnchorEl: null,
+              }}
+            >
+              <MenuItem disabled key="-1" value="">
+                בחר מרצה
+              </MenuItem>
+              {teachers.map((teacher) => {
+                return (
+                  <MenuItem key={teacher.id} value={teacher.name}>
+                    {teacher.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </div>
+          <div className="select-form">
+            <label>בחר סדנה</label>
+            <Select
+              disabled={!currWorkshops.length ? true : false}
+              style={{ height: "40px", backgroundColor: "white" }}
+              variant="outlined"
+              onChange={selectedWorkshopChange}
+              value={selectedWorkshop && selectedWorkshop.name}
+              displayEmpty
+              MenuProps={{
+                anchorOrigin: {
+                  vertical: "bottom",
+                  horizontal: "left",
+                },
+                transformOrigin: {
+                  vertical: "top",
+                  horizontal: "left",
+                },
+                getContentAnchorEl: null,
+              }}
+            >
+              <MenuItem disabled key="-1" value="">
+                בחר סדנה
+              </MenuItem>
+              {currWorkshops.map((workshop) => {
+                return (
+                  <MenuItem key={workshop.id} value={workshop.name}>
+                    {workshop.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </div>
           <div className="input-container">
-            <label>שם מלא</label>
+            <label>שם הפרויקט</label>
             <input
-              value={contactName}
+              value={project.title}
               onChange={(e) =>
-                setProject({ ...project, contactName: e.target.value })
+                setProject({ ...project, title: e.target.value })
               }
-              name="contact-name"
+              name="project-title"
               autoComplete="off"
             />
           </div>
+          <div className="input-container">
+            <label>Github-קישור ל</label>
+            <input
+              value={project.githubLink}
+              onChange={(e) => {
+                setProject({ ...project, githubLink: e.target.value });
+              }}
+              name="github-link"
+              autoComplete="off"
+            />
+            <span className="text-helper">אופציונלי</span>
+          </div>
+          <div className="add-students-div">
+            <label className="main-label">הוסף פרטי המגישים</label>
+            {/* i dont think we need that validation */}
+            {project.studentsList &&
+              project.studentsList.map((student, idx) => {
+                return (
+                  <StudentForm
+                    // key={student.id}
+                    currStudentidx={idx}
+                    student={student}
+                    onStudentListChange={onStudentListChange}
+                    isMultipleStudents={
+                      project.studentsList.length > 1 ? true : false
+                    }
+                    isLast={idx === currStudentidx ? true : false}
+                  />
+                );
+              })}
+            <div
+              className={
+                currStudentidx === 0 || currStudentidx === 3
+                  ? "student-buttons justify-center"
+                  : "student-buttons justify-between"
+              }
+            >
+              {currStudentidx < 3 && (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNextStudentClick();
+                  }}
+                >
+                  הוסף תלמיד
+                </button>
+              )}
+              {currStudentidx > 0 && (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onPreviousStudentClick();
+                  }}
+                >
+                  הסר תלמיד
+                </button>
+              )}
+            </div>
+          </div>
+          <div className="preview-container">
+            <label>כתבו תקציר באורך 250-400 מילים.</label>
+            <textarea
+              className="markdown-editor"
+              value={project.preview}
+              onChange={(e) =>
+                setProject({ ...project, preview: e.target.value })
+              }
+            />
+          </div>
+          <div className="add-img-container">
+            <img src={logoThree} className="left-side" />
+            <div className="right-side">
+              <label>תמונת הפרויקט</label>
+              <div className="image-buttons">
+                <label className="custom-file-upload">
+                  <input onChange={onImageChange} type="file" />
+                  הוסף תמונה
+                </label>
+                <button className="remove-img">הסר תמונה</button>
+              </div>
+            </div>
+          </div>
+          <div className="contacts-container">
+            <label className="main-label">פרטי איש הקשר</label>
+            <div className="contacts-input">
+              <div className="input-container">
+                <label>שם מלא</label>
+                <input
+                  value={project.contactName}
+                  onChange={(e) =>
+                    setProject({ ...project, contactName: e.target.value })
+                  }
+                  name="contact-name"
+                  autoComplete="off"
+                />
+              </div>
 
-          <div className="input-container">
-            <label>טלפון</label>
-            <input
-              value={contactPhone}
-              onChange={(e) =>
-                setProject({ ...project, contactPhone: e.target.value })
-              }
-              name="contact-phone"
-              autoComplete="off"
-            />
+              <div className="input-container">
+                <label>טלפון</label>
+                <input
+                  value={project.contactPhone}
+                  onChange={(e) =>
+                    setProject({ ...project, contactPhone: e.target.value })
+                  }
+                  name="contact-phone"
+                  autoComplete="off"
+                />
+              </div>
+              <div className="input-container">
+                <label>אימייל</label>
+                <input
+                  value={project.contactEmail}
+                  onChange={(e) =>
+                    setProject({ ...project, contactEmail: e.target.value })
+                  }
+                  name="contact-email"
+                  autoComplete="off"
+                />
+              </div>
+            </div>
           </div>
-          <div className="input-container">
-            <label>אימייל</label>
-            <input
-              value={contactEmail}
-              onChange={(e) =>
-                setProject({ ...project, contactEmail: e.target.value })
-              }
-              name="contact-email"
-              autoComplete="off"
-            />
-          </div>
+          <button
+            disabled={!isValidForm ? true : false}
+            onClick={onProjectSubmit}
+            className="save-button"
+          >
+            הגש את הפרויקט
+          </button>
         </div>
-      </div>
-      <button
-        disabled={!isValidForm ? true : false}
-        onClick={onProjectSubmit}
-        className="save-button"
-      >
-        הגש את הפרויקט
-      </button>
-    </div>
+      )}
+    </>
   );
 };
 

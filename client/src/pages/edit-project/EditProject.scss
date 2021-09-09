@@ -352,141 +352,205 @@
 
 .drawer-container {
   display: flex;
-  width: 950px;
-  .drawer-preview-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 0 0 50%;
-    border-right: 1px solid black;
-  }
-  .messages-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 0 0 50%;
-    .new-message-container {
-      display: flex;
-      padding: 20px 20px;
-      height: 70px;
-      .send-message-buttons-div {
-        display: flex;
-        flex-direction: column;
-        .name-select {
-          height: 30px;
-          direction: rtl;
-        }
-      }
-      .new-message-input {
-        direction: rtl;
-        text-align: right;
-        padding: 10px;
-        resize: none;
-        font-family: emoji;
-        outline: none;
-        flex: 0 0 75%;
-      }
-      .new-message-input:hover {
-        // background-color: rgba(174, 244, 174, 0.283);
-      }
-      .new-message-button {
-        background-color: rgb(3, 191, 191);
-        height: 40px;
-        cursor: pointer;
-        border: none;
-        border-radius: 3px;
-        color: white;
-      }
-
-      .new-message-button:hover {
-        background-color: darkcyan;
-      }
-      .new-message-button:disabled,
-      .new-message-button[disabled] {
-        border: 1px solid #999999;
-        background-color: #cccccc;
-        color: #666666;
-        cursor: default;
-      }
+  flex-direction: column;
+  .warning-message-wrapper {
+    padding: 30px 0 10px 0;
+    .leave-message-warning {
+      background-color: #f1050533;
+      border-radius: 6px;
+      padding: 6px;
+      color: black;
     }
-    .messages-display-container {
-      border: 3px solid rgb(114, 228, 207);
-      padding: 20px 20px;
+  }
+  .messages-and-preview-container {
+    display: flex;
+    .drawer-preview-container {
       display: flex;
       flex-direction: column;
+      align-items: center;
+      flex: 0 0 45%;
+      margin: 20px 0;
+      border-left: 1px solid #9694944a;
+      .preview-header {
+        font-size: 22px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #0000002e;
+        width: 80%;
+      }
+      .preview-text {
+        text-align: right;
+        padding: 0 12px;
+        white-space: pre-line;
+      }
+    }
+
+    .messages-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 0 0 55%;
+      .new-message-container {
+        display: flex;
+        padding: 20px 20px;
+        height: 70px;
+        width: 80%;
+        .send-message-buttons-div {
+          display: flex;
+          flex-direction: column;
+          flex: 0 0 23%;
+          .name-select {
+            height: 30px;
+            direction: rtl;
+          }
+        }
+        .new-message-input {
+          direction: rtl;
+          text-align: right;
+          padding: 10px;
+          resize: none;
+          font-family: emoji;
+          outline: none;
+          flex: 0 0 73%;
+        }
+        .new-message-input:hover {
+          // background-color: rgba(174, 244, 174, 0.283);
+        }
+        .new-message-button {
+          background-color: rgb(3, 191, 191);
+          height: 40px;
+          cursor: pointer;
+          border: none;
+          border-radius: 3px;
+          color: white;
+        }
+
+        .new-message-button:hover {
+          background-color: darkcyan;
+        }
+        .new-message-button:disabled,
+        .new-message-button[disabled] {
+          border: 1px solid #999999;
+          background-color: #cccccc;
+          color: #666666;
+          cursor: default;
+        }
+      }
+      .messages-display-container {
+        // border: 3px solid rgb(114, 228, 207);
+        //maybe this padding should be with %
+        padding: 20px 20px;
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+      }
+    }
+  }
+  .buttons-div {
+    display: flex;
+    align-self: center;
+    padding: 10px 0 40px 0;
+    & > button {
+      cursor: pointer;
+      border-radius: 5px;
+      padding: 10px;
+      border: none;
+      color: white;
+      font-size: 18px;
+      font-weight: 600;
+      height: 70px;
+    }
+  }
+  .reject-button {
+    background-color: lightcoral;
+    margin-right: 20px;
+    &:hover {
+      background-color: red;
+    }
+    &:disabled {
+      background-color: #cccccc;
+      cursor: default;
+      &:hover {
+        background-color: #cccccc;
+      }
+    }
+  }
+  .return-button {
+    background-color: #05a2b7;
+    &:hover {
+      background-color: #068090;
     }
   }
   .header {
-    font-size: 20px;
+    font-size: 22px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 415px;
-    align-self: flex-end;
-    button {
-      background-color: #05a2b7;
-      width: 35px;
-      height: 30px;
-      top: -5px;
-    }
-    button:hover {
-      background-color: #068090;
-    }
+    // width: 415px;
+    align-self: center;
+    // button {
+    //   background-color: #05a2b7;
+    //   width: 35px;
+    //   height: 30px;
+    //   top: -5px;
+    // }
+    // button:hover {
+    //   background-color: #068090;
+    // }
   }
   .message-container {
     display: flex;
     flex-direction: column;
-    .message-div {
+    padding: 10px 0;
+    .content-sender {
+      align-self: flex-end;
+      display: flex;
+      flex-direction: column;
+      background-color: darkcyan;
+      border-radius: 10px;
+      padding: 6px;
+      color: white;
+      width: 75%;
+      text-align: right;
+    }
+    .content-reciever {
+      display: flex;
+      flex-direction: column;
+      background-color: rgb(53, 196, 153);
+      border-radius: 10px;
+      padding: 6px;
+      color: white;
+      width: 75%;
+      text-align: right;
+    }
+    .message-text {
+      margin-bottom: 10px;
+      font-family: "Roboto";
+    }
+    .message-details {
+      color: black;
+      font-weight: bold;
+      font-size: 13px;
+      font-family: "Roboto";
+    }
+    .actions {
+      flex: 0 0 12%;
       display: flex;
       justify-content: space-between;
-      .content-teacher {
-        display: flex;
-        flex-direction: column;
-        background-color: darkcyan;
-        border-radius: 10px;
-        padding: 6px;
-        color: white;
-        flex: 0 0 60%;
-        text-align: right;
+      button {
+        background-color: #05a2b7;
+        width: 35px;
+        height: 30px;
       }
-      .content-student {
-        display: flex;
-        flex-direction: column;
-        background-color: rgb(53, 196, 153);
-        border-radius: 10px;
-        padding: 6px;
-        color: white;
-        flex: 0 0 60%;
-        text-align: right;
-        right: 160px;
-        position: relative;
-      }
-      .message-text {
-        margin-bottom: 10px;
-        font-family: "Roboto";
-      }
-      .message-details {
-        color: black;
-        font-weight: bold;
-        font-size: 13px;
-        font-family: "Roboto";
-      }
-      .actions {
-        flex: 0 0 12%;
-        display: flex;
-        justify-content: space-between;
-        button {
-          background-color: #05a2b7;
-          width: 35px;
-          height: 30px;
-        }
-        button:hover {
-          background-color: #068090;
-        }
+      button:hover {
+        background-color: #068090;
       }
     }
   }
   svg {
     color: white;
   }
+}
+.MuiDrawer-paperAnchorLeft {
+  width: 75%;
+  min-width: 900px;
 }

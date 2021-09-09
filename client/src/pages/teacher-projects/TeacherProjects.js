@@ -16,110 +16,112 @@ import { Checkbox } from "@material-ui/core";
 import { useParams } from "react-router";
 import Axios from "axios";
 
-const initialProjects = [
-  {
-    projectName: "Face Recognition System",
-    course: "יישומי רשת",
-    projectImg: logoThree,
-    id: 3424324,
-    status: "pendingTeacherApproval",
-  },
-  {
-    projectName: "פרויקט הנדסת תוכנה",
-    course: "הנדסת תוכנה",
-    projectImg: logo,
-    id: 4564564,
-    status: "pendingStudentsEdit",
-  },
-  {
-    projectName: "Our Amazing Project!",
-    course: "HomeCommunications",
-    projectImg: logoFour,
-    id: 3458677,
-    status: "pendingTeacherApproval",
-  },
-  {
-    projectName: "Face Recognition System",
-    course: "יישומי רשת",
-    projectImg: logoThree,
-    id: 3424324,
-    status: "pendingTeacherApproval",
-  },
-  {
-    projectName: "פרויקט הנדסת תוכנה",
-    course: "הנדסת תוכנה",
-    projectImg: logo,
-    id: 4564564,
-    status: "pendingStudentsEdit",
-  },
-  {
-    projectName: "Our Amazing Project!",
-    course: "HomeCommunications",
-    projectImg: logoFour,
-    id: 3458677,
-    status: "pendingTeacherApproval",
-  },
-  {
-    projectName: "Face Recognition System",
-    course: "יישומי רשת",
-    projectImg: logoThree,
-    id: 3424324,
-    status: "pendingTeacherApproval",
-  },
-  {
-    projectName: "פרויקט הנדסת תוכנה",
-    course: "הנדסת תוכנה",
-    projectImg: logo,
-    id: 4564564,
-    status: "pendingStudentsEdit",
-  },
-  {
-    projectName: "Our Amazing Project!",
-    course: "HomeCommunications",
-    projectImg: logoFour,
-    id: 3458677,
-    status: "pendingTeacherApproval",
-  },
-];
-const initialApprovedProjects = [
-  {
-    projectName: "Face Recognition System",
-    course: "יישומי רשת",
-    projectImg: logoThree,
-    id: 3424324,
-    status: "approved",
-  },
-  {
-    projectName: "פרויקט הנדסת תוכנה",
-    course: "הנדסת תוכנה",
-    projectImg: logo,
-    id: 4564564,
-    status: "approved",
-  },
-  {
-    projectName: "Our Amazing Project!",
-    course: "HomeCommunications",
-    projectImg: logoFour,
-    id: 3458677,
-    status: "approved",
-  },
-  {
-    projectName: "Face Recognition System",
-    course: "יישומי רשת",
-    projectImg: logoThree,
-    id: 3424324,
-    status: "approved",
-  },
-];
+// const initialProjects = [
+//   {
+//     projectName: "Face Recognition System",
+//     course: "יישומי רשת",
+//     projectImg: logoThree,
+//     id: 3424324,
+//     status: "pendingTeacherApproval",
+//   },
+//   {
+//     projectName: "פרויקט הנדסת תוכנה",
+//     course: "הנדסת תוכנה",
+//     projectImg: logo,
+//     id: 4564564,
+//     status: "pendingStudentsEdit",
+//   },
+//   {
+//     projectName: "Our Amazing Project!",
+//     course: "HomeCommunications",
+//     projectImg: logoFour,
+//     id: 3458677,
+//     status: "pendingTeacherApproval",
+//   },
+//   {
+//     projectName: "Face Recognition System",
+//     course: "יישומי רשת",
+//     projectImg: logoThree,
+//     id: 3424324,
+//     status: "pendingTeacherApproval",
+//   },
+//   {
+//     projectName: "פרויקט הנדסת תוכנה",
+//     course: "הנדסת תוכנה",
+//     projectImg: logo,
+//     id: 4564564,
+//     status: "pendingStudentsEdit",
+//   },
+//   {
+//     projectName: "Our Amazing Project!",
+//     course: "HomeCommunications",
+//     projectImg: logoFour,
+//     id: 3458677,
+//     status: "pendingTeacherApproval",
+//   },
+//   {
+//     projectName: "Face Recognition System",
+//     course: "יישומי רשת",
+//     projectImg: logoThree,
+//     id: 3424324,
+//     status: "pendingTeacherApproval",
+//   },
+//   {
+//     projectName: "פרויקט הנדסת תוכנה",
+//     course: "הנדסת תוכנה",
+//     projectImg: logo,
+//     id: 4564564,
+//     status: "pendingStudentsEdit",
+//   },
+//   {
+//     projectName: "Our Amazing Project!",
+//     course: "HomeCommunications",
+//     projectImg: logoFour,
+//     id: 3458677,
+//     status: "pendingTeacherApproval",
+//   },
+// ];
+// const initialApprovedProjects = [
+//   {
+//     projectName: "Face Recognition System",
+//     course: "יישומי רשת",
+//     projectImg: logoThree,
+//     id: 3424324,
+//     status: "approved",
+//   },
+//   {
+//     projectName: "פרויקט הנדסת תוכנה",
+//     course: "הנדסת תוכנה",
+//     projectImg: logo,
+//     id: 4564564,
+//     status: "approved",
+//   },
+//   {
+//     projectName: "Our Amazing Project!",
+//     course: "HomeCommunications",
+//     projectImg: logoFour,
+//     id: 3458677,
+//     status: "approved",
+//   },
+//   {
+//     projectName: "Face Recognition System",
+//     course: "יישומי רשת",
+//     projectImg: logoThree,
+//     id: 3424324,
+//     status: "approved",
+//   },
+// ];
 const TeacherProjects = () => {
   const { teacherId } = useParams();
   const [teacherProjects, setTeacherProjects] = useState([]);
+  const [approvedProjects, setApprovedProjects] = useState([]);
+  const [pendingProjects, setPendingProjects] = useState([]);
 
   useEffect(() => {
     const getTeacherProjects = async () => {
       try {
         const res = await Axios.get(
-          "http://localhost:5000/projects/teacher/6136303f70a7bb817e044709"
+          `http://localhost:5000/projects/teacher/${teacherId}`
         );
         if (res && res.data) {
           setTeacherProjects(res.data);
@@ -129,11 +131,37 @@ const TeacherProjects = () => {
     getTeacherProjects();
   }, [teacherId]);
 
+  useEffect(() => {
+    let approvedArr = [],
+      pendingArr = [];
+    if (teacherProjects.length) {
+      console.log(teacherProjects.length);
+      approvedArr = teacherProjects.filter(
+        (project) => project.status === "approved"
+      );
+      pendingArr = teacherProjects.filter(
+        (project) => project.status !== "approved"
+      );
+    }
+    if (pendingArr.length) {
+      pendingArr = pendingArr.sort(
+        (a, b) =>
+          b.status.localeCompare(a.status) ||
+          b.workshop.name.localeCompare(a.workshop.name)
+      );
+    }
+    if (approvedArr.length) {
+      approvedArr = approvedArr.sort((a, b) =>
+        b.workshop.name.localeCompare(a.workshop.name)
+      );
+    }
+    setPendingProjects(pendingArr);
+    setApprovedProjects(approvedArr);
+  }, [teacherProjects]);
+
   const loggedInTeacher = useSelector(
     (state) => state.security.loggedInTeacher
   );
-  const [currApproved, setCurrApproved] = useState(initialApprovedProjects);
-  const [currProjects, setCurrProjects] = useState(initialProjects);
 
   // const [courses, setCourses] = useState([
   //   { checked: true, name: "יישומי רשת" },
@@ -157,29 +185,27 @@ const TeacherProjects = () => {
                 );
               })} */}
             </div>
-            <ProjectTable
-              projects={currProjects.sort(
-                (a, b) =>
-                  b.status.localeCompare(a.status) ||
-                  b.course.localeCompare(a.course)
-              )}
-              linkType="edit"
-            />
-            <button className="show-more-button">הצג עוד</button>
+            {pendingProjects.length ? (
+              <ProjectTable projects={pendingProjects} linkType="edit" />
+            ) : (
+              <div>אין הגשות שממתינות לאישור</div>
+            )}
+            {/* <button className="show-more-button">הצג עוד</button> */}
           </div>
           <div className="list-display-container">
             <div className="title-container">
-              <div className="title">הגשות שאושרו</div>
+              <div className="approved-title">הגשות שאושרו</div>
             </div>
-
-            <ProjectTable
-              isApproved={true}
-              projects={currApproved.sort((a, b) =>
-                b.course.localeCompare(a.course)
-              )}
-              linkType="edit"
-            />
-            <button className="show-more-button">הצג עוד</button>
+            {approvedProjects.length ? (
+              <ProjectTable
+                isApproved={true}
+                projects={approvedProjects}
+                linkType="edit"
+              />
+            ) : (
+              <div>אין הגשות שאושרו</div>
+            )}
+            {/* <button className="show-more-button">הצג עוד</button> */}
           </div>
         </>
       ) : (

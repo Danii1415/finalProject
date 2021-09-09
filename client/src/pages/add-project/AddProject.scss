@@ -1,5 +1,14 @@
 //maybe add media query for bigger screens
-
+.submit-success-message {
+  background-color: #27bf2b3b;
+  padding: 10px;
+  border-radius: 10px;
+  .header {
+    font-size: 25px;
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+}
 .add-form {
   display: flex;
   flex-direction: column;

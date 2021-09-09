@@ -1,9 +1,10 @@
-//להוסיף שגיאה + שכחת סיסמא + קריאה לדאטה בייס
+//להוסיף שגיאה + שכחת סיסמא +
 
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { teacherLogin } from "../../redux/securitySlice";
+import Axios from "axios";
 import "./SignIn.scss";
 
 const SignIn = () => {
@@ -24,9 +25,18 @@ const SignIn = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    // db call
-    dispatch(teacherLogin("6136303f70a7bb817e044709"));
-    history.push("/6136303f70a7bb817e044709/projects");
+    try {
+      const res = await Axios.post("http://localhost:5000/teachers/validate/", {
+        mail: email,
+        password: password,
+      });
+      if (res && res.data) {
+        dispatch(teacherLogin(res.data._id));
+        history.push(`/${res.data._id}/projects`);
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

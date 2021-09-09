@@ -2,7 +2,9 @@ export const getStudentsNamesFormat = (students) => {
   let res = "";
   for (let i = 0; i < students.length; i++) {
     res +=
-      students.length - i !== 1 ? `${students[i].name}, ` : students[i].name;
+      students.length - i !== 1
+        ? `${students[i].firstName} ${students[i].lastName}, `
+        : `${students[i].firstName} ${students[i].lastName}`;
   }
   return res;
 };
@@ -24,11 +26,12 @@ export class ProjectToAdd {
     workshopId = "",
     studentsList = [new Student()],
     preview = "",
-    status = "pendingTeacherApproval"
-    // githubLink = "",
-    // contactEmail = "",
-    // contactName = "",
-    // contactPhone = ""
+    status = "pendingTeacherApproval",
+    githubLink = "",
+    contactEmail = "",
+    contactName = "",
+    contactPhone = "",
+    lastUpdateByStudent = ""
   ) {
     this.title = title;
     this.teacherId = "";
@@ -37,10 +40,11 @@ export class ProjectToAdd {
     this.imgLink = imgLink;
     this.preview = preview;
     this.status = status;
-    // this.githubLink = githubLink;
-    // this.contactEmail = contactEmail;
-    // this.contactName = contactName;
-    // this.contactPhone = contactPhone;
+    this.githubLink = githubLink;
+    this.contactEmail = contactEmail;
+    this.contactName = contactName;
+    this.contactPhone = contactPhone;
+    this.lastUpdateByStudent = lastUpdateByStudent;
   }
 }
 
@@ -52,11 +56,12 @@ export class ProjectToEdit {
     preview = "",
     status = "",
     workshopName = "",
-    teacherName = ""
-    // githubLink = "",
-    // contactEmail = "",
-    // contactName = "",
-    // contactPhone = ""
+    teacherName = "",
+    githubLink = "",
+    contactEmail = "",
+    contactName = "",
+    contactPhone = "",
+    lastUpdateByStudent = ""
   ) {
     this.title = title;
     this.studentsList = studentsList;
@@ -65,9 +70,10 @@ export class ProjectToEdit {
     this.status = status;
     this.workshopName = workshopName;
     this.teacherName = teacherName;
-    // this.githubLink = githubLink;
-    // this.contactEmail = contactEmail;
-    // this.contactName = contactName;
-    // this.contactPhone = contactPhone;
+    this.githubLink = githubLink;
+    this.contactEmail = contactEmail;
+    this.contactName = contactName;
+    this.contactPhone = contactPhone;
+    this.lastUpdateByStudent = lastUpdateByStudent;
   }
 }

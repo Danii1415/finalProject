@@ -1,9 +1,9 @@
 //fix hours and minutes 1 digit sometimes
+//fix scroll to bottom of drawer.
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Divider, Fab, Drawer } from "@material-ui/core";
 import { ProjectToEdit } from "../../utils";
-import CloseIcon from "@material-ui/icons/Close";
 import { useState } from "react";
 import "./EditProject.scss";
 import { useSelector } from "react-redux";
@@ -13,55 +13,70 @@ import StudentForm from "../../components/student-form/StudentForm";
 import Axios from "axios";
 import { useHistory, useParams } from "react-router";
 
-// const initialMessages = [
-//   {
-//     date: "11/8/21 19:40",
-//     text: "צריך לעשות דברים בצורה אחרת תוסיפו ככה ותעשו ככה ואחרי זה תוסיפו עוד דברים",
-//     fromTeacher: true,
-//     name: "אמיר קירש",
-//   },
-//   {
-//     date: "11/8/21 21:53",
-//     text: "הערות מרצההערות מרצההערות מרצההערות מרצההערות מרצההערות מרצההערות מרצההערות מרצההערות מרצההערות מרצההערות מרצההערות מרצההערות מרצההערות מרצה הערות מרצה",
-//     fromTeacher: false,
-//     name: "דניאל כפיר",
-//   },
-//   {
-//     date: "13/8/21 11:01",
-//     text: "צריך לעשות דברים בצורה אחרת תוסיפו ככה ותעשו ככה ואחרי זה תוסיפו עוד דברים",
-//     fromTeacher: true,
-//     name: "אמיר קירש",
-//   },
-// ];
-
 const EditProject = () => {
   const [project, setProject] = useState(new ProjectToEdit());
   const { projectId } = useParams();
   const [image, setImage] = useState("");
   const [currStudentidx, setCurrStudentidx] = useState(0);
-  // const [messageList, setMessageList] = useState(initialMessages);
+  // const [messageList, setMesPsageList] = useState(initialMessages);
   const [messageList, setMessageList] = useState([]);
-  const [githubLink, setgithubLink] = useState("");
   const [newMessage, setNewMessage] = useState("");
-  const [contactEmail, setContactEmail] = useState("");
-  const [contactName, setContactName] = useState("");
-  const [contactPhone, setContactPhone] = useState("");
   const [messageSender, setMessageSender] = useState("");
   const loggedInTeacher = useSelector(
     (state) => state.security.loggedInTeacher
   );
-  const [isOpenDrawer, setisOpenDrawer] = useState(true);
+  const [isOpenDrawer, setisOpenDrawer] = useState(false);
   const [isValidForm, setIsValidForm] = useState(true);
+  const drawerEndRef = useRef(null);
   const history = useHistory();
+  const [isTeacherMessageRequired, setIsTeacherMessageRequired] =
+    useState(true);
+
+  // const scrollToBottom = () => {
+  //   drawerEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  // };
+
+  // useEffect(() => {
+  //   if (isOpenDrawer === true) {
+  //     scrollToBottom();
+  //   }
+  // }, [isOpenDrawer]);
+
+  useEffect(() => {
+    let res = true;
+    for (const message of messageList) {
+      if (
+        new Date(message.created).getTime() -
+          parseInt(project.lastUpdateByStudent) >
+          0 &&
+        message.fromTeacher === true
+      )
+        res = false;
+    }
+    setIsTeacherMessageRequired(res);
+  }, [messageList]);
 
   useEffect(() => {
     const getProject = async () => {
       try {
         const res = await Axios.get(
-          `http://localhost:5000/projects/${projectId}/`
+          `http://localhost:5000/projects/msgs/${projectId}/`
         );
         if (res && res.data) {
-          const { status, preview, title, studentList, imgLink } = res.data;
+          const {
+            status,
+            preview,
+            title,
+            studentList,
+            imgLink,
+            githubLink,
+            contactEmail,
+            contactName,
+            contactPhone,
+            lastUpdateByStudent,
+            _id,
+            msgs,
+          } = res.data;
           console.log(res.data);
           // check if fields like (status works and not status:status)
           setProject({
@@ -73,8 +88,15 @@ const EditProject = () => {
             studentsList: studentList,
             workshopName: res.data.workshop.name,
             teacherName: res.data.teacher.name,
+            githubLink: githubLink,
+            contactEmail: contactEmail,
+            contactName: contactName,
+            contactPhone: contactPhone,
+            lastUpdateByStudent: lastUpdateByStudent,
+            teacherId: res.data.teacher._id,
+            _id: _id,
           });
-          console.log(studentList.length - 1);
+          setMessageList(msgs.reverse());
           setCurrStudentidx(studentList.length - 1);
         }
       } catch {}
@@ -85,17 +107,31 @@ const EditProject = () => {
   const updateProject = async (newStatus = project.status) => {
     try {
       const res = await Axios.put(
-        "http://localhost:5000/projects/613768a4b8277c2f0220181c/",
+        `http://localhost:5000/projects/${project._id}/`,
         {
           status: newStatus,
           title: project.title,
-          studentList: project.studentsList,
+          //bug in studentsList
+          // studentList: project.studentsList,
           preview: project.preview,
-          // lastUpdateByStudent: loggedInTeacher ? project.lastUpdateByStudent : Date.now()
+          githubLink: project.githubLink,
+          contactEmail: project.contactEmail,
+          contactName: project.contactName,
+          contactPhone: project.contactPhone,
+          lastUpdateByStudent: loggedInTeacher
+            ? project.lastUpdateByStudent
+            : Date.now(),
         }
       );
-      setProject({ ...project, status: newStatus });
-    } catch {}
+      if (res && res.data) {
+        setProject({ ...project, status: newStatus });
+        if (loggedInTeacher) {
+          history.push(`/${project.teacherId}/projects`);
+        }
+      }
+    } catch (e) {
+      //error message with modal.
+    }
   };
 
   useEffect(() => {
@@ -108,14 +144,17 @@ const EditProject = () => {
       project.title &&
       // project.imgLink &&
       project.preview &&
-      project.status &&
+      // project.githubLink &&
+      project.contactEmail &&
+      project.contactName &&
+      project.contactPhone &&
       isStudentListValid()
     );
   };
 
-  const saveAndReject = () => {
-    //check if last edit from students is later than last message from teacher, if not redirect to drawer and make teacher send another message
-    updateProject("pendingStudentsEdit");
+  const saveAndReject = async () => {
+    if (isTeacherMessageRequired) openDrawer();
+    else await updateProject("pendingStudentsEdit");
   };
 
   const isStudentListValid = () => {
@@ -177,28 +216,34 @@ const EditProject = () => {
     }
   };
 
-  const onGithubLinkChange = (e) => {
-    setgithubLink(e.target.value);
-  };
-
-  const saveNewMessage = () => {
-    let messages = [...messageList];
-    const now = new Date();
+  const saveNewMessage = async () => {
     const _newMessage = {
       text: newMessage,
-      date: `${now.getDate()}/${
-        now.getMonth() + 1
-      }/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`,
+      projectId: project._id,
       fromTeacher: loggedInTeacher ? true : false,
-      name: loggedInTeacher ? "אמיר קירש" : messageSender,
+      name: loggedInTeacher ? project.teacherName : messageSender,
+      created: new Date(),
     };
-    messages.push(_newMessage);
-    setMessageList(messages);
-    setNewMessage("");
+    try {
+      const res = await Axios.post("http://localhost:5000/msg/", {
+        text: _newMessage.text,
+        projectId: _newMessage.projectId,
+        fromTeacher: _newMessage.fromTeacher,
+        name: _newMessage.name,
+      });
+      let messages = [...messageList];
+      messages.push(_newMessage);
+      setMessageList(messages);
+      setNewMessage("");
+    } catch (e) {}
   };
 
-  const getMessageDetails = (message) => {
-    return message.date + " ," + message.name;
+  const getMessageDetailsFormat = (messageDate, senderName) => {
+    const date = new Date(messageDate);
+    const dateFormat = `${date.getDate()}/${
+      date.getMonth() + 1
+    }/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+    return `${dateFormat}, ${senderName}`;
   };
 
   const onMessageSenderChange = (e) => {
@@ -218,83 +263,111 @@ const EditProject = () => {
       <div className="title-container">
         <Drawer anchor="left" open={isOpenDrawer} onClose={closeDrawer}>
           <div className="drawer-container">
-            <div className="messages-container">
-              <div className="messages-display-container">
-                <div className="header">
-                  <div> תיבת ההודעות</div>
-                  <Fab onClick={closeDrawer}>
-                    <CloseIcon color="primary" />
-                  </Fab>
-                </div>
-                {messageList.map((message, idx) => {
-                  return (
-                    <div className="message-container" key={idx}>
-                      <Divider
-                        style={{ marginBottom: "10px", marginTop: "10px" }}
-                      />
-                      <div className="message-div">
+            <div className="messages-and-preview-container">
+              <div className="messages-container">
+                <div className="messages-display-container">
+                  <div className="header">תיבת ההודעות</div>
+                  <Divider
+                    style={{ marginBottom: "10px", marginTop: "10px" }}
+                  />
+                  {messageList.map((message, idx) => {
+                    return (
+                      <div className="message-container" key={idx}>
                         <div
                           className={
-                            message.fromTeacher === true
-                              ? "content-teacher"
-                              : "content-student"
+                            loggedInTeacher
+                              ? message.fromTeacher === true
+                                ? "content-sender"
+                                : "content-reciever"
+                              : message.fromTeacher === true
+                              ? "content-reciever"
+                              : "content-sender"
                           }
                         >
                           <span className="message-text">{message.text}</span>
                           <span className="message-details">
-                            {getMessageDetails(message)}
+                            {getMessageDetailsFormat(
+                              message.created,
+                              message.name
+                            )}
                           </span>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="new-message-container">
-                <div className="send-message-buttons-div">
-                  <button
-                    disabled={
-                      (!loggedInTeacher && !messageSender) || !newMessage
-                        ? true
-                        : false
-                    }
-                    onClick={saveNewMessage}
-                    className="new-message-button"
-                  >
-                    הוסף הודעה חדשה
-                  </button>
-                  <select
-                    disabled={loggedInTeacher ? true : false}
-                    className="name-select"
-                    onChange={onMessageSenderChange}
-                  >
-                    {!loggedInTeacher ? (
-                      <>
-                        <option value="" disabled selected>
-                          בחר סטודנט
-                        </option>
-                        {project.studentsList.map((student) => {
-                          return (
-                            <option key={student.id} value={student.name}>
-                              {student.name}
-                            </option>
-                          );
-                        })}
-                      </>
-                    ) : (
-                      <option>אמיר קירש</option>
-                    )}
-                  </select>
+                    );
+                  })}
                 </div>
-                <textarea
-                  className="new-message-input"
-                  placeholder="כתוב הודעה חדשה..."
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                />
+                <div className="new-message-container">
+                  <div className="send-message-buttons-div">
+                    <button
+                      disabled={
+                        (!loggedInTeacher && !messageSender) || !newMessage
+                          ? true
+                          : false
+                      }
+                      onClick={saveNewMessage}
+                      className="new-message-button"
+                    >
+                      הוסף הודעה חדשה
+                    </button>
+                    <select
+                      disabled={loggedInTeacher ? true : false}
+                      className="name-select"
+                      onChange={onMessageSenderChange}
+                    >
+                      {!loggedInTeacher ? (
+                        <>
+                          <option value="" disabled selected>
+                            בחר סטודנט
+                          </option>
+                          {project.studentsList.map((student) => {
+                            return (
+                              <option
+                                key={student._id}
+                                value={`${student.firstName} ${student.lastName}`}
+                              >
+                                {`${student.firstName} ${student.lastName}`}
+                              </option>
+                            );
+                          })}
+                        </>
+                      ) : (
+                        <option>אמיר קירש</option>
+                      )}
+                    </select>
+                  </div>
+                  <textarea
+                    className="new-message-input"
+                    placeholder="כתוב הודעה חדשה..."
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="drawer-preview-container">
+                <div className="preview-header">תקציר הפרויקט</div>
+                <Divider style={{ marginBottom: "10px", marginTop: "10px" }} />
+                <div className="preview-text">{project.preview}</div>
               </div>
             </div>
-            <div className="drawer-preview-container">aaa</div>
+            {isTeacherMessageRequired && (
+              <div className="warning-message-wrapper">
+                <span className="leave-message-warning">
+                  ( יש להשאיר לתלמידים הודעה כדי לדחות את ההגשה )
+                </span>
+              </div>
+            )}
+            <div className="buttons-div">
+              <button
+                disabled={isTeacherMessageRequired ? true : false}
+                className="reject-button"
+              >
+                שמור והחזר לעריכת המגישים
+              </button>
+              <button onClick={closeDrawer} className="return-button">
+                חזור לעריכת הפרויקט
+              </button>
+            </div>
+            {/* <div ref={drawerEndRef}>a</div> */}
           </div>
         </Drawer>
         <button className="messages-button" onClick={openDrawer}>
@@ -341,8 +414,10 @@ const EditProject = () => {
         <label>קישור לגיטהאב</label>
         <input
           disabled={areFieldsDisabled ? true : false}
-          value={githubLink}
-          onChange={onGithubLinkChange}
+          value={project.githubLink}
+          onChange={(e) => {
+            setProject({ ...project, githubLink: e.target.value });
+          }}
           name="github-link"
           autoComplete="off"
         />
@@ -444,8 +519,10 @@ const EditProject = () => {
             <label>שם מלא</label>
             <input
               disabled={areFieldsDisabled ? true : false}
-              value={contactName}
-              onChange={(e) => setContactName(e.target.value)}
+              value={project.contactName}
+              onChange={(e) => {
+                setProject({ ...project, contactName: e.target.value });
+              }}
               name="contact-name"
               autoComplete="off"
             />
@@ -455,8 +532,10 @@ const EditProject = () => {
             <label>טלפון</label>
             <input
               disabled={areFieldsDisabled ? true : false}
-              value={contactPhone}
-              onChange={(e) => setContactPhone(e.target.value)}
+              value={project.contactPhone}
+              onChange={(e) => {
+                setProject({ ...project, contactPhone: e.target.value });
+              }}
               name="contact-phone"
               autoComplete="off"
             />
@@ -465,8 +544,10 @@ const EditProject = () => {
             <label>אימייל</label>
             <input
               disabled={areFieldsDisabled ? true : false}
-              value={contactEmail}
-              onChange={(e) => setContactEmail(e.target.value)}
+              value={project.contactEmail}
+              onChange={(e) => {
+                setProject({ ...project, contactEmail: e.target.value });
+              }}
               name="contact-email"
               autoComplete="off"
             />
@@ -494,8 +575,6 @@ const EditProject = () => {
           <button
             onClick={async () => {
               await updateProject();
-              //here push to teacher projects page
-              // history.push("/");
             }}
             disabled={!isValidForm ? true : false}
             className="save-only"
@@ -506,7 +585,7 @@ const EditProject = () => {
       )}
       {!loggedInTeacher && (
         <button
-          onClick={() => updateProject("pendingTeacherApproval", true)}
+          onClick={async () => updateProject("pendingTeacherApproval")}
           className="student-project-submit-button"
           disabled={
             project.status === "pendingTeacherApproval" || !isValidForm

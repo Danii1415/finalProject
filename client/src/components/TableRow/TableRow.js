@@ -5,9 +5,9 @@ import "./TableRow.scss";
 const TableRow = ({ project, linkType }) => {
   const history = useHistory();
   const onFieldClick = () => {
-    linkType === "display"
-      ? history.push("/displayproject")
-      : history.push("/editproject");
+    linkType === "display" || project.status === "approved"
+      ? history.push(`/DisplayProject/${project._id}`)
+      : history.push(`/editproject/${project._id}`);
   };
   const statusFormat =
     project.status === "pendingTeacherApproval"
@@ -22,17 +22,17 @@ const TableRow = ({ project, linkType }) => {
       </div>
       <div className="project-name">
         <span className="hover-white" onClick={onFieldClick}>
-          {project.projectName}
+          {project.title}
         </span>
       </div>
       <div className="course-content">
         <span className="hover-white" onClick={onFieldClick}>
-          {project.course}
+          {project.workshop.name}
         </span>
       </div>
       <div className="project-id-content">
         <span className="hover-white" onClick={onFieldClick}>
-          {project.id}
+          {project._id}
         </span>
       </div>
       {linkType === "edit" && (
