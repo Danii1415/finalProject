@@ -135,7 +135,6 @@ const TeacherProjects = () => {
     let approvedArr = [],
       pendingArr = [];
     if (teacherProjects.length) {
-      console.log(teacherProjects.length);
       approvedArr = teacherProjects.filter(
         (project) => project.status === "approved"
       );

@@ -22,13 +22,16 @@ const Navbar = () => {
         <img className="logo" src={logo} alt="logo" />
         <div className="links">
           {loggedInTeacher && (
-            <Link to="/1/Projects" className="link">
+            <button
+              onClick={() => history.push(`/${loggedInTeacher}/projects`)}
+              className="link"
+            >
               הקורסים שלי
-            </Link>
+            </button>
           )}
-          <Link to="/" className="link">
+          <button onClick={() => history.push("/")} className="link">
             כל הפרויקטים
-          </Link>
+          </button>
           {loggedInTeacher ? (
             <div className="button-link primary" onClick={onSignOut}>
               התנתק

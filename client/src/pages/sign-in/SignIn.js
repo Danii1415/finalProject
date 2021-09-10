@@ -13,6 +13,7 @@ const SignIn = () => {
   const [isValidForm, setIsValidForm] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
+  const [isSaveClicked, setIsSaveClicked] = useState(false);
 
   useEffect(() => {
     if (validateFields()) setIsValidForm(true);
@@ -25,6 +26,7 @@ const SignIn = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setIsSaveClicked(true);
     try {
       const res = await Axios.post("http://localhost:5000/teachers/validate/", {
         mail: email,
@@ -35,6 +37,7 @@ const SignIn = () => {
         history.push(`/${res.data._id}/projects`);
       }
     } catch (e) {
+      setIsSaveClicked(false);
       console.log(e);
     }
   };
@@ -60,7 +63,7 @@ const SignIn = () => {
         />
         <button
           className="signin-button"
-          // disabled={!isValidForm ? true : false}
+          disabled={!isValidForm || isSaveClicked ? true : false}
           onClick={(e) => {
             onSubmit(e);
           }}

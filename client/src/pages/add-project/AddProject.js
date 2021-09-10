@@ -20,6 +20,7 @@ const AddProject = () => {
   const [isValidForm, setIsValidForm] = useState(false);
   const [project, setProject] = useState(new ProjectToAdd());
   const [displayProjectSuccess, setDisplayProjectSuccess] = useState(false);
+  const [isSaveClicked, setIsSaveClicked] = useState(false);
 
   useEffect(() => {
     if (areFieldsValid()) setIsValidForm(true);
@@ -68,6 +69,7 @@ const AddProject = () => {
   };
 
   const onProjectSubmit = async () => {
+    setIsSaveClicked(true);
     try {
       const res = await Axios.post("http://localhost:5000/projects/", {
         title: project.title,
@@ -88,6 +90,7 @@ const AddProject = () => {
         setDisplayProjectSuccess(true);
       }
     } catch (e) {
+      setIsSaveClicked(false);
       console.log(e);
     }
   };
@@ -366,7 +369,7 @@ const AddProject = () => {
             </div>
           </div>
           <button
-            disabled={!isValidForm ? true : false}
+            disabled={!isValidForm || isSaveClicked ? true : false}
             onClick={onProjectSubmit}
             className="save-button"
           >
