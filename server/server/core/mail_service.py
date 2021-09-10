@@ -20,8 +20,8 @@ class Mail_Service(object):
 				</html>
 				"""
 
-		sender_address = 'uero2021.bet.with.your.friends@gmail.com'
-		sender_pass = 'bwyf2021'
+		sender_address = 'mta.final.project.system@gmail.com'
+		sender_pass = 'p0o9i8u7y6t5'
 		message = MIMEMultipart()
 		message['From'] = sender_address
 		message['To'] = receiver_address
