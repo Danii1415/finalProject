@@ -165,7 +165,7 @@ const AddProject = () => {
         <div className="submit-success-message">
           <div className="header">הפרויקט הוגש בהצלחה</div>
           <div className="description">
-            קישור לדף עריכת התקציר יישלח למגישים במייל
+            קישור לדף עריכת התקציר נשלח למגישים במייל
           </div>
         </div>
       ) : (
