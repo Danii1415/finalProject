@@ -1,5 +1,8 @@
+
+import os
+from flask import Flask, flash, request, redirect, url_for, session, jsonify
+from werkzeug.utils import secure_filename
 import random
-from flask import Flask, request, jsonify
 from pymongo import MongoClient
 from flask_cors import CORS, cross_origin
 from core import app
@@ -183,3 +186,25 @@ def get_msgs_by_project_id(project_id):
 def get_all_projects_of_teacher(teacher_id):
 		response = db_manager.get_all_projects_of_teacher(teacher_id)
 		return response, 200
+
+
+UPLOAD_FOLDER = '/app/projects_pictures/'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+@app.route('/upload', methods=['POST'])
+def fileUpload():
+    target=os.path.join(UPLOAD_FOLDER,'test_docs')
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    file = request.files['file'] 
+    filename = secure_filename(file.filename)
+    if filename[-4:] in ALLOWED_EXTENSIONS:
+    	destination="/".join([target, filename])
+    	file.save(destination)
+    	#session['uploadFilePath']=destination
+    	response="Success to upload image"
+    	return jsonify(response), 201
+    response="Failed to upload image"
+	return jsonify(response), 404 
