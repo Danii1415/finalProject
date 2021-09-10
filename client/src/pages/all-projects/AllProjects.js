@@ -25,7 +25,6 @@ const AllProjects = () => {
   const history = useHistory();
 
   const handleViewChange = (e, nextView) => {
-    console.log(nextView);
     setView(nextView);
   };
   const projects = [

@@ -31,7 +31,7 @@ const EditProject = () => {
   const history = useHistory();
   const [isTeacherMessageRequired, setIsTeacherMessageRequired] =
     useState(true);
-
+  const [isSaveClicked, setIsSaveClicked] = useState(false);
   // const scrollToBottom = () => {
   //   drawerEndRef.current?.scrollIntoView({ behavior: "smooth" });
   // };
@@ -77,7 +77,6 @@ const EditProject = () => {
             _id,
             msgs,
           } = res.data;
-          console.log(res.data);
           // check if fields like (status works and not status:status)
           setProject({
             ...project,
@@ -120,7 +119,7 @@ const EditProject = () => {
           contactPhone: project.contactPhone,
           lastUpdateByStudent: loggedInTeacher
             ? project.lastUpdateByStudent
-            : Date.now(),
+            : Date.now().toString(),
         }
       );
       if (res && res.data) {
@@ -130,6 +129,7 @@ const EditProject = () => {
         }
       }
     } catch (e) {
+      setIsSaveClicked(false);
       //error message with modal.
     }
   };
@@ -153,8 +153,10 @@ const EditProject = () => {
   };
 
   const saveAndReject = async () => {
-    if (isTeacherMessageRequired) openDrawer();
-    else await updateProject("pendingStudentsEdit");
+    if (isTeacherMessageRequired) {
+      openDrawer();
+      setIsSaveClicked(false);
+    } else await updateProject("pendingStudentsEdit");
   };
 
   const isStudentListValid = () => {
@@ -349,7 +351,7 @@ const EditProject = () => {
                 <div className="preview-text">{project.preview}</div>
               </div>
             </div>
-            {isTeacherMessageRequired && (
+            {loggedInTeacher && isTeacherMessageRequired && (
               <div className="warning-message-wrapper">
                 <span className="leave-message-warning">
                   ( יש להשאיר לתלמידים הודעה כדי לדחות את ההגשה )
@@ -357,12 +359,19 @@ const EditProject = () => {
               </div>
             )}
             <div className="buttons-div">
-              <button
-                disabled={isTeacherMessageRequired ? true : false}
-                className="reject-button"
-              >
-                שמור והחזר לעריכת המגישים
-              </button>
+              {loggedInTeacher && (
+                <button
+                  onClick={saveAndReject}
+                  disabled={
+                    isTeacherMessageRequired || isSaveClicked || !isValidForm
+                      ? true
+                      : false
+                  }
+                  className="reject-button"
+                >
+                  שמור והחזר לעריכת המגישים
+                </button>
+              )}
               <button onClick={closeDrawer} className="return-button">
                 חזור לעריכת הפרויקט
               </button>
@@ -558,7 +567,7 @@ const EditProject = () => {
         <div className="teacher-project-approval">
           <button
             onClick={() => updateProject("approved")}
-            disabled={!isValidForm ? true : false}
+            disabled={!isValidForm || isSaveClicked ? true : false}
             className="approval-button"
           >
             שמור ואשר הגשה
@@ -566,7 +575,7 @@ const EditProject = () => {
           {project.status === "pendingTeacherApproval" && (
             <button
               onClick={() => saveAndReject()}
-              disabled={!isValidForm ? true : false}
+              disabled={!isValidForm || isSaveClicked ? true : false}
               className="decline-button"
             >
               שמור והחזר לעריכת המגישים
@@ -576,7 +585,7 @@ const EditProject = () => {
             onClick={async () => {
               await updateProject();
             }}
-            disabled={!isValidForm ? true : false}
+            disabled={!isValidForm || isSaveClicked ? true : false}
             className="save-only"
           >
             שמור בלבד
@@ -588,7 +597,9 @@ const EditProject = () => {
           onClick={async () => updateProject("pendingTeacherApproval")}
           className="student-project-submit-button"
           disabled={
-            project.status === "pendingTeacherApproval" || !isValidForm
+            project.status === "pendingTeacherApproval" ||
+            !isValidForm ||
+            isSaveClicked
               ? true
               : false
           }

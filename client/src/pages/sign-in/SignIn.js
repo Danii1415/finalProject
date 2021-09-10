@@ -33,8 +33,8 @@ const SignIn = () => {
         password: password,
       });
       if (res && res.data) {
-        dispatch(teacherLogin(res.data._id));
-        history.push(`/${res.data._id}/projects`);
+        dispatch(teacherLogin(res.data));
+        history.push(`/${res.data}/projects`);
       }
     } catch (e) {
       setIsSaveClicked(false);

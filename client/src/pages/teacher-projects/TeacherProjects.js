@@ -12,110 +12,28 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ProjectBox from "../../components/ProjectBox/ProjectBox";
 import "./TeacherProjects.scss";
 import ProjectTable from "../../components/ProjectTable/ProjectTable";
-import { Checkbox } from "@material-ui/core";
+import { Checkbox, withStyles } from "@material-ui/core";
 import { useParams } from "react-router";
 import Axios from "axios";
 
-// const initialProjects = [
-//   {
-//     projectName: "Face Recognition System",
-//     course: "יישומי רשת",
-//     projectImg: logoThree,
-//     id: 3424324,
-//     status: "pendingTeacherApproval",
-//   },
-//   {
-//     projectName: "פרויקט הנדסת תוכנה",
-//     course: "הנדסת תוכנה",
-//     projectImg: logo,
-//     id: 4564564,
-//     status: "pendingStudentsEdit",
-//   },
-//   {
-//     projectName: "Our Amazing Project!",
-//     course: "HomeCommunications",
-//     projectImg: logoFour,
-//     id: 3458677,
-//     status: "pendingTeacherApproval",
-//   },
-//   {
-//     projectName: "Face Recognition System",
-//     course: "יישומי רשת",
-//     projectImg: logoThree,
-//     id: 3424324,
-//     status: "pendingTeacherApproval",
-//   },
-//   {
-//     projectName: "פרויקט הנדסת תוכנה",
-//     course: "הנדסת תוכנה",
-//     projectImg: logo,
-//     id: 4564564,
-//     status: "pendingStudentsEdit",
-//   },
-//   {
-//     projectName: "Our Amazing Project!",
-//     course: "HomeCommunications",
-//     projectImg: logoFour,
-//     id: 3458677,
-//     status: "pendingTeacherApproval",
-//   },
-//   {
-//     projectName: "Face Recognition System",
-//     course: "יישומי רשת",
-//     projectImg: logoThree,
-//     id: 3424324,
-//     status: "pendingTeacherApproval",
-//   },
-//   {
-//     projectName: "פרויקט הנדסת תוכנה",
-//     course: "הנדסת תוכנה",
-//     projectImg: logo,
-//     id: 4564564,
-//     status: "pendingStudentsEdit",
-//   },
-//   {
-//     projectName: "Our Amazing Project!",
-//     course: "HomeCommunications",
-//     projectImg: logoFour,
-//     id: 3458677,
-//     status: "pendingTeacherApproval",
-//   },
-// ];
-// const initialApprovedProjects = [
-//   {
-//     projectName: "Face Recognition System",
-//     course: "יישומי רשת",
-//     projectImg: logoThree,
-//     id: 3424324,
-//     status: "approved",
-//   },
-//   {
-//     projectName: "פרויקט הנדסת תוכנה",
-//     course: "הנדסת תוכנה",
-//     projectImg: logo,
-//     id: 4564564,
-//     status: "approved",
-//   },
-//   {
-//     projectName: "Our Amazing Project!",
-//     course: "HomeCommunications",
-//     projectImg: logoFour,
-//     id: 3458677,
-//     status: "approved",
-//   },
-//   {
-//     projectName: "Face Recognition System",
-//     course: "יישומי רשת",
-//     projectImg: logoThree,
-//     id: 3424324,
-//     status: "approved",
-//   },
-// ];
+const GreenCheckbox = withStyles({
+  root: {
+    color: "#028cb7",
+    "&$checked": {
+      color: "#028cb7",
+    },
+  },
+  checked: {},
+})((props) => <Checkbox color="default" {...props} />);
+
 const TeacherProjects = () => {
   const { teacherId } = useParams();
   const [teacherProjects, setTeacherProjects] = useState([]);
+  const [filteredProjects, setFilteredProjects] = useState([]);
   const [approvedProjects, setApprovedProjects] = useState([]);
   const [pendingProjects, setPendingProjects] = useState([]);
+  const [coursesCheckboxes, setCoursesCheckboxes] = useState([]);
+  const [currDisplayedCourses, setCurrDisplayedCourses] = useState([]);
 
   useEffect(() => {
     const getTeacherProjects = async () => {
@@ -124,7 +42,18 @@ const TeacherProjects = () => {
           `http://localhost:5000/projects/teacher/${teacherId}`
         );
         if (res && res.data) {
+          const coursesSet = new Set();
+          for (const project of res.data) {
+            coursesSet.add(project.workshop.name);
+          }
+          setCoursesCheckboxes(
+            [...coursesSet].map((courseName) => {
+              return { name: courseName, checked: true };
+            })
+          );
+          setCurrDisplayedCourses([...coursesSet]);
           setTeacherProjects(res.data);
+          setFilteredProjects(res.data);
         }
       } catch (e) {}
     };
@@ -134,11 +63,11 @@ const TeacherProjects = () => {
   useEffect(() => {
     let approvedArr = [],
       pendingArr = [];
-    if (teacherProjects.length) {
-      approvedArr = teacherProjects.filter(
+    if (filteredProjects.length) {
+      approvedArr = filteredProjects.filter(
         (project) => project.status === "approved"
       );
-      pendingArr = teacherProjects.filter(
+      pendingArr = filteredProjects.filter(
         (project) => project.status !== "approved"
       );
     }
@@ -156,17 +85,38 @@ const TeacherProjects = () => {
     }
     setPendingProjects(pendingArr);
     setApprovedProjects(approvedArr);
-  }, [teacherProjects]);
+  }, [filteredProjects]);
+
+  useEffect(() => {
+    if (teacherProjects.length) {
+      setFilteredProjects(
+        teacherProjects.filter((project) => {
+          return currDisplayedCourses.indexOf(project.workshop.name) > -1;
+        })
+      );
+    }
+  }, [currDisplayedCourses]);
 
   const loggedInTeacher = useSelector(
     (state) => state.security.loggedInTeacher
   );
 
-  // const [courses, setCourses] = useState([
-  //   { checked: true, name: "יישומי רשת" },
-  //   { checked: true, name: "הנדסת תוכנה" },
-  //   { checked: true, name: "HomeCommunications" },
-  // ]);
+  const handleCheckboxChange = (e, idx) => {
+    const changedCheckbox = coursesCheckboxes.find(
+      (course) => course.name === e.target.name
+    );
+    const _coursesCheckboxes = [
+      ...coursesCheckboxes.slice(0, idx),
+      { ...changedCheckbox, checked: !changedCheckbox.checked },
+      ...coursesCheckboxes.slice(idx + 1),
+    ];
+    setCoursesCheckboxes(_coursesCheckboxes);
+    setCurrDisplayedCourses(
+      _coursesCheckboxes
+        .filter((checkbox) => checkbox.checked === true)
+        .map((course) => course.name)
+    );
+  };
 
   return (
     <>
@@ -175,14 +125,18 @@ const TeacherProjects = () => {
           <div className="list-display-container">
             <div className="title-container">
               <div className="title">הגשות שלא אושרו</div>
-              {/* {courses.map((course) => {
+              {coursesCheckboxes.map((course, idx) => {
                 return (
                   <>
-                    <span className="checkbox-text">{course}</span>
-                    <Checkbox checked={course.name} />
+                    <span className="checkbox-text">{course.name}</span>
+                    <GreenCheckbox
+                      checked={course.checked}
+                      onChange={(e) => handleCheckboxChange(e, idx)}
+                      name={course.name}
+                    />
                   </>
                 );
-              })} */}
+              })}
             </div>
             {pendingProjects.length ? (
               <ProjectTable projects={pendingProjects} linkType="edit" />
