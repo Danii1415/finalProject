@@ -181,6 +181,13 @@
     justify-content: space-between;
     .remove-img {
       background-color: #05a2b7;
+      &:disabled {
+        background-color: #cccccc;
+        cursor: default;
+      }
+      &:disabled:hover {
+        background-color: #cccccc;
+      }
     }
     .remove-img:hover {
       background-color: #068090;
@@ -222,6 +229,13 @@
     font-size: 18px;
     font-weight: 600;
     margin: 0;
+    &.grey {
+      background-color: #cccccc;
+      cursor: default;
+      &:hover {
+        background-color: #cccccc;
+      }
+    }
   }
   .custom-file-upload:hover {
     background-color: #068090;

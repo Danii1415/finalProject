@@ -1,3 +1,5 @@
+//project number and not id
+
 import React, { useEffect, useState } from "react";
 import "./DisplayProject.scss";
 import { getStudentsNamesFormat } from "../../utils";
@@ -67,12 +69,14 @@ const DisplayProject = () => {
           <div className="content">{project.courseName}</div>
           <div className="title">:שם הסדנה</div>
         </div>
-        <div className="info-div">
-          <a href={"www.github.com"} className="content">
-            {project.githubLink}
-          </a>
-          <div className="title">:github</div>
-        </div>
+        {project.githubLink && (
+          <div className="info-div">
+            <a href={"www.github.com"} className="content">
+              {project.githubLink}
+            </a>
+            <div className="title">:github</div>
+          </div>
+        )}
         <div className="preview-container">
           <div className="preview-header">:תקציר הפרויקט</div>
           <div className="preview-content">{project.preview}</div>

@@ -15,43 +15,6 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const [isSaveClicked, setIsSaveClicked] = useState(false);
 
-  const [imgUrl, setImgUrl] = useState("");
-  const [currFile, setCurrFile] = useState("");
-  const [fileName, setFileName] = useState("Daniel");
-
-  const onInputChange = (e) => {
-    setCurrFile(e.target.files && e.target.files[0]);
-  };
-
-  const handleUploadImage = async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("file", currFile);
-    formData.append("filename", fileName);
-    try {
-      Axios({
-        method: "post",
-        url: "http://localhost:5000/upload",
-        data: formData,
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      // const res = await Axios.post("http://localhost:5000/upload", {
-      //   body: data,
-      // });
-    } catch (e) {
-      console.log(e);
-    }
-    // fetch("http://localhost:8000/upload", {
-    //   method: "POST",
-    //   body: data,
-    // }).then((response) => {
-    //   response.json().then((body) => {
-    //     this.setState({ imageURL: `http://localhost:8000/${body.file}` });
-    //   });
-    // });
-  };
-
   useEffect(() => {
     if (validateFields()) setIsValidForm(true);
     else setIsValidForm(false);
@@ -81,11 +44,6 @@ const SignIn = () => {
 
   return (
     <div className="signin-container">
-      <img src={imgUrl} alt="img" />
-      <form onSubmit={handleUploadImage}>
-        <input onChange={onInputChange} type="file" />
-        <input type="submit" />
-      </form>
       <div className="page-title">התחבר למערכת</div>
       <form className="signin-form">
         <input

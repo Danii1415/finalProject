@@ -18,7 +18,10 @@ const TableRow = ({ project, linkType }) => {
   return (
     <div className="content-row">
       <div className="img-wrapper">
-        <img src={project.projectImg} className="img-name-content" />
+        <img
+          src={`http://localhost:5000/get_image/${project._id}/`}
+          className="img-name-content"
+        />
       </div>
       <div className="project-name">
         <span className="hover-white" onClick={onFieldClick}>
