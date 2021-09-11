@@ -47,7 +47,7 @@ class Project(object):
         # Validator will throw error if invalid
         self.validator.validate(project, self.fields, self.create_required_fields, self.create_optional_fields)
         res = self.db.insert(project, self.collection_name)
-        return "Inserted Id " + res
+        return res
 
     def find(self, project):  # find all
         return self.db.find(project, self.collection_name)
