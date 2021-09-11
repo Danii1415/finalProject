@@ -26,16 +26,26 @@ const DisplayProject = () => {
           `http://localhost:5000/projects/${projectId}/`
         );
         if (res && res.data) {
-          const { title, preview, studentList, _id, githubLink } = res.data;
+          const {
+            title,
+            preview,
+            studentList,
+            number,
+            githubLink,
+            imageIsOld,
+            imgLink,
+          } = res.data;
           setProject({
             ...project,
             title: title,
             preview: preview,
-            _id: _id,
+            number: number,
             students: studentList,
             githubLink: githubLink,
             teacherName: res.data.teacher.name,
             courseName: res.data.workshop.name,
+            imgLink: imgLink,
+            imageIsOld: imageIsOld,
           });
         }
       } catch {}
@@ -47,12 +57,19 @@ const DisplayProject = () => {
     <div className="project-display-container">
       <div className="body">
         <div className="title-img-div">
-          <img className="project-img" src={logoThree} />
+          <img
+            className="project-img"
+            src={
+              project.imageIsOld
+                ? project.imgLink
+                : `http://localhost:5000/get_image/${project._id}/`
+            }
+          />
           <div className="project-name">{project.title}</div>
         </div>
 
         <div className="info-div">
-          <div className="content">{project._id}</div>
+          <div className="content">{project.number}</div>
           <div className="title">:מספר פרויקט</div>
         </div>
         <div className="info-div">
@@ -79,7 +96,7 @@ const DisplayProject = () => {
         )}
         <div className="preview-container">
           <div className="preview-header">:תקציר הפרויקט</div>
-          <div className="preview-content">{project.preview}</div>
+          <p className="preview-content">{project.preview}</p>
         </div>
       </div>
     </div>

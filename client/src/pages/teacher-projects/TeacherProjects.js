@@ -35,9 +35,8 @@ const TeacherProjects = () => {
         if (res && res.data) {
           const coursesSet = new Set();
           for (const project of res.data) {
-            coursesSet.add(project.workshop.name);
+            coursesSet.add(project.workshop_name);
           }
-          console.log(res.data);
           setCoursesCheckboxes(
             [...coursesSet].map((courseName) => {
               return { name: courseName, checked: true };
@@ -67,12 +66,12 @@ const TeacherProjects = () => {
       pendingArr = pendingArr.sort(
         (a, b) =>
           b.status.localeCompare(a.status) ||
-          b.workshop.name.localeCompare(a.workshop.name)
+          b.workshop_name.localeCompare(a.workshop_name)
       );
     }
     if (approvedArr.length) {
       approvedArr = approvedArr.sort((a, b) =>
-        b.workshop.name.localeCompare(a.workshop.name)
+        b.workshop_name.localeCompare(a.workshop_name)
       );
     }
     setPendingProjects(pendingArr);
@@ -83,7 +82,7 @@ const TeacherProjects = () => {
     if (teacherProjects.length) {
       setFilteredProjects(
         teacherProjects.filter((project) => {
-          return currDisplayedCourses.indexOf(project.workshop.name) > -1;
+          return currDisplayedCourses.indexOf(project.workshop_name) > -1;
         })
       );
     }
@@ -117,18 +116,19 @@ const TeacherProjects = () => {
           <div className="list-display-container">
             <div className="title-container">
               <div className="title">הגשות שלא אושרו</div>
-              {coursesCheckboxes.map((course, idx) => {
-                return (
-                  <>
-                    <span className="checkbox-text">{course.name}</span>
-                    <GreenCheckbox
-                      checked={course.checked}
-                      onChange={(e) => handleCheckboxChange(e, idx)}
-                      name={course.name}
-                    />
-                  </>
-                );
-              })}
+              {coursesCheckboxes.length > 1 &&
+                coursesCheckboxes.map((course, idx) => {
+                  return (
+                    <>
+                      <span className="checkbox-text">{course.name}</span>
+                      <GreenCheckbox
+                        checked={course.checked}
+                        onChange={(e) => handleCheckboxChange(e, idx)}
+                        name={course.name}
+                      />
+                    </>
+                  );
+                })}
             </div>
             {pendingProjects.length ? (
               <ProjectTable projects={pendingProjects} linkType="edit" />

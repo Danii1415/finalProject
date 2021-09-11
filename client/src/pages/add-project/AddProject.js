@@ -64,7 +64,6 @@ const AddProject = () => {
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       });
-      console.log(res);
     } catch (e) {
       console.log(e);
     }
@@ -115,6 +114,7 @@ const AddProject = () => {
         contactName: project.contactName,
         contactPhone: project.contactPhone,
         lastUpdateByStudent: Date.now().toString(),
+        imageIsOld: false,
       });
       // const res = await Axios.post("http://localhost:5000/projects/", project);
       if (res && res.data) {

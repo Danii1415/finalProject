@@ -9,7 +9,11 @@ const ProjectBox = ({ project }) => {
         <div className="figure">
           <img
             className="image"
-            src={`http://localhost:5000/get_image/${project._id}/`}
+            src={
+              project.imageIsOld
+                ? project.imgLink
+                : `http://localhost:5000/get_image/${project._id}/`
+            }
           />
         </div>
         <Link
@@ -22,7 +26,7 @@ const ProjectBox = ({ project }) => {
           <Chip
             className="course-name"
             style={{ color: "#05a2b7", border: "1px solid #05a2b7" }}
-            label={project.course}
+            label={project.workshop_name}
             size="small"
             color="primary"
             variant="outlined"

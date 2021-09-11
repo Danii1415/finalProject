@@ -77,6 +77,7 @@ const EditProject = () => {
             lastUpdateByStudent,
             _id,
             msgs,
+            imageIsOld,
           } = res.data;
           // check if fields like (status works and not status:status)
           setProject({
@@ -95,6 +96,7 @@ const EditProject = () => {
             lastUpdateByStudent: lastUpdateByStudent,
             teacherId: res.data.teacher._id,
             _id: _id,
+            imageIsOld: imageIsOld,
           });
           setMessageList(msgs.reverse());
           setCurrStudentidx(studentList.length - 1);
@@ -109,7 +111,6 @@ const EditProject = () => {
     const formData = new FormData();
     formData.append("file", currFile);
     formData.append("filename", fileName);
-    console.log(fileName);
     try {
       const res = await Axios({
         method: "post",
@@ -139,6 +140,7 @@ const EditProject = () => {
           lastUpdateByStudent: loggedInTeacher
             ? project.lastUpdateByStudent
             : Date.now().toString(),
+          imageIsOld: project.imageIsOld,
         }
       );
       if (res && res.data) {
@@ -236,7 +238,6 @@ const EditProject = () => {
   const onImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       let img = e.target.files[0];
-      console.log(e.target.files[0]);
       setImage(URL.createObjectURL(img));
       setCurrFile(e.target.files[0]);
     }
@@ -277,6 +278,7 @@ const EditProject = () => {
   };
 
   const removeImage = () => {
+    setProject({ ...project, imageIsOld: false });
     setCurrImgLink("");
     setImage("");
   };
@@ -524,7 +526,9 @@ const EditProject = () => {
       <div className="add-img-container">
         <img
           src={
-            image
+            project.imageIsOld
+              ? project.imgLink
+              : image
               ? image
               : currImgLink
               ? `http://localhost:5000/get_image/${project._id}/`

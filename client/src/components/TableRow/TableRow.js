@@ -19,7 +19,11 @@ const TableRow = ({ project, linkType }) => {
     <div className="content-row">
       <div className="img-wrapper">
         <img
-          src={`http://localhost:5000/get_image/${project._id}/`}
+          src={
+            project.imageIsOld
+              ? project.imgLink
+              : `http://localhost:5000/get_image/${project._id}/`
+          }
           className="img-name-content"
         />
       </div>
@@ -30,12 +34,12 @@ const TableRow = ({ project, linkType }) => {
       </div>
       <div className="course-content">
         <span className="hover-white" onClick={onFieldClick}>
-          {project.workshop.name}
+          {project.workshop_name}
         </span>
       </div>
       <div className="project-id-content">
         <span className="hover-white" onClick={onFieldClick}>
-          {project._id}
+          {project.number}
         </span>
       </div>
       {linkType === "edit" && (
@@ -55,7 +59,7 @@ const TableRow = ({ project, linkType }) => {
       )}
       {linkType === "display" && (
         <div className="last-content">
-          <span className="hover-white">{project.teacherName}</span>
+          <span className="hover-white">{project.teacher_name}</span>
         </div>
       )}
     </div>
