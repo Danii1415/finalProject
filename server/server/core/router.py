@@ -1,6 +1,6 @@
 
 import os
-from flask import Flask, flash, request, redirect, url_for, session, jsonify
+from flask import Flask, flash, request, redirect, url_for, jsonify, send_file
 from werkzeug.utils import secure_filename
 import random
 from pymongo import MongoClient
@@ -33,7 +33,6 @@ mail_service = Mail_Service()
 @app.route('/')
 def index():
 	mail_service.send_mail("levsagiv@gmail.com", "Test - subject", "Test - content")
-
 	return db_manager.index()
 
 @app.route('/init_db')
@@ -193,18 +192,34 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-@app.route('/upload', methods=['POST'])
+@app.route('/upload/', methods=['POST'])
 def fileUpload():
     target=os.path.join(UPLOAD_FOLDER,'test_docs')
     if not os.path.isdir(target):
         os.mkdir(target)
     file = request.files['file'] 
-    filename = secure_filename(file.filename)
-    if filename[-4:] in ALLOWED_EXTENSIONS:
+    filename = request.form.get('filename')
+    if filename[-3:] in ALLOWED_EXTENSIONS or filename[-4:] in ALLOWED_EXTENSIONS:
     	destination="/".join([target, filename])
     	file.save(destination)
-    	#session['uploadFilePath']=destination
-    	response="Success to upload image"
+    	response=filename
+    	project_id = os.path.splitext(filename)[0]
+    	db_manager.update_project(project_id, {"imgLink":filename})
     	return jsonify(response), 201
     response="Failed to upload image"
-	return jsonify(response), 404 
+    return jsonify(response), 404
+
+
+@app.route('/get_image/<string:project_id>/')
+def get_image(project_id):
+	target = os.path.join(UPLOAD_FOLDER,'test_docs')
+	if not os.path.isdir(target):
+		response = "Failed to get image"
+		return jsonify(response), 404
+	filename = db_manager.get_project_by_id(project_id)["imgLink"]
+	destination = "/".join([target, filename])
+	if not os.path.isfile(destination):
+		response = "Failed to get image"
+		return jsonify(response), 404
+	extension = str(os.path.splitext(destination)[1])
+	return send_file(destination, mimetype='image/' + extension[1:])
