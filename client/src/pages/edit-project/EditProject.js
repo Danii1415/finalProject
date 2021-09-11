@@ -1,13 +1,13 @@
 //fix hours and minutes 1 digit sometimes
 //fix scroll to bottom of drawer.
+// project number property
 
 import React, { useEffect, useRef } from "react";
-import { Divider, Fab, Drawer } from "@material-ui/core";
+import { Divider, Drawer } from "@material-ui/core";
 import { ProjectToEdit } from "../../utils";
 import { useState } from "react";
 import "./EditProject.scss";
 import { useSelector } from "react-redux";
-import logoThree from "../../images/dd.png";
 import { Student } from "../../utils";
 import StudentForm from "../../components/student-form/StudentForm";
 import Axios from "axios";
@@ -18,7 +18,6 @@ const EditProject = () => {
   const { projectId } = useParams();
   const [image, setImage] = useState("");
   const [currStudentidx, setCurrStudentidx] = useState(0);
-  // const [messageList, setMesPsageList] = useState(initialMessages);
   const [messageList, setMessageList] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [messageSender, setMessageSender] = useState("");
@@ -29,9 +28,11 @@ const EditProject = () => {
   const [isValidForm, setIsValidForm] = useState(true);
   const drawerEndRef = useRef(null);
   const history = useHistory();
+  const [currImgLink, setCurrImgLink] = useState("");
   const [isTeacherMessageRequired, setIsTeacherMessageRequired] =
     useState(true);
   const [isSaveClicked, setIsSaveClicked] = useState(false);
+  const [currFile, setCurrFile] = useState("");
   // const scrollToBottom = () => {
   //   drawerEndRef.current?.scrollIntoView({ behavior: "smooth" });
   // };
@@ -97,11 +98,29 @@ const EditProject = () => {
           });
           setMessageList(msgs.reverse());
           setCurrStudentidx(studentList.length - 1);
+          setCurrImgLink(imgLink);
         }
       } catch {}
     };
     getProject();
   }, []);
+
+  const handleUploadImage = async (fileName) => {
+    const formData = new FormData();
+    formData.append("file", currFile);
+    formData.append("filename", fileName);
+    console.log(fileName);
+    try {
+      const res = await Axios({
+        method: "post",
+        url: "http://localhost:5000/upload/",
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const updateProject = async (newStatus = project.status) => {
     try {
@@ -123,6 +142,10 @@ const EditProject = () => {
         }
       );
       if (res && res.data) {
+        if (currFile) {
+          const split = currFile.name.split(".");
+          await handleUploadImage(`${project._id}.${split[split.length - 1]}`);
+        }
         setProject({ ...project, status: newStatus });
         if (loggedInTeacher) {
           history.push(`/${project.teacherId}/projects`);
@@ -142,9 +165,8 @@ const EditProject = () => {
   const areFieldsValid = () => {
     return (
       project.title &&
-      // project.imgLink &&
+      (currImgLink || image) &&
       project.preview &&
-      // project.githubLink &&
       project.contactEmail &&
       project.contactName &&
       project.contactPhone &&
@@ -214,7 +236,9 @@ const EditProject = () => {
   const onImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       let img = e.target.files[0];
+      console.log(e.target.files[0]);
       setImage(URL.createObjectURL(img));
+      setCurrFile(e.target.files[0]);
     }
   };
 
@@ -250,6 +274,11 @@ const EditProject = () => {
 
   const onMessageSenderChange = (e) => {
     setMessageSender(e.target.value);
+  };
+
+  const removeImage = () => {
+    setCurrImgLink("");
+    setImage("");
   };
 
   const areFieldsDisabled =
@@ -430,6 +459,7 @@ const EditProject = () => {
           name="github-link"
           autoComplete="off"
         />
+        <span className="text-helper">אופציונלי</span>
       </div>
       <div className="preview-container">
         <label>עריכת התקציר</label>
@@ -492,28 +522,44 @@ const EditProject = () => {
         )}
       </div>
       <div className="add-img-container">
-        <img src={logoThree} className="left-side" />
+        <img
+          src={
+            image
+              ? image
+              : currImgLink
+              ? `http://localhost:5000/get_image/${project._id}/`
+              : ""
+          }
+          className="left-side"
+        />
         <div className="right-side">
           <label>תמונת הפרויקט</label>
           <div className="image-buttons">
             <label
               className={
-                areFieldsDisabled
+                areFieldsDisabled || currImgLink || image
                   ? "custom-file-upload disabled"
                   : "custom-file-upload"
               }
             >
               <input
-                disabled={areFieldsDisabled ? true : false}
+                disabled={
+                  areFieldsDisabled || currImgLink || image ? true : false
+                }
                 onChange={onImageChange}
                 type="file"
               />
               הוסף תמונה
             </label>
             <button
-              disabled={areFieldsDisabled ? true : false}
+              onClick={removeImage}
+              disabled={
+                areFieldsDisabled || (!currImgLink && !image) ? true : false
+              }
               className={
-                areFieldsDisabled ? "remove-img disabled" : "remove-img"
+                areFieldsDisabled || (!currImgLink && !image)
+                  ? "remove-img disabled"
+                  : "remove-img"
               }
             >
               הסר תמונה

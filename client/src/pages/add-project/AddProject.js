@@ -1,4 +1,5 @@
-//photos and missing fields.
+//check why removing photo and uploading again not working
+
 //change select focus
 //before final submit make post request with only project
 
@@ -7,7 +8,6 @@ import "./AddProject.scss";
 import { MenuItem, Select } from "@material-ui/core";
 import { ProjectToAdd, Student } from "../../utils";
 import StudentForm from "../../components/student-form/StudentForm";
-import logoThree from "../../images/dd.png";
 import Axios from "axios";
 
 const AddProject = () => {
@@ -21,6 +21,7 @@ const AddProject = () => {
   const [project, setProject] = useState(new ProjectToAdd());
   const [displayProjectSuccess, setDisplayProjectSuccess] = useState(false);
   const [isSaveClicked, setIsSaveClicked] = useState(false);
+  const [currFile, setCurrFile] = useState("");
 
   useEffect(() => {
     if (areFieldsValid()) setIsValidForm(true);
@@ -38,6 +39,36 @@ const AddProject = () => {
     };
     getTeacherData();
   }, []);
+
+  const onImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      let img = e.target.files[0];
+      setImage(URL.createObjectURL(img));
+      setCurrFile(e.target.files[0]);
+    }
+  };
+
+  const removePictureClick = () => {
+    setImage("");
+    setCurrFile("");
+  };
+
+  const handleUploadImage = async (fileName) => {
+    const formData = new FormData();
+    formData.append("file", currFile);
+    formData.append("filename", fileName);
+    try {
+      const res = await Axios({
+        method: "post",
+        url: "http://localhost:5000/upload/",
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      console.log(res);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const isStudentListValid = () => {
     for (const student of project.studentsList) {
@@ -58,7 +89,7 @@ const AddProject = () => {
       project.title &&
       project.teacherId &&
       project.workshopId &&
-      // project.imgLink &&
+      image &&
       project.preview &&
       project.status &&
       isStudentListValid() &&
@@ -76,7 +107,7 @@ const AddProject = () => {
         teacherId: project.teacherId,
         workshopId: project.workshopId,
         studentList: project.studentsList,
-        imgLink: "linkkkk",
+        imgLink: "",
         preview: project.preview,
         status: project.status,
         githubLink: project.githubLink,
@@ -87,23 +118,14 @@ const AddProject = () => {
       });
       // const res = await Axios.post("http://localhost:5000/projects/", project);
       if (res && res.data) {
+        const split = currFile.name.split(".");
+        await handleUploadImage(`${res.data}.${split[split.length - 1]}`);
         setDisplayProjectSuccess(true);
       }
     } catch (e) {
       setIsSaveClicked(false);
       console.log(e);
     }
-  };
-
-  const onImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      let img = e.target.files[0];
-      setImage(URL.createObjectURL(img));
-    }
-  };
-
-  const removePictureClick = () => {
-    setImage(null);
   };
 
   const selectedTeacherChange = (e) => {
@@ -317,15 +339,29 @@ const AddProject = () => {
             />
           </div>
           <div className="add-img-container">
-            <img src={logoThree} className="left-side" />
+            <img src={image} className="left-side" />
             <div className="right-side">
               <label>תמונת הפרויקט</label>
               <div className="image-buttons">
-                <label className="custom-file-upload">
-                  <input onChange={onImageChange} type="file" />
+                <label
+                  className={
+                    image ? "custom-file-upload grey" : "custom-file-upload"
+                  }
+                >
+                  <input
+                    disabled={image ? true : false}
+                    onChange={onImageChange}
+                    type="file"
+                  />
                   הוסף תמונה
                 </label>
-                <button className="remove-img">הסר תמונה</button>
+                <button
+                  disabled={!image ? true : false}
+                  onClick={removePictureClick}
+                  className="remove-img"
+                >
+                  הסר תמונה
+                </button>
               </div>
             </div>
           </div>

@@ -12,6 +12,7 @@ import Axios from "axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { teacherLogin } from "./redux/securitySlice";
+import { SettingsRemote } from "@material-ui/icons";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -19,40 +20,11 @@ const App = () => {
   // useEffect(() => {
   //   const postMessage = async () => {
   //     try {
-  //       const res = await Axios.post("http://localhost:5000/msg/", {
-  //         name: "דניאל כפיר",
-  //         text: "הודעה שעובדת",
-  //         projectId: "6138c4dce63c661fbca2922e",
-  //         fromTeacher: false,
-  //       });
-  //       console.log(res.data);
-  //     } catch (e) {
-  //       // try {
-  //       //   const res = await Axios.post("http://localhost:5000/projects/", {
-  //       //     title: "project200",
-  //       //     teacherId: "6138c4dce63c661fbca2922a",
-  //       //     workshopId: "6138c4dce63c661fbca2922b",
-  //       //     studentList: [
-  //       //       {
-  //       //         firstName: "d",
-  //       //         lastName: "d",
-  //       //         mail: "d",
-  //       //         id: "m",
-  //       //       },
-  //       //     ],
-  //       //     imgLink: "imglink",
-  //       //     preview: "preview preview preview",
-  //       //     status: "pendingTeacherApproval",
-  //       //     githubLink: "htttp://github...",
-  //       //     contactName: "sagiv",
-  //       //     contactPhone: "0522222222",
-  //       //     contactEmail: "sagivle@mta.ac.il",
-  //       //     lastUpdateByStudent: "1232131231231231231231",
-  //       //   });
-  //       //   console.log(res.data);
-  //       // }
-  //       console.log(e);
-  //     }
+  //       const res = await Axios.get(
+  //         "http://localhost:5000/get_image/613b1d62b6934531b51647a3/"
+  //       );
+  //       console.log(res);
+  //     } catch (e) {}
   //   };
   //   postMessage();
   // }, []);

@@ -46,6 +46,7 @@ const TeacherProjects = () => {
           for (const project of res.data) {
             coursesSet.add(project.workshop.name);
           }
+          console.log(res.data);
           setCoursesCheckboxes(
             [...coursesSet].map((courseName) => {
               return { name: courseName, checked: true };
@@ -141,7 +142,9 @@ const TeacherProjects = () => {
             {pendingProjects.length ? (
               <ProjectTable projects={pendingProjects} linkType="edit" />
             ) : (
-              <div>אין הגשות שממתינות לאישור</div>
+              <div className="no-projects-message">
+                אין הגשות שממתינות לאישור
+              </div>
             )}
             {/* <button className="show-more-button">הצג עוד</button> */}
           </div>
@@ -156,7 +159,7 @@ const TeacherProjects = () => {
                 linkType="edit"
               />
             ) : (
-              <div>אין הגשות שאושרו</div>
+              <div className="no-projects-message">אין הגשות שאושרו</div>
             )}
             {/* <button className="show-more-button">הצג עוד</button> */}
           </div>
