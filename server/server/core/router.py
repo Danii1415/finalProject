@@ -14,7 +14,6 @@ from .models.project import Project
 from .models.teacher import Teacher
 from .mail_service import Mail_Service
 from .db.db_manager import DBManager
-
 import bson
 import json
 
@@ -27,6 +26,7 @@ teacher = Teacher(db)
 mail_service = Mail_Service()
 
 
+app.config['JSON_AS_ASCII'] = False
 
 
 
@@ -63,10 +63,34 @@ def init_for_testing_db():
 	contactEmail = "sagivle@mta.ac.il"
 	lastUpdateByStudent = "1232131231231231231231"
 	db_manager.insert_project(title, teacherId, workshopId, studentList, imgLink, preview
-				,status, githubLink, contactName, contactPhone, contactEmail, lastUpdateByStudent)
+				,status, githubLink, contactName, contactPhone, contactEmail, lastUpdateByStudent, False)
 
-	return "success to init DB for testing"
+	teachers = set()
+	with open('a.json') as data_file:    
+		data = json.load(data_file)
 
+	teachers_with_sadnaot_dict={}
+	for project in data:
+		teacher_temp = ""
+		sadna_temp = ""
+		for detail in project['details']:
+			if detail['value'] ==":שם המנחה":
+				teacher_temp = detail['key']
+				teachers.add(detail['key'])
+			elif detail['value'] == ":שם הסדנה":
+				sadna_temp = detail['key']
+			if sadna_temp!="" and teacher_temp!="":
+				teachers_with_sadnaot_dict[sadna_temp] = teacher_temp
+        #	workshops= []
+	mail = "levsagiv@gmail.com"
+	for teacher_temp in teachers:
+		#teachers_ids_names_dict[teacher_temp]=teacher.create({'name': teacher_temp, 'mail': mail, 'workshops': workshops, 'password': password})
+		teacher.create({'name': teacher_temp, 'mail': mail, 'workshops': workshops, 'password': password})
+	for sadna_name in teachers_with_sadnaot_dict.keys():
+		workshopId=db_manager.insert_workshop_and_append_it_to_teacher(sadna_name, teachers_with_sadnaot_dict[sadna_name])
+
+
+	return jsonify("success to init DB")
 
 @app.route('/teachers/validate/', methods=['POST'])
 def validate_teacher():
@@ -123,7 +147,8 @@ def add_project():
 		response = db_manager.insert_project(request_json["title"], request_json["teacherId"], request_json["workshopId"]
 									, request_json["studentList"], request_json["imgLink"], request_json["preview"]
 									, request_json["status"], request_json["githubLink"], request_json["contactName"]
-									, request_json["contactPhone"], request_json["contactEmail"], request_json["lastUpdateByStudent"])
+									, request_json["contactPhone"], request_json["contactEmail"]
+									, request_json["lastUpdateByStudent"], request_json["imageIsOld"])
 		try:
 			mail_service.send_create_new_project_mail(["levsagiv@gmail.com", "danii1415@gmail.com"], response[13:])
 		except Exception as e:

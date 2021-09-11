@@ -8,7 +8,7 @@ from core.models.project import Project
 from core.models.msg import Msg
 import json
 from datetime import datetime
-
+from random import randint
 
 class DBManager(object):
 	def __init__(self):
@@ -23,14 +23,22 @@ class DBManager(object):
 	def index(self):
 		return "success";
 
-	def insert_project(self, title, teacherId, workshopId, studentList, imgLink, preview, status, githubLink, contactName, contactPhone, contactEmail, lastUpdateByStudent):
+	def insert_project(self, title, teacherId, workshopId, studentList, imgLink, preview, status,
+				githubLink, contactName, contactPhone, contactEmail, lastUpdateByStudent, imageIsOld):
 		students_id_list = []
 		for student_json in studentList:
 			students_id_list.append(self.insert_student(student_json))
+		number = randint(100000, 999999)
+		ans=self.project.find({'number': number})
+		while len(ans) != 0:
+			number = randint(100000, 999999)
+			ans=self.project.find({'number': number})
+
 		response = self.insert_project_with_json({'title': title, 'teacherId': teacherId, 'workshopId': workshopId, 
 								'studentList': students_id_list, 'imgLink': imgLink, 'preview': preview, 'status': status,
 								'githubLink': githubLink, 'contactName': contactName, 'contactPhone': contactPhone,
-								'contactEmail': contactEmail, 'lastUpdateByStudent':lastUpdateByStudent})
+								'contactEmail': contactEmail, 'lastUpdateByStudent':lastUpdateByStudent,
+								'number': number, "imageIsOld": imageIsOld})
 		return response
 
 
@@ -39,35 +47,40 @@ class DBManager(object):
 		return response
 
 
+	def get_all_projects_fron_ans(self, ans):
+		for project in ans:
+			#students_list=[]
+			#for student_id in project["studentList"]:
+			#	students_list.append(self.student.find_by_id(student_id))
+			#project["studentList"] = students_list
+			#project["teacher"] = self.get_teacher_by_id(project["teacherId"])
+			project["teacher_name"] = self.get_teacher_by_id(project["teacherId"])["name"]
+			project.pop("teacherId")
+			#project["workshop"] = self.workshop.find_by_id(project["workshopId"])
+			project["workshop_name"] = self.workshop.find_by_id(project["workshopId"])["name"]
+			project.pop("workshopId")
+			project.pop("studentList")
+			project.pop("contactEmail") 
+			project.pop("contactName") 
+			project.pop("contactPhone") 
+			project.pop("created")
+			project.pop("updated")
+			project.pop("lastUpdateByStudent")
+			project.pop("preview")
+			project.pop("githubLink")
+		#ans = sorted(ans, key=lambda k: k['workshop']['name'])
+		ans = sorted(ans, key=lambda k: k['workshop_name'])
+		return ans
+
+
 	def get_all_projects(self):
 		ans=self.project.find({})
-		for project in ans:
-			students_list=[]
-			for student_id in project["studentList"]:
-				students_list.append(self.student.find_by_id(student_id))
-			project["studentList"] = students_list
-			project["teacher"] = self.get_teacher_by_id(project["teacherId"])
-			project.pop("teacherId")
-			project["workshop"] = self.workshop.find_by_id(project["workshopId"])
-			project.pop("workshopId")
-
-		ans = sorted(ans, key=lambda k: k['teacher']['name'])
-		return jsonify(ans)
+		return jsonify(self.get_all_projects_fron_ans(ans))
 
 
 	def get_all_projects_of_teacher(self, teacher_id):
 		ans=self.project.find({'teacherId': teacher_id})
-		for project in ans:
-			students_list=[]
-			for student_id in project["studentList"]:
-				students_list.append(self.student.find_by_id(student_id))
-			project["studentList"] = students_list
-			project["teacher"] = self.get_teacher_by_id(project["teacherId"])
-			project.pop("teacherId")
-			project["workshop"] = self.workshop.find_by_id(project["workshopId"])
-			project.pop("workshopId")
-		ans = sorted(ans, key=lambda k: k['workshop']['name'])
-		return jsonify(ans)
+		return jsonify(self.get_all_projects_fron_ans(ans))
 
 
 	def get_project_by_id(self, project_id):
