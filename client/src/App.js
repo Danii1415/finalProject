@@ -575,7 +575,7 @@ import { teacherLogin } from "./redux/securitySlice";
 //     ],
 //   },
 //   {
-//     status: "approved",
+//     status: "pendingTeacherApproval",
 //     teacherId: "613ce0fd6b3ab6b59152e484",
 //     workshopId: "613ce0fd6b3ab6b59152e48b",
 //     title: "SmartSend",
@@ -610,7 +610,7 @@ import { teacherLogin } from "./redux/securitySlice";
 //     ],
 //   },
 //   {
-//     status: "approved",
+//     status: "pendingStudentsEdit",
 //     teacherId: "613ce0fd6b3ab6b59152e484",
 //     workshopId: "613ce0fd6b3ab6b59152e48b",
 //     title: "Final Projects Web App",
@@ -680,7 +680,7 @@ import { teacherLogin } from "./redux/securitySlice";
 //     ],
 //   },
 //   {
-//     status: "pendingStudentsEdit",
+//     status: "approved",
 //     teacherId: "613ce0fd6b3ab6b59152e484",
 //     workshopId: "613ce0fd6b3ab6b59152e48d",
 //     title: "Office Manager",
@@ -715,7 +715,7 @@ import { teacherLogin } from "./redux/securitySlice";
 //     ],
 //   },
 //   {
-//     status: "pendingStudentsEdit",
+//     status: "pendingTeacherApproval",
 //     teacherId: "613ce0fd6b3ab6b59152e484",
 //     workshopId: "613ce0fd6b3ab6b59152e48d",
 //     title: "NBA Fantasy League",
@@ -786,7 +786,7 @@ import { teacherLogin } from "./redux/securitySlice";
 //     ],
 //   },
 //   {
-//     status: "pendingStudentsEdit",
+//     status: "approved",
 //     teacherId: "613ce0fd6b3ab6b59152e484",
 //     workshopId: "613ce0fd6b3ab6b59152e48d",
 //     title: "Get Pet",
@@ -821,7 +821,7 @@ import { teacherLogin } from "./redux/securitySlice";
 //     ],
 //   },
 //   {
-//     status: "pendingStudentsEdit",
+//     status: "pendingTeacherApproval",
 //     teacherId: "613ce0fd6b3ab6b59152e484",
 //     workshopId: "613ce0fd6b3ab6b59152e48d",
 //     title: "מֶש - מבשלים עם מה שיש",
@@ -961,7 +961,7 @@ import { teacherLogin } from "./redux/securitySlice";
 //     ],
 //   },
 //   {
-//     status: "pendingTeacherApproval",
+//     status: "pendingStudentsEdit",
 //     teacherId: "613ce0fd6b3ab6b59152e484",
 //     workshopId: "613ce0fd6b3ab6b59152e48e",
 //     title: "A&GBusinessesPromotions",
@@ -1066,7 +1066,7 @@ import { teacherLogin } from "./redux/securitySlice";
 //     ],
 //   },
 //   {
-//     status: "pendingTeacherApproval",
+//     status: "pendingStudentsEdit",
 //     teacherId: "613ce0fd6b3ab6b59152e484",
 //     workshopId: "613ce0fd6b3ab6b59152e48e",
 //     title: "Easybot",

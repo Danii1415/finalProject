@@ -78,6 +78,7 @@ const EditProject = () => {
             _id,
             msgs,
             imageIsOld,
+            number,
           } = res.data;
           // check if fields like (status works and not status:status)
           setProject({
@@ -97,6 +98,7 @@ const EditProject = () => {
             teacherId: res.data.teacher._id,
             _id: _id,
             imageIsOld: imageIsOld,
+            number: number,
           });
           setMessageList(msgs.reverse());
           setCurrStudentidx(studentList.length - 1);
@@ -435,7 +437,7 @@ const EditProject = () => {
         </div>
         <div className="input-container">
           <label>מספר פרויקט</label>
-          <input value={projectId} disabled />
+          <input value={project.number} disabled />
         </div>
       </div>
       <div className="input-container">

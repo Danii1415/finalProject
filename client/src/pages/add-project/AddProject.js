@@ -90,7 +90,6 @@ const AddProject = () => {
       project.workshopId &&
       image &&
       project.preview &&
-      project.status &&
       isStudentListValid() &&
       project.contactEmail &&
       project.contactName &&
@@ -108,7 +107,7 @@ const AddProject = () => {
         studentList: project.studentsList,
         imgLink: "",
         preview: project.preview,
-        status: project.status,
+        status: "pendingTeacherApproval",
         githubLink: project.githubLink,
         contactEmail: project.contactEmail,
         contactName: project.contactName,
@@ -329,7 +328,7 @@ const AddProject = () => {
             </div>
           </div>
           <div className="preview-container">
-            <label>כתבו תקציר באורך 250-400 מילים.</label>
+            <label>כתבו תקציר באורך 250-400 מילים</label>
             <textarea
               className="markdown-editor"
               value={project.preview}

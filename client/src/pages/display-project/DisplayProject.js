@@ -62,7 +62,7 @@ const DisplayProject = () => {
             src={
               project.imageIsOld
                 ? project.imgLink
-                : `http://localhost:5000/get_image/${project._id}/`
+                : `http://localhost:5000/get_image/${projectId}/`
             }
           />
           <div className="project-name">{project.title}</div>
@@ -88,9 +88,12 @@ const DisplayProject = () => {
         </div>
         {project.githubLink && (
           <div className="info-div">
-            <a href={"www.github.com"} className="content">
+            <button
+              onClick={() => (window.location.href = `${project.githubLink}`)}
+              className="content github-link"
+            >
               {project.githubLink}
-            </a>
+            </button>
             <div className="title">:github</div>
           </div>
         )}

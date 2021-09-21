@@ -58,7 +58,6 @@ const AllProjects = () => {
             projects={projects.sort((a, b) => b.status.localeCompare(a.status))}
             linkType="display"
           />
-          <button className="show-more-button">הצג עוד</button>
         </div>
       )}
     </>
