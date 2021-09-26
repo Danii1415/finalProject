@@ -2,6 +2,7 @@ import { Chip } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
 import "./ProjectBox.scss";
+
 const ProjectBox = ({ project }) => {
   return (
     <div className="project-container">
@@ -14,6 +15,7 @@ const ProjectBox = ({ project }) => {
                 ? project.imgLink
                 : `http://localhost:5000/get_image/${project._id}/`
             }
+            alt=""
           />
         </div>
         <Link
@@ -26,7 +28,7 @@ const ProjectBox = ({ project }) => {
           <Chip
             className="course-name"
             style={{ color: "#05a2b7", border: "1px solid #05a2b7" }}
-            label={project.workshop_name}
+            label={project.course_name}
             size="small"
             color="primary"
             variant="outlined"

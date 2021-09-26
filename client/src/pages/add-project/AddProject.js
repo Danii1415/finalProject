@@ -1,20 +1,16 @@
-//check why removing photo and uploading again not working
-
-//change select focus
-//before final submit make post request with only project
-
 import React, { useEffect, useState } from "react";
-import "./AddProject.scss";
+import { uploadImage, submitProject } from "../../api/api";
 import { MenuItem, Select } from "@material-ui/core";
 import { ProjectToAdd, Student } from "../../utils";
 import StudentForm from "../../components/student-form/StudentForm";
-import Axios from "axios";
+import { getTeacherData } from "../../api/api";
+import "./AddProject.scss";
 
 const AddProject = () => {
   const [teachers, setTeachers] = useState([]);
   const [selectedTeacher, setSelectedTeacher] = useState("");
-  const [currWorkshops, setCurrWorkshops] = useState([]);
-  const [selectedWorkshop, setSelectedWorkshop] = useState("");
+  const [currCourses, setCurrCourses] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState("");
   const [currStudentidx, setCurrStudentidx] = useState(0);
   const [image, setImage] = useState("");
   const [isValidForm, setIsValidForm] = useState(false);
@@ -29,15 +25,10 @@ const AddProject = () => {
   });
 
   useEffect(() => {
-    const getTeacherData = async () => {
-      try {
-        const res = await Axios.get("http://localhost:5000/teachers/");
-        setTeachers(res.data);
-      } catch (e) {
-        console.log(e);
-      }
+    const getTeachers = async () => {
+      setTeachers((await getTeacherData()) || []);
     };
-    getTeacherData();
+    getTeachers();
   }, []);
 
   const onImageChange = (e) => {
@@ -57,16 +48,7 @@ const AddProject = () => {
     const formData = new FormData();
     formData.append("file", currFile);
     formData.append("filename", fileName);
-    try {
-      const res = await Axios({
-        method: "post",
-        url: "http://localhost:5000/upload/",
-        data: formData,
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    await uploadImage(formData);
   };
 
   const isStudentListValid = () => {
@@ -87,7 +69,7 @@ const AddProject = () => {
     return (
       project.title &&
       project.teacherId &&
-      project.workshopId &&
+      project.courseId &&
       image &&
       project.preview &&
       isStudentListValid() &&
@@ -100,22 +82,17 @@ const AddProject = () => {
   const onProjectSubmit = async () => {
     setIsSaveClicked(true);
     try {
-      const res = await Axios.post("http://localhost:5000/projects/", {
-        title: project.title,
-        teacherId: project.teacherId,
-        workshopId: project.workshopId,
-        studentList: project.studentsList,
-        imgLink: "",
-        preview: project.preview,
-        status: "pendingTeacherApproval",
-        githubLink: project.githubLink,
-        contactEmail: project.contactEmail,
-        contactName: project.contactName,
-        contactPhone: project.contactPhone,
-        lastUpdateByStudent: Date.now().toString(),
-        imageIsOld: false,
-      });
-      // const res = await Axios.post("http://localhost:5000/projects/", project);
+      const res = await submitProject(
+        project.title,
+        project.teacherId,
+        project.courseId,
+        project.studentsList,
+        project.preview,
+        project.githubLink,
+        project.contactEmail,
+        project.contactName,
+        project.contactPhone
+      );
       if (res && res.data) {
         const split = currFile.name.split(".");
         await handleUploadImage(`${res.data}.${split[split.length - 1]}`);
@@ -131,23 +108,23 @@ const AddProject = () => {
     const teacher = teachers.filter(
       (teacher) => teacher.name === e.target.value
     )[0];
-    const workshops = teacher.workshops;
+    const courses = teacher.courses;
 
     if (selectedTeacher) {
-      setSelectedWorkshop("");
+      setSelectedCourse("");
     }
     setSelectedTeacher(teacher);
-    setCurrWorkshops(workshops);
+    setCurrCourses(courses);
     setProject({ ...project, teacherId: teacher._id });
   };
 
-  const selectedWorkshopChange = (e) => {
-    const workshop = currWorkshops.filter(
-      (workshop) => workshop.name === e.target.value
+  const selectedCourseChange = (e) => {
+    const course = currCourses.filter(
+      (course) => course.name === e.target.value
     )[0];
 
-    setSelectedWorkshop(workshop);
-    setProject({ ...project, workshopId: workshop._id });
+    setSelectedCourse(course);
+    setProject({ ...project, courseId: course._id });
   };
 
   const onStudentListChange = (e, idx) => {
@@ -227,11 +204,11 @@ const AddProject = () => {
           <div className="select-form">
             <label>בחר סדנה</label>
             <Select
-              disabled={!currWorkshops.length ? true : false}
+              disabled={!currCourses.length ? true : false}
               style={{ height: "40px", backgroundColor: "white" }}
               variant="outlined"
-              onChange={selectedWorkshopChange}
-              value={selectedWorkshop && selectedWorkshop.name}
+              onChange={selectedCourseChange}
+              value={selectedCourse && selectedCourse.name}
               displayEmpty
               MenuProps={{
                 anchorOrigin: {
@@ -248,10 +225,10 @@ const AddProject = () => {
               <MenuItem disabled key="-1" value="">
                 בחר סדנה
               </MenuItem>
-              {currWorkshops.map((workshop) => {
+              {currCourses.map((course) => {
                 return (
-                  <MenuItem key={workshop.id} value={workshop.name}>
-                    {workshop.name}
+                  <MenuItem key={course.id} value={course.name}>
+                    {course.name}
                   </MenuItem>
                 );
               })}
@@ -338,7 +315,7 @@ const AddProject = () => {
             />
           </div>
           <div className="add-img-container">
-            <img src={image} className="left-side" />
+            <img src={image} alt="" className="left-side" />
             <div className="right-side">
               <label>תמונת הפרויקט</label>
               <div className="image-buttons">

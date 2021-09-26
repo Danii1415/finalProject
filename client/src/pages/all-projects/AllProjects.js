@@ -1,5 +1,3 @@
-// should be Sorted by course name, filtered by project name or project course
-
 import React, { useEffect, useState } from "react";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import ViewModuleIcon from "@material-ui/icons/ViewModule";
@@ -7,7 +5,6 @@ import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import Axios from "axios";
 import "./AllProjects.scss";
-import { useHistory } from "react-router-dom";
 import ProjectBox from "../../components/ProjectBox/ProjectBox";
 import ProjectTable from "../../components/ProjectTable/ProjectTable";
 

@@ -1,17 +1,13 @@
-//fix hours and minutes 1 digit sometimes
-//fix scroll to bottom of drawer.
-// project number property
-
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { Divider, Drawer } from "@material-ui/core";
 import { ProjectToEdit } from "../../utils";
 import { useState } from "react";
-import "./EditProject.scss";
 import { useSelector } from "react-redux";
 import { Student } from "../../utils";
 import StudentForm from "../../components/student-form/StudentForm";
 import Axios from "axios";
 import { useHistory, useParams } from "react-router";
+import "./EditProject.scss";
 
 const EditProject = () => {
   const [project, setProject] = useState(new ProjectToEdit());
@@ -26,22 +22,12 @@ const EditProject = () => {
   );
   const [isOpenDrawer, setisOpenDrawer] = useState(false);
   const [isValidForm, setIsValidForm] = useState(true);
-  const drawerEndRef = useRef(null);
   const history = useHistory();
   const [currImgLink, setCurrImgLink] = useState("");
   const [isTeacherMessageRequired, setIsTeacherMessageRequired] =
     useState(true);
   const [isSaveClicked, setIsSaveClicked] = useState(false);
   const [currFile, setCurrFile] = useState("");
-  // const scrollToBottom = () => {
-  //   drawerEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  // };
-
-  // useEffect(() => {
-  //   if (isOpenDrawer === true) {
-  //     scrollToBottom();
-  //   }
-  // }, [isOpenDrawer]);
 
   useEffect(() => {
     let res = true;
@@ -80,7 +66,6 @@ const EditProject = () => {
             imageIsOld,
             number,
           } = res.data;
-          // check if fields like (status works and not status:status)
           setProject({
             ...project,
             status: status,
@@ -88,7 +73,7 @@ const EditProject = () => {
             preview: preview,
             imgLink: imgLink,
             studentsList: studentList,
-            workshopName: res.data.workshop.name,
+            courseName: res.data.course.name,
             teacherName: res.data.teacher.name,
             githubLink: githubLink,
             contactEmail: contactEmail,
@@ -132,8 +117,6 @@ const EditProject = () => {
         {
           status: newStatus,
           title: project.title,
-          //bug in studentsList
-          // studentList: project.studentsList,
           preview: project.preview,
           githubLink: project.githubLink,
           contactEmail: project.contactEmail,
@@ -157,7 +140,6 @@ const EditProject = () => {
       }
     } catch (e) {
       setIsSaveClicked(false);
-      //error message with modal.
     }
   };
 
@@ -433,7 +415,7 @@ const EditProject = () => {
         </div>
         <div className="input-container">
           <label>שם הסדנה</label>
-          <input value={project.workshopName} disabled />
+          <input value={project.courseName} disabled />
         </div>
         <div className="input-container">
           <label>מספר פרויקט</label>
@@ -527,6 +509,7 @@ const EditProject = () => {
       </div>
       <div className="add-img-container">
         <img
+          alt=""
           src={
             project.imageIsOld
               ? project.imgLink

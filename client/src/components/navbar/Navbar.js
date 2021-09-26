@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, useHistory } from "react-router-dom";
-import "./Navbar.scss";
 import logo from "../../images/academLogo.jpeg";
 import { useDispatch, useSelector } from "react-redux";
 import { teacherLogout } from "../../redux/securitySlice";
+import "./Navbar.scss";
 
 const Navbar = () => {
   const history = useHistory();

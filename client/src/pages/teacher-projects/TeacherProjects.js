@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import "./TeacherProjects.scss";
 import { useSelector } from "react-redux";
-import "./TeacherProjects.scss";
 import ProjectTable from "../../components/ProjectTable/ProjectTable";
 import { Checkbox, withStyles } from "@material-ui/core";
 import { useParams } from "react-router";
 import Axios from "axios";
+import "./TeacherProjects.scss";
 
 const GreenCheckbox = withStyles({
   root: {
@@ -35,7 +34,7 @@ const TeacherProjects = () => {
         if (res && res.data) {
           const coursesSet = new Set();
           for (const project of res.data) {
-            coursesSet.add(project.workshop_name);
+            coursesSet.add(project.course_name);
           }
           setCoursesCheckboxes(
             [...coursesSet].map((courseName) => {
@@ -66,12 +65,12 @@ const TeacherProjects = () => {
       pendingArr = pendingArr.sort(
         (a, b) =>
           b.status.localeCompare(a.status) ||
-          b.workshop_name.localeCompare(a.workshop_name)
+          b.course_name.localeCompare(a.course_name)
       );
     }
     if (approvedArr.length) {
       approvedArr = approvedArr.sort((a, b) =>
-        b.workshop_name.localeCompare(a.workshop_name)
+        b.course_name.localeCompare(a.course_name)
       );
     }
     setPendingProjects(pendingArr);
@@ -82,7 +81,7 @@ const TeacherProjects = () => {
     if (teacherProjects.length) {
       setFilteredProjects(
         teacherProjects.filter((project) => {
-          return currDisplayedCourses.indexOf(project.workshop_name) > -1;
+          return currDisplayedCourses.indexOf(project.course_name) > -1;
         })
       );
     }

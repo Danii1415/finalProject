@@ -8,7 +8,6 @@ const StudentForm = ({
   isMultipleStudents,
   isLast,
   disabled,
-  // key = "",
 }) => {
   return (
     <form className="students-form">

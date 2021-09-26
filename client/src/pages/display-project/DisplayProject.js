@@ -1,11 +1,8 @@
-//project number and not id
-
 import React, { useEffect, useState } from "react";
-import "./DisplayProject.scss";
 import { getStudentsNamesFormat } from "../../utils";
-import logoThree from "../../images/dd.png";
 import { useParams } from "react-router";
 import Axios from "axios";
+import "./DisplayProject.scss";
 
 const DisplayProject = () => {
   const { projectId } = useParams();
@@ -43,7 +40,7 @@ const DisplayProject = () => {
             students: studentList,
             githubLink: githubLink,
             teacherName: res.data.teacher.name,
-            courseName: res.data.workshop.name,
+            courseName: res.data.course.name,
             imgLink: imgLink,
             imageIsOld: imageIsOld,
           });
@@ -58,6 +55,7 @@ const DisplayProject = () => {
       <div className="body">
         <div className="title-img-div">
           <img
+            alt=""
             className="project-img"
             src={
               project.imageIsOld

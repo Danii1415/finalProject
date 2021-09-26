@@ -19,6 +19,7 @@ const TableRow = ({ project, linkType }) => {
     <div className="content-row">
       <div className="img-wrapper">
         <img
+          alt=""
           src={
             project.imageIsOld
               ? project.imgLink
@@ -34,7 +35,7 @@ const TableRow = ({ project, linkType }) => {
       </div>
       <div className="course-content">
         <span className="hover-white" onClick={onFieldClick}>
-          {project.workshop_name}
+          {project.course_name}
         </span>
       </div>
       <div className="project-id-content">

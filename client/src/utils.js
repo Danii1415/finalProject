@@ -22,8 +22,6 @@ export class ProjectToAdd {
   constructor(
     imgLink = "",
     title = "",
-    teacherId = "",
-    workshopId = "",
     studentsList = [new Student()],
     preview = "",
     status = "pendingTeacherApproval",
@@ -35,7 +33,7 @@ export class ProjectToAdd {
   ) {
     this.title = title;
     this.teacherId = "";
-    this.workshopId = "";
+    this.courseId = "";
     this.studentsList = studentsList;
     this.imgLink = imgLink;
     this.preview = preview;
@@ -55,7 +53,7 @@ export class ProjectToEdit {
     studentsList = [new Student()],
     preview = "",
     status = "",
-    workshopName = "",
+    courseName = "",
     teacherName = "",
     githubLink = "",
     contactEmail = "",
@@ -68,7 +66,7 @@ export class ProjectToEdit {
     this.imgLink = imgLink;
     this.preview = preview;
     this.status = status;
-    this.workshopName = workshopName;
+    this.courseName = courseName;
     this.teacherName = teacherName;
     this.githubLink = githubLink;
     this.contactEmail = contactEmail;
