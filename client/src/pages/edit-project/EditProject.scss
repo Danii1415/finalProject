@@ -101,7 +101,6 @@
     display: flex;
     padding-top: 10px;
     & > button {
-      // flex: 0 0 calc((100% - 40px) * 0.333333);
       flex: 1;
       height: 60px;
       &:disabled {
@@ -419,7 +418,6 @@
           flex: 0 0 73%;
         }
         .new-message-input:hover {
-          // background-color: rgba(174, 244, 174, 0.283);
         }
         .new-message-button {
           background-color: rgb(3, 191, 191);
@@ -443,8 +441,6 @@
         }
       }
       .messages-display-container {
-        // border: 3px solid rgb(114, 228, 207);
-        //maybe this padding should be with %
         padding: 20px 20px;
         display: flex;
         flex-direction: column;
@@ -492,17 +488,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    // width: 415px;
     align-self: center;
-    // button {
-    //   background-color: #05a2b7;
-    //   width: 35px;
-    //   height: 30px;
-    //   top: -5px;
-    // }
-    // button:hover {
-    //   background-color: #068090;
-    // }
   }
   .message-container {
     display: flex;

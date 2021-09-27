@@ -1,10 +1,9 @@
-//להוסיף שגיאה + שכחת סיסמא +
-
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { teacherLogin } from "../../redux/securitySlice";
 import Axios from "axios";
+import { BASE_ROUTE } from "../../const";
 import "./SignIn.scss";
 
 const SignIn = () => {
@@ -28,7 +27,7 @@ const SignIn = () => {
     e.preventDefault();
     setIsSaveClicked(true);
     try {
-      const res = await Axios.post("http://localhost:5000/teachers/validate/", {
+      const res = await Axios.post(`${BASE_ROUTE}/teachers/validate/`, {
         mail: email,
         password: password,
       });

@@ -5,6 +5,7 @@ import { Checkbox, withStyles } from "@material-ui/core";
 import { useParams } from "react-router";
 import Axios from "axios";
 import "./TeacherProjects.scss";
+import { BASE_ROUTE } from "../../const";
 
 const GreenCheckbox = withStyles({
   root: {
@@ -29,7 +30,7 @@ const TeacherProjects = () => {
     const getTeacherProjects = async () => {
       try {
         const res = await Axios.get(
-          `http://localhost:5000/projects/teacher/${teacherId}`
+          `${BASE_ROUTE}/projects/teacher/${teacherId}`
         );
         if (res && res.data) {
           const coursesSet = new Set();
@@ -136,7 +137,6 @@ const TeacherProjects = () => {
                 אין הגשות שממתינות לאישור
               </div>
             )}
-            {/* <button className="show-more-button">הצג עוד</button> */}
           </div>
           <div className="list-display-container">
             <div className="title-container">
@@ -151,7 +151,6 @@ const TeacherProjects = () => {
             ) : (
               <div className="no-projects-message">אין הגשות שאושרו</div>
             )}
-            {/* <button className="show-more-button">הצג עוד</button> */}
           </div>
         </>
       ) : (

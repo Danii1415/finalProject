@@ -1,6 +1,7 @@
 import { Chip } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
+import { BASE_ROUTE } from "../../const";
 import "./ProjectBox.scss";
 
 const ProjectBox = ({ project }) => {
@@ -13,7 +14,7 @@ const ProjectBox = ({ project }) => {
             src={
               project.imageIsOld
                 ? project.imgLink
-                : `http://localhost:5000/get_image/${project._id}/`
+                : `${BASE_ROUTE}/get_image/${project._id}/`
             }
             alt=""
           />

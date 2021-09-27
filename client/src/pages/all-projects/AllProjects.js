@@ -3,23 +3,21 @@ import ViewListIcon from "@material-ui/icons/ViewList";
 import ViewModuleIcon from "@material-ui/icons/ViewModule";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-import Axios from "axios";
-import "./AllProjects.scss";
 import ProjectBox from "../../components/ProjectBox/ProjectBox";
 import ProjectTable from "../../components/ProjectTable/ProjectTable";
+import { getProjects } from "../../api/api";
+import "./AllProjects.scss";
 
 const AllProjects = () => {
   const [view, setView] = useState("grid");
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    const getProjects = async () => {
-      try {
-        const res = await Axios.get("http://localhost:5000/projects/");
-        setProjects(res.data);
-      } catch (e) {}
+    const getData = async () => {
+      const res = await getProjects();
+      if (res) setProjects(res.data);
     };
-    getProjects();
+    getData();
   }, []);
   return (
     <>

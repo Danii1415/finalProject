@@ -7,6 +7,7 @@ import { Student } from "../../utils";
 import StudentForm from "../../components/student-form/StudentForm";
 import Axios from "axios";
 import { useHistory, useParams } from "react-router";
+import { BASE_ROUTE } from "../../const";
 import "./EditProject.scss";
 
 const EditProject = () => {
@@ -47,7 +48,7 @@ const EditProject = () => {
     const getProject = async () => {
       try {
         const res = await Axios.get(
-          `http://localhost:5000/projects/msgs/${projectId}/`
+          `${BASE_ROUTE}/projects/msgs/${projectId}/`
         );
         if (res && res.data) {
           const {
@@ -101,7 +102,7 @@ const EditProject = () => {
     try {
       const res = await Axios({
         method: "post",
-        url: "http://localhost:5000/upload/",
+        url: `${BASE_ROUTE}/upload/`,
         data: formData,
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -112,22 +113,19 @@ const EditProject = () => {
 
   const updateProject = async (newStatus = project.status) => {
     try {
-      const res = await Axios.put(
-        `http://localhost:5000/projects/${project._id}/`,
-        {
-          status: newStatus,
-          title: project.title,
-          preview: project.preview,
-          githubLink: project.githubLink,
-          contactEmail: project.contactEmail,
-          contactName: project.contactName,
-          contactPhone: project.contactPhone,
-          lastUpdateByStudent: loggedInTeacher
-            ? project.lastUpdateByStudent
-            : Date.now().toString(),
-          imageIsOld: project.imageIsOld,
-        }
-      );
+      const res = await Axios.put(`${BASE_ROUTE}/projects/${project._id}/`, {
+        status: newStatus,
+        title: project.title,
+        preview: project.preview,
+        githubLink: project.githubLink,
+        contactEmail: project.contactEmail,
+        contactName: project.contactName,
+        contactPhone: project.contactPhone,
+        lastUpdateByStudent: loggedInTeacher
+          ? project.lastUpdateByStudent
+          : Date.now().toString(),
+        imageIsOld: project.imageIsOld,
+      });
       if (res && res.data) {
         if (currFile) {
           const split = currFile.name.split(".");
@@ -236,7 +234,7 @@ const EditProject = () => {
       created: new Date(),
     };
     try {
-      const res = await Axios.post("http://localhost:5000/msg/", {
+      const res = await Axios.post(`${BASE_ROUTE}/msg/`, {
         text: _newMessage.text,
         projectId: _newMessage.projectId,
         fromTeacher: _newMessage.fromTeacher,
@@ -464,7 +462,6 @@ const EditProject = () => {
           project.studentsList.map((student, idx) => {
             return (
               <StudentForm
-                //  key={student.id}
                 disabled={areFieldsDisabled ? true : false}
                 currStudentidx={idx}
                 student={student}
@@ -516,7 +513,7 @@ const EditProject = () => {
               : image
               ? image
               : currImgLink
-              ? `http://localhost:5000/get_image/${project._id}/`
+              ? `${BASE_ROUTE}/get_image/${project._id}/`
               : ""
           }
           className="left-side"

@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router";
+import { BASE_ROUTE } from "../../const";
 import "./TableRow.scss";
 
 const TableRow = ({ project, linkType }) => {
@@ -23,7 +24,7 @@ const TableRow = ({ project, linkType }) => {
           src={
             project.imageIsOld
               ? project.imgLink
-              : `http://localhost:5000/get_image/${project._id}/`
+              : `${BASE_ROUTE}/get_image/${project._id}/`
           }
           className="img-name-content"
         />

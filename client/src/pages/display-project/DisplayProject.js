@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getStudentsNamesFormat } from "../../utils";
 import { useParams } from "react-router";
 import Axios from "axios";
+import { BASE_ROUTE } from "../../const";
 import "./DisplayProject.scss";
 
 const DisplayProject = () => {
@@ -19,9 +20,7 @@ const DisplayProject = () => {
   useEffect(() => {
     const getProject = async () => {
       try {
-        const res = await Axios.get(
-          `http://localhost:5000/projects/${projectId}/`
-        );
+        const res = await Axios.get(`${BASE_ROUTE}/projects/${projectId}/`);
         if (res && res.data) {
           const {
             title,
@@ -60,7 +59,7 @@ const DisplayProject = () => {
             src={
               project.imageIsOld
                 ? project.imgLink
-                : `http://localhost:5000/get_image/${projectId}/`
+                : `${BASE_ROUTE}/get_image/${projectId}/`
             }
           />
           <div className="project-name">{project.title}</div>
