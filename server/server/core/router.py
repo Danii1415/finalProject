@@ -8,26 +8,31 @@ from flask_cors import CORS, cross_origin
 from core import app
 
 from .db.database import DB
-from .models.models import Quote
 from .models.student import Student 
 from .models.project import Project
 from .models.teacher import Teacher
+from .models.sadna import Sadna
 from .mail_service import Mail_Service
 from .db.db_manager import DBManager
 import bson
 import json
+import secrets
+import string
 
 db_manager=DBManager()
 db = DB()
 student = Student(db)
 project = Project(db)
 teacher = Teacher(db)
+sadna = Sadna(db)
 
 mail_service = Mail_Service()
 
 
 app.config['JSON_AS_ASCII'] = False
-
+UPLOAD_FOLDER = '/app/projects_pictures/'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 @app.route('/')
@@ -43,15 +48,11 @@ def init_for_testing_db():
 	name = "Yossi"
 	ID = "203516794"
 	mail = "yossi@mta.ac.il"
-	workshops= []
+	sadnas= []
 	password="1234"
-	teacherId = teacher.create({'name': name, 'mail': mail, 'workshops': workshops, 'password': password})
-
-	workshopId=db_manager.insert_workshop_and_append_it_to_teacher("sadna2", "Yossi")
-
+	teacherId = teacher.create({'name': name, 'mail': mail, 'sadnas': sadnas, 'password': password})
+	sadnaId=db_manager.insert_sadna_and_append_it_to_teacher("sadna2", "Yossi")
 	title = "project100"
-	#teacherId = "610802d00b576fc654a9138a"
-	#workshopId = "610802dc0b576fc654a9138b"
 	studentList =[{'firstName': "sagiv", 'lastName': "levy", 'id': "203516794", 'mail': "sagivle@mta.ac.il"},
 					{'firstName': "daniel", 'lastName': "daniel", 'id': "123456789", 'mail': "levsagiv@gmail.com"}]
 	imgLink = ""
@@ -62,7 +63,7 @@ def init_for_testing_db():
 	contactPhone="0522222222"
 	contactEmail = "sagivle@mta.ac.il"
 	lastUpdateByStudent = "1232131231231231231231"
-	db_manager.insert_project(title, teacherId, workshopId, studentList, imgLink, preview
+	db_manager.insert_project(title, teacherId, sadnaId, studentList, imgLink, preview
 				,status, githubLink, contactName, contactPhone, contactEmail, lastUpdateByStudent, False)
 
 	teachers = set()
@@ -81,16 +82,19 @@ def init_for_testing_db():
 				sadna_temp = detail['key']
 			if sadna_temp!="" and teacher_temp!="":
 				teachers_with_sadnaot_dict[sadna_temp] = teacher_temp
-        #	workshops= []
+        
 	mail = "levsagiv@gmail.com"
+	
 	for teacher_temp in teachers:
-		#teachers_ids_names_dict[teacher_temp]=teacher.create({'name': teacher_temp, 'mail': mail, 'workshops': workshops, 'password': password})
-		teacher.create({'name': teacher_temp, 'mail': mail, 'workshops': workshops, 'password': password})
+		alphabet = string.ascii_letters + string.digits
+		password = ''.join(secrets.choice(alphabet) for i in range(8))
+		teacher.create({'name': teacher_temp, 'mail': mail, 'sadnas': sadnas, 'password': password})
+		mail_service.send_teacher_password_mail(mail, password)
 	for sadna_name in teachers_with_sadnaot_dict.keys():
-		workshopId=db_manager.insert_workshop_and_append_it_to_teacher(sadna_name, teachers_with_sadnaot_dict[sadna_name])
-
+		sadnaId=db_manager.insert_sadna_and_append_it_to_teacher(sadna_name, teachers_with_sadnaot_dict[sadna_name])
 
 	return jsonify("success to init DB")
+
 
 @app.route('/teachers/validate/', methods=['POST'])
 def validate_teacher():
@@ -144,13 +148,22 @@ def get_projects():
 def add_project():
 	if request.method == "POST":
 		request_json = request.get_json()
-		response = db_manager.insert_project(request_json["title"], request_json["teacherId"], request_json["workshopId"]
+		response = db_manager.insert_project(request_json["title"], request_json["teacherId"], request_json["sadnaId"]
 									, request_json["studentList"], request_json["imgLink"], request_json["preview"]
 									, request_json["status"], request_json["githubLink"], request_json["contactName"]
 									, request_json["contactPhone"], request_json["contactEmail"]
 									, request_json["lastUpdateByStudent"], request_json["imageIsOld"])
+		
 		try:
-			mail_service.send_create_new_project_mail(["levsagiv@gmail.com", "danii1415@gmail.com"], response[13:])
+			sadna = sadna.find_by_id(request_json["sadnaId"])
+			if sadna:
+				if sadna[name]:
+					sadna_id = response[13:]
+					project = db_manager.get_project_by_id(sadna_id)
+					if project:
+						if project["number"]:
+							project_number = project["number"]
+							mail_service.send_create_new_project_mail(["levsagiv@gmail.com", "danii1415@gmail.com"], sadna[name], project_number, request_json["title"])
 		except Exception as e:
 			print("Send Mail Error! " + str(e))
 		return jsonify(response), 201
@@ -211,11 +224,6 @@ def get_all_projects_of_teacher(teacher_id):
 		response = db_manager.get_all_projects_of_teacher(teacher_id)
 		return response, 200
 
-
-UPLOAD_FOLDER = '/app/projects_pictures/'
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/upload/', methods=['POST'])
 def fileUpload():

@@ -14,7 +14,7 @@ class Validator(object):
 		if desired_type == "bool":
 			return type(element) == bool
 		if desired_type == "list":
-			return type(element) == list#(element in desired_type)
+			return type(element) == list
 		raise ValueError("Invalid value for desired type")
 
 	def validateTypes(self, element, fields):

@@ -46,10 +46,14 @@ class Mail_Service(object):
 		self.send_mail_to_mail_list(receiver_addresses_list, "Final Project - you got a new message", "Message content: <br>" + str_html_msg_to_send)
 
 
-	def send_create_new_project_mail(self, receiver_addresses_list, project_id):
-		self.send_mail_to_mail_list(receiver_addresses_list, "Final Project - new project was created", "Project ID: " + project_id)
+	def send_create_new_project_mail(self, receiver_addresses_list, sadna_name, project_number, project_name):
+		self.send_mail_to_mail_list(receiver_addresses_list, "Final Project - New project was created",  "Course name: " + sadna_name+"<br>"+ "Project Number: "+project_number+"<br>"+"Project_name: "+ project_name)
 
 
 	def send_status_was_changed_mail(self, receiver_addresses_list, new_status):
-		self.send_mail_to_mail_list(receiver_addresses_list, "Final Project - status was changed", "New_status: " + new_status)
+		self.send_mail_to_mail_list(receiver_addresses_list, "Final Project - status was changed", "New status: " + new_status)
+
+	
+	def send_teacher_password_mail(self, receiver_address, password):
+		self.send_mail(receiver_address, "Teacher user was created succesfully", "Your new password: " + password)
 

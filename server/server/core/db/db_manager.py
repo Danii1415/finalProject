@@ -1,9 +1,8 @@
 from flask import jsonify
 from .database import DB
-from core.models.models import Quote
 from core.models.student import Student
 from core.models.teacher import Teacher
-from core.models.workshop import Workshop
+from core.models.sadna import Sadna
 from core.models.project import Project
 from core.models.msg import Msg
 import json
@@ -16,14 +15,14 @@ class DBManager(object):
 		self.student = Student(self.db)
 		self.project = Project(self.db)
 		self.teacher = Teacher(self.db)
-		self.workshop = Workshop(self.db)
+		self.sadna = Sadna(self.db)
 		self.msg = Msg(self.db)
 
 
 	def index(self):
 		return "success";
 
-	def insert_project(self, title, teacherId, workshopId, studentList, imgLink, preview, status,
+	def insert_project(self, title, teacherId, sadnaId, studentList, imgLink, preview, status,
 				githubLink, contactName, contactPhone, contactEmail, lastUpdateByStudent, imageIsOld):
 		students_id_list = []
 		for student_json in studentList:
@@ -34,7 +33,7 @@ class DBManager(object):
 			number = randint(100000, 999999)
 			ans=self.project.find({'number': number})
 
-		response = self.insert_project_with_json({'title': title, 'teacherId': teacherId, 'workshopId': workshopId, 
+		response = self.insert_project_with_json({'title': title, 'teacherId': teacherId, 'sadnaId': sadnaId, 
 								'studentList': students_id_list, 'imgLink': imgLink, 'preview': preview, 'status': status,
 								'githubLink': githubLink, 'contactName': contactName, 'contactPhone': contactPhone,
 								'contactEmail': contactEmail, 'lastUpdateByStudent':lastUpdateByStudent,
@@ -49,16 +48,11 @@ class DBManager(object):
 
 	def get_all_projects_fron_ans(self, ans):
 		for project in ans:
-			#students_list=[]
-			#for student_id in project["studentList"]:
-			#	students_list.append(self.student.find_by_id(student_id))
-			#project["studentList"] = students_list
-			#project["teacher"] = self.get_teacher_by_id(project["teacherId"])
+			
 			project["teacher_name"] = self.get_teacher_by_id(project["teacherId"])["name"]
 			project.pop("teacherId")
-			#project["workshop"] = self.workshop.find_by_id(project["workshopId"])
-			project["workshop_name"] = self.workshop.find_by_id(project["workshopId"])["name"]
-			project.pop("workshopId")
+			project["sadna_name"] = self.sadna.find_by_id(project["sadnaId"])["name"]
+			project.pop("sadnaId")
 			project.pop("studentList")
 			project.pop("contactEmail") 
 			project.pop("contactName") 
@@ -68,8 +62,7 @@ class DBManager(object):
 			project.pop("lastUpdateByStudent")
 			project.pop("preview")
 			project.pop("githubLink")
-		#ans = sorted(ans, key=lambda k: k['workshop']['name'])
-		ans = sorted(ans, key=lambda k: k['workshop_name'])
+		ans = sorted(ans, key=lambda k: k['sadna_name'])
 		return ans
 
 
@@ -91,8 +84,8 @@ class DBManager(object):
 		response["studentList"] = students_list
 		response["teacher"] = self.get_teacher_by_id(response["teacherId"])
 		response.pop("teacherId")
-		response["workshop"] = self.workshop.find_by_id(response["workshopId"])
-		response.pop("workshopId")
+		response["sadna"] = self.sadna.find_by_id(response["sadnaId"])
+		response.pop("sadnaId")
 		return (response)
 		
 
@@ -126,20 +119,20 @@ class DBManager(object):
 	def get_all_teachers(self):
 		ans=self.teacher.find({})
 		for teacher in ans:
-			workshops_list=[]
-			for workshop in teacher["workshops"]:
-				workshops_list.append(self.workshop.find_by_id(workshop))
-			teacher["workshops"]=workshops_list
+			sadnas_list=[]
+			for sadna in teacher["sadnas"]:
+				sadnas_list.append(self.sadna.find_by_id(sadna))
+			teacher["sadnas"]=sadnas_list
 			teacher.pop("password")
 		return jsonify(ans)
 
 
 	def get_teacher_by_id(self, teacher_id):
 		teacher=self.teacher.find_by_id(teacher_id)
-		workshops_list=[]
-		for workshop in teacher["workshops"]:
-			workshops_list.append(self.workshop.find_by_id(workshop))
-		teacher["workshops"]=workshops_list
+		sadnas_list=[]
+		for sadna in teacher["sadnas"]:
+			sadnas_list.append(self.sadna.find_by_id(sadna))
+		teacher["sadnas"]=sadnas_list
 		teacher.pop("password")
 		return teacher
 
@@ -149,38 +142,38 @@ class DBManager(object):
 		if teacher== []:
 			return "Wrong password"
 		teacher = teacher[0]
-		workshops_list=[]
-		for workshop in teacher["workshops"]:
-			workshops_list.append(self.workshop.find_by_id(workshop))
-		teacher["workshops"]=workshops_list
+		sadnas_list=[]
+		for sadna in teacher["sadnas"]:
+			sadnas_list.append(self.sadna.find_by_id(sadna))
+		teacher["sadnas"]=sadnas_list
 		teacher.pop("password")
 		return teacher["_id"]
 
 
 	def insert_teacher(self, name, mail):
-		response = self.teacher.create({'name': name, 'mail': mail, 'workshops': []})
+		response = self.teacher.create({'name': name, 'mail': mail, 'sadnas': []})
 		return response
 
 
-	def get_all_workshops(self):
-		return jsonify(self.Workshop.find({}))
+	def get_all_sadnas(self):
+		return jsonify(self.sadna.find({}))
 
 
-	def insert_workshop_and_append_it_to_teacher(self, name, teacher_name):
-		response = self.workshop.create({'name': name})
-		workshop_record = self.workshop.find_by_id(response)
+	def insert_sadna_and_append_it_to_teacher(self, name, teacher_name):
+		response = self.sadna.create({'name': name})
+		sadna_record = self.sadna.find_by_id(response)
 
 		teacher_record = self.teacher.find_by_name(teacher_name)
 		teacher_id=teacher_record['_id']
-		teacher_workshops = teacher_record['workshops']
+		teacher_sadnas = teacher_record['sadnas']
 
-		teacher_workshops.append(workshop_record["_id"])
-		teacher_record['workshops'] = teacher_workshops
+		teacher_sadnas.append(sadna_record["_id"])
+		teacher_record['sadnas'] = teacher_sadnas
 		teacher_record.pop("created")
 		teacher_record.pop("updated")
 		teacher_record.pop("_id")
 		response2 = self.teacher.update(teacher_id, teacher_record)
-		return workshop_record["_id"] # workshopID
+		return sadna_record["_id"] # sadnaID
 
 
 	def insert_msg(self, name, text, projectId, fromTeacher):

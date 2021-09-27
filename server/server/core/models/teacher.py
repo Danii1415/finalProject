@@ -12,19 +12,19 @@ class Teacher(object):
 		self.fields = {
 			"name": "string",
 			"mail": "string",
-			"workshops": "list",
+			"sadnas": "list",
 			"password": "string",
 			"created": "datetime",
 			"updated": "datetime"
 		}
 
-		self.create_required_fields = ["name", "mail", "workshops", "password"]
+		self.create_required_fields = ["name", "mail", "sadnas", "password"]
 
 		# Fields optional for CREATE
 		self.create_optional_fields = []
 
 		# Fields required for UPDATE
-		self.update_required_fields = ["name", "mail", "workshops", "password"]
+		self.update_required_fields = ["name", "mail", "sadnas", "password"]
 
 		# Fields optional for UPDATE
 		self.update_optional_fields = []
