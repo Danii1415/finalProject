@@ -46,8 +46,8 @@ class Mail_Service(object):
 		self.send_mail_to_mail_list(receiver_addresses_list, "Final Project - you got a new message", "Message content: <br>" + str_html_msg_to_send)
 
 
-	def send_create_new_project_mail(self, receiver_addresses_list, sadna_name, project_number, project_name):
-		self.send_mail_to_mail_list(receiver_addresses_list, "Final Project - New project was created",  "Course name: " + sadna_name+"<br>"+ "Project Number: "+project_number+"<br>"+"Project_name: "+ project_name)
+	def send_create_new_project_mail(self, receiver_addresses_list, course_name, project_number, project_name):
+		self.send_mail_to_mail_list(receiver_addresses_list, "Final Project - New project was created",  "Course name: " + course_name+"<br>"+ "Project Number: "+project_number+"<br>"+"Project_name: "+ project_name)
 
 
 	def send_status_was_changed_mail(self, receiver_addresses_list, new_status):

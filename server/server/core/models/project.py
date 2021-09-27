@@ -12,7 +12,7 @@ class Project(object):
         self.fields = {
             "title": "string",
             "teacherId": "string",
-            "sadnaId": "string",
+            "courseId": "string",
             "studentList": "list",
             "imgLink": "string",
             "preview": "string",
@@ -28,7 +28,7 @@ class Project(object):
             "updated": "datetime"
         }
 
-        self.create_required_fields = ["title", "teacherId", "sadnaId", "studentList", "imgLink", "preview"
+        self.create_required_fields = ["title", "teacherId", "courseId", "studentList", "imgLink", "preview"
 						, "status", "githubLink", "contactName", "contactPhone", "contactEmail"
                         , "lastUpdateByStudent", "number", "imageIsOld"]
 
@@ -36,7 +36,7 @@ class Project(object):
         self.create_optional_fields = []
 
         # Fields required for UPDATE
-        self.update_required_fields = ["title", "teacherId", "sadnaId", "studentList", "imgLink", "preview"
+        self.update_required_fields = ["title", "teacherId", "courseId", "studentList", "imgLink", "preview"
 						, "status", "githubLink", "contactName", "contactPhone", "contactEmail"
                         , "lastUpdateByStudent", "number", "imageIsOld"]
 
